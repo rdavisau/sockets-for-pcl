@@ -24,9 +24,8 @@ functionality around them, including hub-based communications, custom protocol h
 and error handling/reliablity options. 
 
 #### Example Usage
-````TcpSocketListener```` and ````TcpSocketClient```` each expose ````ReadStream```` and ````WriteStream```` properties of type  
-````System.IO.Stream```` for receiving and sending data. ````UdpReceiver````, ````UdpClient```` and ````UdpMulticastClient```` expose
-a ````MessageReceived```` event and a ````Send()```` method due to the nature of the transport and the underlying implementations.
+````TcpSocketListener```` and ````TcpSocketClient```` each expose ````ReadStream```` and ````WriteStream```` 
+properties of type ````System.IO.Stream```` for receiving and sending data. ````UdpReceiver````, ````UdpClient```` and ````UdpMulticastClient```` expose a ````MessageReceived```` event and a ````Send()```` method due to the nature of the transport and the underlying implementations.
 
 ##### A TCP listener
     var listenPort = 11000;
@@ -94,7 +93,7 @@ a ````MessageReceived```` event and a ````Send()```` method due to the nature of
     var msg = "HELLO WORLD";
     var msgBytes = Encoding.UTF8.GetBytes(msg);
     
-    await client.SendToAsync(msgBytes, "127.0.0.1", listenPort);
+    await client.SendToAsync(msgBytes, address, port);
 
 #### Planned Features
  - Select interface/s to bind to - currently all available interfaces are bound. 
