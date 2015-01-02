@@ -1,8 +1,8 @@
 #Sockets Plugin for Xamarin and Windows (PCL)
 
-An abstraction over the socket implementations of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store, and/or Windows Desktop.
+An abstraction over the socket implementations of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store, and/or Windows Desktop. Using this plugin, you can write socket code in your PCL. This simplifies cross-platform peer-to-peer communications signficantly, but also promotes code reuse for many other cases. 
 
-Get it on nuget: __NUGET_LINK_HERE__
+The library utilises the "Bait and Switch" pattern, so _must_ be installed via nuget in both the PCL _and_ your native projects. Get it on nuget: __NUGET_LINK_HERE__
 
 #### Classes
 The plugin currently provides the following socket abstractions:
@@ -15,7 +15,7 @@ Class|Description|.NET Abstraction|WinRT Abstraction
 **UdpSocketClient** | Send messages to arbitrary endpoints over UDP. | UdpClient | DatagramSocket
 **UdpSocketMulticastClient** | Send and receive UDP messages within a multicast group. | UdpClient | DatagramSocket
 
-Apart from the decisions neccessary to merge the two apis, the abstraction aims to be relatively unprescriptive. 
+Apart from the decisions neccessary to merge the two APIs, the abstraction aims to be relatively non-prescriptive. 
 This means that there is little to no protection in the library against socket failures, reliablity, retry, etc., 
 and nothing in the way of help for sending or receiving data. 
 
