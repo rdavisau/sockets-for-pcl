@@ -18,6 +18,14 @@ namespace Sockets.Plugin
         private CancellationTokenSource _messageCanceller;
 
         /// <summary>
+        ///     Default constructor for <code>UdpSocketClient.</code>
+        /// </summary>
+        public UdpSocketClient()
+        {
+            _backingUdpClient = new UdpClient();
+        }
+
+        /// <summary>
         ///     Sets the endpoint at the specified address/port pair as the 'default' target of sent data.
         ///     After calling <code>ConnectAsync</code>, use <code>SendAsync</code> to send data to the default target.
         /// </summary>
@@ -25,7 +33,6 @@ namespace Sockets.Plugin
         /// <param name="port">The remote port for the default target.</param>
         public async Task ConnectAsync(string address, int port)
         {
-            _backingUdpClient = new UdpClient();
             _messageCanceller = new CancellationTokenSource();
 
             await Task.Run(() => _backingUdpClient.Connect(address, port));
