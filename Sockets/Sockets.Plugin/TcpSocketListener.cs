@@ -48,5 +48,13 @@ namespace Sockets.Plugin
             get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
             set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Sockets.Plugin
     ///     which data will be sent,
     ///     and send data with <code>SendAsync</code>.
     /// </summary>
-    public class UdpSocketClient : IUdpSocketClient
+    public class UdpSocketClient : UdpSocketBase, IUdpSocketClient
     {
         /// <summary>
         ///     Sets the endpoint at the specified address/port pair as the 'default' target of sent data.

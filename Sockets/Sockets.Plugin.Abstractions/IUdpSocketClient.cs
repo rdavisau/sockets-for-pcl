@@ -9,7 +9,7 @@ namespace Sockets.Plugin.Abstractions
     ///     which data will be sent,
     ///     and send data with <code>SendAsync</code>.
     /// </summary>
-    public interface IUdpSocketClient
+    public interface IUdpSocketClient : IDisposable
     {
         /// <summary>
         ///     Sets the endpoint at the specified address/port pair as the 'default' target of sent data.

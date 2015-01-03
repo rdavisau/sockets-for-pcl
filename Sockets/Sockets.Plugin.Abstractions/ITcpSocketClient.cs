@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Sockets.Plugin.Abstractions
@@ -9,7 +10,7 @@ namespace Sockets.Plugin.Abstractions
     ///     Use the <code>WriteStream</code> and <code>ReadStream</code> properties for sending and receiving data
     ///     respectively.
     /// </summary>
-    public interface ITcpSocketClient
+    public interface ITcpSocketClient : IDisposable
     {
         /// <summary>
         ///     Establishes a TCP connection with the endpoint at the specified address/port pair.

@@ -82,5 +82,32 @@ namespace Sockets.Plugin
         {
             await _backingUdpClient.SendAsync(data, data.Length, address, port);
         }
+        
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
+        /// </summary>
+        ~UdpSocketBase()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_backingUdpClient != null)
+                    ((IDisposable)_backingUdpClient).Dispose();
+            }
+        }
+        
     }
 }

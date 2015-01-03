@@ -8,7 +8,7 @@ namespace Sockets.Plugin.Abstractions
     ///     Use <code>StartListeningAsync</code> to bind to a local port, then handle <code>ConnectionReceived</code> events as
     ///     clients connect.
     /// </summary>
-    public interface ITcpSocketListener
+    public interface ITcpSocketListener : IDisposable
     {
         /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.

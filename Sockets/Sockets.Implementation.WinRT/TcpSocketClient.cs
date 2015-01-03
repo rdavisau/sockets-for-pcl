@@ -86,5 +86,31 @@ namespace Sockets.Plugin
         {
             get { return Int32.Parse(_backingStreamSocket.Information.RemotePort); }
         }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
+        /// </summary>
+        ~TcpSocketClient()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_backingStreamSocket != null)
+                    (_backingStreamSocket).Dispose();
+            }
+        }
     }
 }

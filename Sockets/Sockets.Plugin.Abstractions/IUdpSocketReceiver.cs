@@ -6,7 +6,7 @@ namespace Sockets.Plugin.Abstractions
     /// <summary>
     ///     Listens on a port for UDP traffic and can send UDP data to arbitrary endpoints.
     /// </summary>
-    public interface IUdpSocketReceiver
+    public interface IUdpSocketReceiver : IDisposable
     {
         /// <summary>
         ///     Binds the <code>UdpSocketReceiver</code> to the specified port on all endpoints and listens for UDP traffic.

@@ -7,7 +7,7 @@ namespace Sockets.Plugin
     /// <summary>
     ///     Listens on a port for UDP traffic and can send UDP data to arbitrary endpoints.
     /// </summary>
-    public class UdpSocketReceiver : IUdpSocketReceiver
+    public class UdpSocketReceiver : UdpSocketBase, IUdpSocketReceiver
     {
         /// <summary>
         ///     Binds the <code>UdpSocketReceiver</code> to the specified port on all endpoints and listens for UDP traffic.
