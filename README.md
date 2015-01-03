@@ -141,4 +141,4 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
  the standard WinRT classes, but there is suppport for low level WinSock calls 
  which can be investigated. 
  
- Other 'higher level' functionality will end up in the __EXT_LIBRARY_NAME_HERE__ project mentioned earlier. 
+Other 'higher level' functionality will end up in the __EXT_LIBRARY_NAME_HERE__ project mentioned earlier. 
