@@ -38,7 +38,7 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
       while (nextByte != -1)
       {
         // read from the 'ReadStream' property of the socket client to receive data
-        nextByte = await client.ReadStream.ReadByteAsync();
+        nextByte = await Task.Run(()=> client.ReadStream.ReadByte());
         Debug.Write(nextByte);
       }
     };
@@ -63,7 +63,7 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
       await client.WriteStream.FlushAsync();
       
       // wait a little before sending the next bit of data
-      await Task.Delay(Timespan.FromMilliseconds(500)); 
+      await Task.Delay(TimeSpan.FromMilliseconds(500)); 
     }
     
     await client.DisconnectAsync();
