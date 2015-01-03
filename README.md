@@ -1,6 +1,6 @@
 #Sockets Plugin for Xamarin and Windows (PCL)
 
-An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store, and/or Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications signficantly as well as enabling code sharing for many other use cases. 
+An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store, and/or Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
 
 This library utilises the "Bait and Switch" pattern, so __must__ be installed via NuGet in _both_ the PCL _and_ your native projects. 
 
@@ -135,6 +135,10 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
  - Select interface/s to bind to - currently all available interfaces are bound. This should be OK for most purposes, particularly for mobile platforms, but might make udp multicast more difficult on a desktop with many interfaces.  
  - API for socket connection settings. Very few settings are exposed through 
  the standard WinRT classes, but there is suppport for low level WinSock calls 
- which can be investigated. 
+ which can be investigated. Currently you get the defaults, which should be relatively sane. If there's something you need, please raise an issue or submit a pull request. 
 
 Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
+
+
+### Contributions, Issues, Feedback
+All welcome!!
