@@ -6,7 +6,7 @@ The library utilises the "Bait and Switch" pattern, so __must__ be installed via
 
 Get it on nuget: __NUGET_LINK_HERE__
 
-#### Classes
+### Classes
 The plugin currently provides the following socket abstractions:
 
 Class|Description|.NET Abstraction|WinRT Abstraction
@@ -17,15 +17,11 @@ Class|Description|.NET Abstraction|WinRT Abstraction
 **UdpSocketClient** | Send messages to arbitrary endpoints over UDP. | UdpClient | DatagramSocket
 **UdpSocketMulticastClient** | Send and receive UDP messages within a multicast group. | UdpClient | DatagramSocket
 
-Apart from the decisions neccessary to merge the two APIs, the abstraction aims to be relatively non-prescriptive. 
+Apart from the decisions made in order to merge the two APIs, the abstraction aims to be relatively non-prescriptive. 
 This means that there is little to no protection in the library against socket failures, reliablity, retry, etc., 
-and nothing in the way of help for sending or receiving data. 
+and nothing in the way of help for sending or receiving data. To that end, [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) is a longer term project with the aim of providing useful functionality around the base sockets-for-pcl classes, including hub-style communications, custom protocol helpers and support for typed messaging, and error handling/life cycle and reliability options. 
 
-__EXT_LIBRARY_NAME_HERE__ is a more opinionated library that aims to take the basic sockets-for-pcl classes and wrap useful 
-functionality around them, including hub-based communications, custom protocol helpers and support for typed messaging, 
-and error handling/life cycle and reliability options. 
-
-#### Example Usage
+### Example Usage
 ````TcpSocketListener```` and ````TcpSocketClient```` each expose ````ReadStream```` and ````WriteStream```` 
 properties of type ````System.IO.Stream```` for receiving and sending data. ````UdpReceiver````, ````UdpClient```` and ````UdpMulticastClient```` expose a ````MessageReceived```` event and a ````Send()```` method due to the nature of the transport and the underlying implementations.
 
@@ -131,14 +127,14 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
     await receiver.SendMulticastAsync(msgBytes);
 
 
-#### Platform Considerations
+### Platform Considerations
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of ````privateNetworkClientServer````, ````internetClient```` and/or  ````internetClientServer```` capabilities. 
  - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between seperate apps (i.e. no IPC) 
 
-#### Planned Features
+### Planned Features
  - Select interface/s to bind to - currently all available interfaces are bound. This should be OK for most purposes, particularly for mobile platforms, but might make udp multicast more difficult on a desktop with many interfaces.  
  - API for socket connection settings. Very few settings are exposed through 
  the standard WinRT classes, but there is suppport for low level WinSock calls 
  which can be investigated. 
- 
-Other 'higher level' functionality will end up in the __EXT_LIBRARY_NAME_HERE__ project mentioned earlier. 
+
+Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
