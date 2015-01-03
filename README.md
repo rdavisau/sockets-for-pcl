@@ -2,9 +2,9 @@
 
 An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store, and/or Windows Desktop. This library allows you to  write socket code in your PCL, simplifying cross-platform peer-to-peer communications signficantly as well as enabling code sharing for many other use cases. 
 
-The library utilises the "Bait and Switch" pattern, so __must__ be installed via nuget in _both_ the PCL _and_ your native projects. 
+The library utilises the "Bait and Switch" pattern, so __must__ be installed via NuGet in _both_ the PCL _and_ your native projects. 
 
-Get it on nuget: __NUGET_LINK_HERE__
+Get it on NuGet: ````Install-Package rda.SocketsForPCL````
 
 ### Classes
 The plugin currently provides the following socket abstractions:
