@@ -14,6 +14,10 @@ namespace Sockets.Plugin
     /// </summary>
     public class UdpSocketMulticastClient : UdpSocketBase, IUdpSocketMulticastClient
     {
+        private string _multicastAddress;
+        private int _multicastPort;
+        private int _ttl = 1;
+
         /// <summary>
         ///     Joins the multicast group at the specified endpoint.
         /// </summary>
@@ -26,7 +30,11 @@ namespace Sockets.Plugin
             var sn = port.ToString();
 
             await _backingDatagramSocket.BindServiceNameAsync(sn);
+            _backingDatagramSocket.Control.OutboundUnicastHopLimit = (byte) TTL;
             await Task.Run(() => _backingDatagramSocket.JoinMulticastGroup(hn));
+
+            _multicastAddress = multicastAddress;
+            _multicastPort = port;
         }
 
         /// <summary>
@@ -34,9 +42,22 @@ namespace Sockets.Plugin
         ///     If a group has not been set, calls will have no effect.
         /// </summary>
         /// <param name="data">A byte array of data to be sent.</param>
-        public new async Task SendAsync(byte[] data)
+        public async Task SendMulticastAsync(byte[] data)
         {
-            await base.SendAsync(data);
+            if (_multicastAddress == null)
+                throw new InvalidOperationException("Must join a multicast group before sending.");
+
+            await base.SendToAsync(data, _multicastAddress, _multicastPort);
+        }
+
+        /// <summary>
+        ///     Gets or sets the Time To Live value for the <code>UdpSocketMulticastClient</code>.
+        ///     Must be called before joining a multicast group. 
+        /// </summary>
+        public int TTL
+        {
+            get { return _ttl; }
+            set { _ttl = value; }
         }
 
         /// <summary>

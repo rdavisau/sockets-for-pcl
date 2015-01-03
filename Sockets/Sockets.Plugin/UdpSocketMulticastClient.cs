@@ -7,9 +7,9 @@ namespace Sockets.Plugin
     /// <summary>
     ///     Sends and recieves data in a udp multicast group.
     ///     Join a udp multicast address using <code>JoinMulticastGroupAsync</code>, then send data using
-    ///     <code>SendAsync</code>.
+    ///     <code>SendMulticastAsync</code>.
     /// </summary>
-    public class UdpSocketMulticastClient : IUdpSocketMulticastClient
+    public class UdpSocketMulticastClient : UdpSocketBase, IUdpSocketMulticastClient
     {
         /// <summary>
         ///     Joins the multicast group at the specified endpoint.
@@ -35,9 +35,19 @@ namespace Sockets.Plugin
         ///     If a group has not been set, calls will have no effect.
         /// </summary>
         /// <param name="data">A byte array of data to be sent.</param>
-        public Task SendAsync(byte[] data)
+        public Task SendMulticastAsync(byte[] data)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
+        ///     Gets or sets the Time To Live value for the <code>UdpSocketMulticastClient</code>.
+        ///     Must be called before joining a multicast group. 
+        /// </summary>
+        public int TTL
+        {
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
 
         /// <summary>
