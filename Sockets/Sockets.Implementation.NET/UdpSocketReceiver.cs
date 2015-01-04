@@ -51,7 +51,23 @@ namespace Sockets.Plugin
         /// <param name="port">The remote port to which the data should be sent.</param>
         public new async Task SendToAsync(byte[] data, string address, int port)
         {
-            await base.SendToAsync(data, address, port);
+            if (_backingUdpClient == null)
+            {
+                // haven't bound to a port, so _backingUdpClient has not been created
+                // (must be created with the binding port as a parameter, so is 
+                // instantiated on call to StartListeningAsync(). If we are here, user
+                // is sending before having 'bound' to a port, so just create a temporary
+                // backing client to send this data. 
+                using (_backingUdpClient = new UdpClient())
+                {
+                    await base.SendToAsync(data, address, port);
+                }
+            }
+            else
+            {
+                await base.SendToAsync(data, address, port);
+            }
+
         }
     }
 }

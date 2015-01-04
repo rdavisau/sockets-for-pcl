@@ -21,7 +21,7 @@ namespace Sockets.Plugin
 
         /// <summary>
         ///     Fired when a new TCP connection has been received.
-        ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListnerConnectEventArgs</code>
+        ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
         public EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived { get; set; }
