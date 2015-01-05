@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using Sockets.Plugin.Abstractions;
 
-namespace Sockets.Implementation.NET
+namespace Sockets.Plugin
 {
     public static class NetworkExtensions
     {

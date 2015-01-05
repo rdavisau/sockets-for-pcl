@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
-namespace Sockets.Implementation.NET
+namespace Sockets.Plugin
 {
     public class NetworkInterfaceSummary : INetworkInterfaceSummary
     {
@@ -16,9 +16,7 @@ namespace Sockets.Implementation.NET
         public string Name { get; private set; }
 
         public string IpAddress { get; private set; }
-
-        public int NetmaskLength { get; private set; }
-        
+      
         public string GatewayAddress { get; private set; }
 
         public string BroadcastAddress { get; private set; }
