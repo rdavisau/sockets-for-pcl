@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetworkExtensions.cs" />
+    <Compile Include="NetworkInterfaceSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TcpSocketListener.cs" />
     <Compile Include="TcpSocketClient.cs" />
