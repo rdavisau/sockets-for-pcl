@@ -9,6 +9,9 @@ using Sockets.Plugin.Abstractions;
 
 namespace Sockets.Plugin
 {
+    /// <summary>
+    /// Provides a summary of an available network interface on the device.
+    /// </summary>
     public class NetworkInterfaceSummary : INetworkInterfaceSummary
     {
         public string NativeInterfaceId { get; private set; }
@@ -23,6 +26,8 @@ namespace Sockets.Plugin
 
         public NetworkInterfaceStatus ConnectionStatus { get; private set; }
 
+        protected internal NetworkInterface NativeInterface;
+        
         public static NetworkInterfaceSummary FromNativeInterface(NetworkInterface nativeInterface)
         {           
             var ip = 
@@ -48,8 +53,25 @@ namespace Sockets.Plugin
                 IpAddress = ip != null ? ip.Address.ToString() : null,
                 GatewayAddress = gateway,
                 BroadcastAddress = broadcast,
-                ConnectionStatus = nativeInterface.OperationalStatus.ToNetworkInterfaceStatus()
+                ConnectionStatus = nativeInterface.OperationalStatus.ToNetworkInterfaceStatus(),
+                NativeInterface = nativeInterface
             };
+        }
+
+        // TODO: Move to singleton, rather than static method?
+        /// <summary>
+        /// Retrieves information on the IPv4 network interfaces available.
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<List<NetworkInterfaceSummary>> GetAllNetworkInterfaceSummariesAsync()
+        {
+            var interfaces = await Task.Run(() =>
+                NetworkInterface
+                    .GetAllNetworkInterfaces()
+                    .Select(FromNativeInterface)
+                    .ToList());
+
+            return interfaces;
         }
     }
 }
