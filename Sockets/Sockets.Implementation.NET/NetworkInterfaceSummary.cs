@@ -14,21 +14,39 @@ namespace Sockets.Plugin
     /// </summary>
     public class NetworkInterfaceSummary : INetworkInterfaceSummary
     {
+        /// <summary>
+        /// The interface identifier provided by the underlying platform.
+        /// </summary>
         public string NativeInterfaceId { get; private set; }
-        
+
+        /// <summary>
+        /// The interface name, as provided by the underlying platform.
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// The IPv4 Address of the interface, if connected. 
+        /// </summary>
         public string IpAddress { get; private set; }
-      
+
+        /// <summary>
+        /// The IPv4 address of the gateway, if available.
+        /// </summary>
         public string GatewayAddress { get; private set; }
 
+        /// <summary>
+        /// The IPv4 broadcast address for the interface, if available.
+        /// </summary>
         public string BroadcastAddress { get; private set; }
 
+        /// <summary>
+        /// The connection status of the interface, if available
+        /// </summary>
         public NetworkInterfaceStatus ConnectionStatus { get; private set; }
 
         protected internal NetworkInterface NativeInterface;
         
-        public static NetworkInterfaceSummary FromNativeInterface(NetworkInterface nativeInterface)
+        internal static NetworkInterfaceSummary FromNativeInterface(NetworkInterface nativeInterface)
         {           
             var ip = 
                 nativeInterface
