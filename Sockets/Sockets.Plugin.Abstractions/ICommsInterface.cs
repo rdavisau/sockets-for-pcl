@@ -42,8 +42,15 @@ namespace Sockets.Plugin.Abstractions
         /// </summary>
         NetworkInterfaceStatus ConnectionStatus { get; }
 
+        /// <summary>
+        /// Indicates whether the interface has a network address and can be used for 
+        /// sending/receiving data.
+        /// </summary>
         bool IsUsable { get; }
 
+        /// <summary>
+        /// Indicates whether the interface is the loopback interface
+        /// </summary>
         bool IsLoopback { get; }
     }
 }

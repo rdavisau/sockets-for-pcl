@@ -61,11 +61,18 @@ namespace Sockets.Plugin
             get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
 
+        /// <summary>
+        /// Indicates whether the interface has a network address and can be used for 
+        /// sending/receiving data.
+        /// </summary>
         public bool IsUsable
         {
             get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
 
+        /// <summary>
+        /// Indicates whether the interface is the loopback interface
+        /// </summary>
         public bool IsLoopback
         {
             get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
