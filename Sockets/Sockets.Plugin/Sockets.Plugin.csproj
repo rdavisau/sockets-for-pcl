@@ -42,7 +42,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NetworkInterfaceSummary.cs" />
+    <Compile Include="CommsInterface.cs" />
     <Compile Include="TcpSocketClient.cs" />
     <Compile Include="PCL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

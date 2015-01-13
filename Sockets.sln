@@ -54,11 +54,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App1.WindowsPhone", "App1\App1.WindowsPhone\App1.WindowsPhone.csproj", "{809E689F-B854-4BE0-A0E3-BC77C5B37761}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		App1\App1.Shared\App1.Shared.projitems*{809e689f-b854-4be0-a0e3-bc77c5b37761}*SharedItemsImports = 4
-		App1\App1.Shared\App1.Shared.projitems*{47f4f409-3a9a-4b03-a148-c33a25e6c725}*SharedItemsImports = 4
-		App1\App1.Shared\App1.Shared.projitems*{b2f55959-9d24-4aff-91ab-2ffdbc5337ff}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|ARM = Ad-Hoc|ARM
@@ -584,6 +579,7 @@ Global
 		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|ARM.ActiveCfg = Release|iPhone
 		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|iPhone.ActiveCfg = Release|iPhone
 		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|iPhone.Build.0 = Release|iPhone
+		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|iPhone.Deploy.0 = Release|iPhone
 		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{3D9C7D35-3D58-4271-A889-884140708B23}.Release|Mixed Platforms.ActiveCfg = Release|iPhone

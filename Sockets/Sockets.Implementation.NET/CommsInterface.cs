@@ -12,7 +12,7 @@ namespace Sockets.Plugin
     /// <summary>
     /// Provides a summary of an available network interface on the device.
     /// </summary>
-    public class NetworkInterfaceSummary : INetworkInterfaceSummary
+    public partial class CommsInterface : ICommsInterface
     {
         /// <summary>
         /// The interface identifier provided by the underlying platform.
@@ -44,9 +44,29 @@ namespace Sockets.Plugin
         /// </summary>
         public NetworkInterfaceStatus ConnectionStatus { get; private set; }
 
-        protected internal NetworkInterface NativeInterface;
+        /// <summary>
+        /// Indicates whether the interface has a network address and can be used for 
+        /// sending/receiving data.
+        /// </summary>
+        public bool IsUsable
+        {
+            get { return !String.IsNullOrWhiteSpace(IpAddress); }
+        }
+
+        private readonly string[] _loopbackAddresses = { "127.0.0.1", "localhost" };
+
+        /// <summary>
+        /// Indicates whether the interface is the loopback interface
+        /// </summary>
+        public bool IsLoopback
+        {
+            // yes, crude.
+            get { return _loopbackAddresses.Contains(IpAddress); }
+        }
+
+        protected internal System.Net.NetworkInformation.NetworkInterface NativeInterface;
         
-        internal static NetworkInterfaceSummary FromNativeInterface(NetworkInterface nativeInterface)
+        internal static CommsInterface FromNativeInterface(System.Net.NetworkInformation.NetworkInterface nativeInterface)
         {           
             var ip = 
                 nativeInterface
@@ -62,9 +82,11 @@ namespace Sockets.Plugin
                     .Select(a => a.Address.ToString())
                     .FirstOrDefault();
 
-            var broadcast = ip != null ? ip.Address.GetBroadcastAddress(ip.IPv4Mask).ToString() : null;
+            var netmask = GetSubnetMask(ip); // implemented natively for each .NET platform
 
-            return new NetworkInterfaceSummary
+            var broadcast = (ip != null && netmask != null) ? ip.Address.GetBroadcastAddress(netmask).ToString() : null;
+
+            return new CommsInterface
             {
                 NativeInterfaceId = nativeInterface.Id,
                 Name = nativeInterface.Name,
@@ -81,10 +103,10 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<NetworkInterfaceSummary>> GetAllNetworkInterfaceSummariesAsync()
+        public static async Task<List<CommsInterface>> GetAllNetworkInterfacesAsync()
         {
             var interfaces = await Task.Run(() =>
-                NetworkInterface
+                System.Net.NetworkInformation.NetworkInterface
                     .GetAllNetworkInterfaces()
                     .Select(FromNativeInterface)
                     .ToList());

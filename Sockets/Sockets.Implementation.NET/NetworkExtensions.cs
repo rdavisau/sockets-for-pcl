@@ -7,9 +7,9 @@ namespace Sockets.Plugin
 {
     public static class NetworkExtensions
     {
-        public static NetworkInterfaceSummary ToNetworkInterfaceSummary(this NetworkInterface nativeInterface)
+        public static CommsInterface ToNetworkInterfaceSummary(this System.Net.NetworkInformation.NetworkInterface nativeInterface)
         {
-            return NetworkInterfaceSummary.FromNativeInterface(nativeInterface);
+            return CommsInterface.FromNativeInterface(nativeInterface);
         }
 
         public static NetworkInterfaceStatus ToNetworkInterfaceStatus(this OperationalStatus nativeStatus)

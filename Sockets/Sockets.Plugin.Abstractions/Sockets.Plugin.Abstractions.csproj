@@ -38,7 +38,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="INetworkInterfaceSummary.cs" />
+    <Compile Include="ICommsInterface.cs" />
     <Compile Include="IUdpSocketMulticastClient.cs" />
     <Compile Include="ITcpSocketClient.cs" />
     <Compile Include="ITcpSocketListener.cs" />

@@ -35,6 +35,12 @@
     <DocumentationFile>bin\iPhone\Release\Sockets.Plugin.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Sockets.Implementation.NET\CommsInterface.cs">
+      <Link>CommsInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\NetworkExtensions.cs">
+      <Link>NetworkExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Sockets.Implementation.NET\TcpSocketClient.cs">
       <Link>TcpSocketClient.cs</Link>
     </Compile>
@@ -53,6 +59,10 @@
     <Compile Include="..\Sockets.Implementation.NET\UdpSocketReceiver.cs">
       <Link>UdpSocketReceiver.cs</Link>
     </Compile>
+    <Compile Include="Netmask\CommsInterfaceNative.cs" />
+    <Compile Include="Netmask\NetInfo.cs" />
+    <Compile Include="Netmask\NetInterfaceInfo.cs" />
+    <Compile Include="Netmask\StructsAndEnums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

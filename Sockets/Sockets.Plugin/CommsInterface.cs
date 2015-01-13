@@ -10,7 +10,7 @@ namespace Sockets.Plugin
     /// <summary>
     /// Provides a summary of an available network interface on the device.
     /// </summary>
-    class NetworkInterfaceSummary : INetworkInterfaceSummary
+    public class CommsInterface : ICommsInterface
     {
         /// <summary>
         /// The interface identifier provided by the underlying platform.
@@ -61,12 +61,22 @@ namespace Sockets.Plugin
             get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
 
+        public bool IsUsable
+        {
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+        }
+
+        public bool IsLoopback
+        {
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+        }
+
         // TODO: Move to singleton, rather than static method?
         /// <summary>
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<NetworkInterfaceSummary>> GetAllNetworkInterfaceSummariesAsync()
+        public static async Task<List<CommsInterface>> GetAllNetworkInterfacesAsync()
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }

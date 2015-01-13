@@ -40,6 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Sockets.Implementation.NET\CommsInterface.cs">
+      <Link>CommsInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\CommsInterfaceNative.cs">
+      <Link>CommsInterfaceNative.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\NetworkExtensions.cs">
+      <Link>NetworkExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Sockets.Implementation.NET\TcpSocketClient.cs">
       <Link>TcpSocketClient.cs</Link>
     </Compile>

@@ -10,7 +10,7 @@ namespace Sockets.Plugin.Abstractions
     /// <summary>
     /// Provides a summary of an available network interface on the device.
     /// </summary>
-    public interface INetworkInterfaceSummary
+    public interface ICommsInterface
     {
         /// <summary>
         /// The interface identifier provided by the underlying platform.
@@ -41,5 +41,9 @@ namespace Sockets.Plugin.Abstractions
         /// The connection status of the interface, if available
         /// </summary>
         NetworkInterfaceStatus ConnectionStatus { get; }
+
+        bool IsUsable { get; }
+
+        bool IsLoopback { get; }
     }
 }

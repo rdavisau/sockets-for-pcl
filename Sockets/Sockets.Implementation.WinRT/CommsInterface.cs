@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace Sockets.Plugin
     /// <summary>
     /// Provides a summary of an available network interface on the device.
     /// </summary>
-    public class NetworkInterfaceSummary : INetworkInterfaceSummary
+    public class CommsInterface : ICommsInterface
     {
         /// <summary>
         /// The interface identifier provided by the underlying platform.
@@ -41,6 +41,26 @@ namespace Sockets.Plugin
         public string BroadcastAddress { get; private set; }
 
         /// <summary>
+        /// Indicates whether the interface has a network address and can be used for 
+        /// sending/receiving data.
+        /// </summary>
+        public bool IsUsable
+        {
+            get { return !String.IsNullOrWhiteSpace(IpAddress); }
+        }
+
+        private readonly string[] _loopbackAddresses = { "127.0.0.1", "localhost" };
+
+        /// <summary>
+        /// Indicates whether the interface is the loopback interface
+        /// </summary>5
+        public bool IsLoopback
+        {
+            // yes, crude.
+            get { return _loopbackAddresses.Contains(IpAddress); }
+        }
+
+        /// <summary>
         /// The connection status of the interface, if available
         /// </summary>
         public NetworkInterfaceStatus ConnectionStatus { get; private set; }
@@ -53,7 +73,7 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<NetworkInterfaceSummary>> GetAllNetworkInterfaceSummariesAsync()
+        public static async Task<List<CommsInterface>> GetAllNetworkInterfacesAsync()
         {
             return await Task.Run(() =>
             {
@@ -75,7 +95,7 @@ namespace Sockets.Plugin
                             var ipAddress = hn.CanonicalName;
                             var prefixLength = (int) hn.IPInformation.PrefixLength; // seriously why is this nullable
 
-                            var subnetAddress = NetworkExtensions.GetSubnetAddress(ipAddress, (int) prefixLength);
+                            var subnetAddress = NetworkExtensions.GetSubnetAddress(ipAddress, prefixLength);
                             var broadcastAddress = NetworkExtensions.GetBroadcastAddress(ipAddress, subnetAddress);
 
                             var adapter = hn.IPInformation.NetworkAdapter;
@@ -86,7 +106,7 @@ namespace Sockets.Plugin
                             if (profiles.TryGetValue(adapterId, out matchingProfile))
                                 adapterName = matchingProfile.ProfileName;
 
-                            return new NetworkInterfaceSummary
+                            return new CommsInterface
                             {
                                 NativeInterfaceId = adapterId,
                                 Name = adapterName,
