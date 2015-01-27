@@ -167,11 +167,13 @@
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\..\..\..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Sockets.Plugin">
-      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.0.1.0\lib\wp8\Sockets.Plugin.dll</HintPath>
+    <Reference Include="Sockets.Plugin, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.0\lib\wp8\Sockets.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="Sockets.Plugin.Abstractions">
-      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.0.1.0\lib\wp8\Sockets.Plugin.Abstractions.dll</HintPath>
+    <Reference Include="Sockets.Plugin.Abstractions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.0\lib\wp8\Sockets.Plugin.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\..\..\..\packages\Rx-Core.2.2.5\lib\windowsphone8\System.Reactive.Core.dll</HintPath>
