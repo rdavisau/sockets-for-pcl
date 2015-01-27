@@ -40,7 +40,7 @@ namespace Sockets.Plugin.Abstractions
         /// <summary>
         /// The connection status of the interface, if available
         /// </summary>
-        NetworkInterfaceStatus ConnectionStatus { get; }
+        CommsInterfaceStatus ConnectionStatus { get; }
 
         /// <summary>
         /// Indicates whether the interface has a network address and can be used for 

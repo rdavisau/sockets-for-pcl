@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Sockets.Plugin
 {
+    /// <summary>
+    /// Helper methods required for the conversion of platform-specific network items to the abstracted versions. 
+    /// </summary>
     public static class NetworkExtensions
     {
         /// <summary>

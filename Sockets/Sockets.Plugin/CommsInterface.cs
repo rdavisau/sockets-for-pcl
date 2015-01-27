@@ -56,7 +56,7 @@ namespace Sockets.Plugin
         /// <summary>
         /// The connection status of the interface, if available
         /// </summary>
-        public NetworkInterfaceStatus ConnectionStatus
+        public CommsInterfaceStatus ConnectionStatus
         {
             get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }

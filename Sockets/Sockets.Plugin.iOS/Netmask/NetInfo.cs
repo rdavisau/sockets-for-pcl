@@ -6,9 +6,8 @@ using System.Runtime.InteropServices;
 
 namespace Sockets.Plugin
 {
-    public class NetInfo
+    internal class NetInfo
     {
-
         [DllImport("libc")]
         static extern int getifaddrs(out IntPtr ifap);
 
@@ -18,11 +17,12 @@ namespace Sockets.Plugin
         const int AF_INET = 2;
         const int AF_INET6 = 30;
         const int AF_LINK = 18;
+
         // The code in this event handler is essentially a trimmed down version
         // of `MacOsNetworkInterface.ImplGetAllNetworkInterfaces()`, from:
         // `mcs/class/System/System.Net.NetworkInformation/NetworkInterface.cs`
 
-        public static List<NetInterfaceInfo> GetInterfaceInfo()
+        internal static List<NetInterfaceInfo> GetInterfaceInfo()
         {
             var netInterfaceInfos = new Dictionary<string, NetInterfaceInfo>();
 

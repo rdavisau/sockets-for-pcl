@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+// ReSharper disable InconsistentNaming
 
 namespace Sockets.Plugin
 {
+    #pragma warning disable 0649
+
     struct ifaddrs
     {
         public IntPtr ifa_next;
@@ -57,6 +60,8 @@ namespace Sockets.Plugin
             Marshal.Copy(new IntPtr(ptr.ToInt64() + 8), sdl_data, 0, sdl_data.Length);
         }
     }
+
+    #pragma warning restore 0649
 
     // The corresponding C defines are in `/usr/include/net/if.h`
     [Flags]

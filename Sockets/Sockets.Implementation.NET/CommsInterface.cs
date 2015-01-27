@@ -43,7 +43,7 @@ namespace Sockets.Plugin
         /// <summary>
         /// The connection status of the interface, if available
         /// </summary>
-        public NetworkInterfaceStatus ConnectionStatus { get; private set; }
+        public CommsInterfaceStatus ConnectionStatus { get; private set; }
 
         /// <summary>
         /// Indicates whether the interface has a network address and can be used for 
@@ -65,9 +65,21 @@ namespace Sockets.Plugin
             get { return _loopbackAddresses.Contains(IpAddress); }
         }
 
+        /// <summary>
+        /// The native NetworkInterface this CommsInterface represents.
+        /// </summary>
         protected internal NetworkInterface NativeInterface;
+
+        /// <summary>
+        /// The Native IpAddress this CommsInterface represents.
+        /// </summary>
         protected internal IPAddress NativeIpAddress;
 
+        /// <summary>
+        /// Returns an IPEndpoint object that can be used to bind the network interface to specified port. 
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         protected internal IPEndPoint EndPoint(int port)
         {
             return new IPEndPoint(NativeIpAddress, port);
@@ -101,7 +113,7 @@ namespace Sockets.Plugin
                 IpAddress = ip != null ? ip.Address.ToString() : null,
                 GatewayAddress = gateway,
                 BroadcastAddress = broadcast,
-                ConnectionStatus = nativeInterface.OperationalStatus.ToNetworkInterfaceStatus(),
+                ConnectionStatus = nativeInterface.OperationalStatus.ToCommsInterfaceStatus(),
                 NativeInterface = nativeInterface
             };
         }

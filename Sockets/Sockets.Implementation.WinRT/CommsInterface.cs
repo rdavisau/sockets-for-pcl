@@ -63,9 +63,16 @@ namespace Sockets.Plugin
         /// <summary>
         /// The connection status of the interface, if available
         /// </summary>
-        public NetworkInterfaceStatus ConnectionStatus { get; private set; }
+        public CommsInterfaceStatus ConnectionStatus { get; private set; }
 
+        /// <summary>
+        /// The native HostName this CommsInterface represents.
+        /// </summary>
         protected internal HostName NativeHostName;
+
+        /// <summary>
+        /// The native NetworkAdapter this CommsInterface represents.
+        /// </summary>
         protected internal NetworkAdapter NativeNetworkAdapter;
 
         // TODO: Move to singleton, rather than static method?
@@ -117,7 +124,7 @@ namespace Sockets.Plugin
                                 NativeHostName = hn,
                                 NativeNetworkAdapter = adapter,
 
-                                ConnectionStatus = NetworkInterfaceStatus.Unknown
+                                ConnectionStatus = CommsInterfaceStatus.Unknown
                             };
                         }).ToList();
 

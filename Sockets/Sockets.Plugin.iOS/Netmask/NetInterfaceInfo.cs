@@ -2,7 +2,7 @@
 
 namespace Sockets.Plugin
 {
-    public class NetInterfaceInfo
+    internal class NetInterfaceInfo
     {
         public IPAddress Netmask;
         public IPAddress Address;

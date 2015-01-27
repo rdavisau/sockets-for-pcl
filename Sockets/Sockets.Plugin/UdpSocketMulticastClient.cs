@@ -16,6 +16,7 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="multicastAddress">The address for the multicast group.</param>
         /// <param name="port">The port for the multicast group.</param>
+        /// <param name="multicastOn">The <code>CommsInterface</code> to multicast on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
         public Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn)
         {

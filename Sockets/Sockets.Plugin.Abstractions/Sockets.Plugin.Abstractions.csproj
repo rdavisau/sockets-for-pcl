@@ -44,7 +44,7 @@
     <Compile Include="ITcpSocketListener.cs" />
     <Compile Include="IUdpSocketClient.cs" />
     <Compile Include="IUdpSocketReceiver.cs" />
-    <Compile Include="Enums\NetworkInterfaceStatus.cs" />
+    <Compile Include="Enums\CommsInterfaceStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EventArgs\TcpSocketListenerConnectEventArgs.cs" />
     <Compile Include="EventArgs\UdpSocketMessageReceivedEventArgs.cs" />

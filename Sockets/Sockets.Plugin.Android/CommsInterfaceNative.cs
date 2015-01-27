@@ -52,9 +52,18 @@ namespace Sockets.Plugin
         }
     }
 
-    // thank you deapsquatter - https://gist.github.com/deapsquatter/5644550
+    /// <summary>
+    /// Helper methods required for the conversion of platform-specific network items to the abstracted versions. 
+    /// </summary>
     public static class AndroidNetworkExtensions
     {
+        // thank you deapsquatter - https://gist.github.com/deapsquatter/5644550
+        /// <summary>
+        /// Allows a Java.Util.IEnumeration to be enumerated as an IEnumerable.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumeration"></param>
+        /// <returns></returns>
         public static IEnumerable<T> GetEnumerable<T>(this Java.Util.IEnumeration enumeration) where T : class
         {
             while (enumeration.HasMoreElements)

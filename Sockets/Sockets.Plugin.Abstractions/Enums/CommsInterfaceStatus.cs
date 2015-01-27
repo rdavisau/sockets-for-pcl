@@ -3,7 +3,7 @@
     /// <summary>
     /// The connection state of an interface.
     /// </summary>
-    public enum NetworkInterfaceStatus
+    public enum CommsInterfaceStatus
     {
         /// <summary>
         /// The state of the interface can not be determined.

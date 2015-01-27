@@ -5,23 +5,36 @@ using Sockets.Plugin.Abstractions;
 
 namespace Sockets.Plugin
 {
+    /// <summary>
+    /// Helper methods required for the conversion of platform-specific network items to the abstracted versions. 
+    /// </summary>
     public static class NetworkExtensions
     {
-        public static CommsInterface ToNetworkInterfaceSummary(this System.Net.NetworkInformation.NetworkInterface nativeInterface)
+        /// <summary>
+        /// Returns a <code>CommsInterface</code> wrapper from a platform native <code>NetworkInterface</code>. 
+        /// </summary>
+        /// <param name="nativeInterface"></param>
+        /// <returns></returns>
+        public static CommsInterface ToCommsInterfaceSummary(this NetworkInterface nativeInterface)
         {
             return CommsInterface.FromNativeInterface(nativeInterface);
         }
 
-        public static NetworkInterfaceStatus ToNetworkInterfaceStatus(this OperationalStatus nativeStatus)
+        /// <summary>
+        /// Converts an <code>OperationalStatus</code> value to the abstracted <code>CommsInterfaceStatus</code>. 
+        /// </summary>
+        /// <param name="nativeStatus"></param>
+        /// <returns></returns>
+        public static CommsInterfaceStatus ToCommsInterfaceStatus(this OperationalStatus nativeStatus)
         {
             switch (nativeStatus)
             {
                 case OperationalStatus.Up:
-                    return NetworkInterfaceStatus.Connected;
+                    return CommsInterfaceStatus.Connected;
                 case OperationalStatus.Down:
-                    return NetworkInterfaceStatus.Disconnected;
+                    return CommsInterfaceStatus.Disconnected;
                 case OperationalStatus.Unknown:
-                    return NetworkInterfaceStatus.Unknown;
+                    return CommsInterfaceStatus.Unknown;
 
                 /*
                  * Treat remaining enumerations as "Unknown".
@@ -41,7 +54,7 @@ namespace Sockets.Plugin
                  */
 
                 default:
-                    return NetworkInterfaceStatus.Unknown;
+                    return CommsInterfaceStatus.Unknown;
             }
             
         }
