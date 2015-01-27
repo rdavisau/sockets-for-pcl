@@ -30,14 +30,20 @@ namespace Sockets.Plugin
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
         /// </summary>
         /// <param name="port">The port to listen on.</param>
+        /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port)
+        public async Task StartListeningAsync(int port, ICommsInterface listenOn = null)
         {
             await Task.Run(() =>
             {
+                if (listenOn != null && !listenOn.IsUsable)
+                    throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
+
+                var ipAddress = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
+
                 _listenCanceller = new CancellationTokenSource();
 
-                _backingTcpListener = new TcpListener(IPAddress.Any, port);
+                _backingTcpListener = new TcpListener(ipAddress, port);
                 _backingTcpListener.Start();
 
                 WaitForConnections(_listenCanceller.Token);

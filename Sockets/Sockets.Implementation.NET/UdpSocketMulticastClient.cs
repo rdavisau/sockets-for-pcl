@@ -27,14 +27,22 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="multicastAddress">The address for the multicast group.</param>
         /// <param name="port">The port for the multicast group.</param>
+        /// <param name="multicastOn">The <code>CommsInterface</code> to multicast on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task JoinMulticastGroupAsync(string multicastAddress, int port)
+        public async Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn = null)
         {
-            var ip = IPAddress.Parse(multicastAddress);
-            _backingUdpClient = new UdpClient(port);
-            _messageCanceller = new CancellationTokenSource();
+            if (multicastOn != null && !multicastOn.IsUsable)
+                throw new InvalidOperationException("Cannot multicast on an unusable interface. Check the IsUsable property before attemping to connect.");
 
-            await Task.Run(() => _backingUdpClient.JoinMulticastGroup(ip,TTL));
+            var bindingIp = multicastOn != null ? ((CommsInterface)multicastOn).NativeIpAddress : IPAddress.Any;
+            var bindingEp = new IPEndPoint(bindingIp, port);
+
+            var multicastIp = IPAddress.Parse(multicastAddress);
+            
+            _backingUdpClient = new UdpClient(bindingEp);
+            _messageCanceller = new CancellationTokenSource();
+            
+            await Task.Run(() => _backingUdpClient.JoinMulticastGroup(multicastIp,TTL));
 
             _multicastAddress = multicastAddress;
             _multicastPort = port;

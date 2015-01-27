@@ -14,9 +14,10 @@ namespace Sockets.Plugin.Abstractions
         ///     Joins the multicast group at the specified endpoint.
         /// </summary>
         /// <param name="multicastAddress">The address for the multicast group.</param>
-        /// <param name="port">The port for the multicast group.</param>
-        /// <returns></returns>
-        Task JoinMulticastGroupAsync(string multicastAddress, int port);
+        /// <param name="port">The port for the multicast group.</param>        
+        /// <param name="multicastOn">The <code>CommsInterface</code> to multicast on. If unspecified, all interfaces will be bound.</param>
+        // <returns></returns>
+        Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn);
 
         /// <summary>
         ///     Removes the <code>UdpSocketMulticastClient</code> from a joined multicast group.

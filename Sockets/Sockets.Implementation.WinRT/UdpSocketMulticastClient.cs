@@ -23,13 +23,26 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="multicastAddress">The address for the multicast group.</param>
         /// <param name="port">The port for the multicast group.</param>
+        /// <param name="multicastOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task JoinMulticastGroupAsync(string multicastAddress, int port)
+        public async Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn = null)
         {
+            if (multicastOn != null && !multicastOn.IsUsable)
+                throw new InvalidOperationException("Cannot multicast on an unusable interface. Check the IsUsable property before attemping to connect.");
+
             var hn = new HostName(multicastAddress);
             var sn = port.ToString();
 
-            await _backingDatagramSocket.BindServiceNameAsync(sn);
+#if !WP80    
+            if (multicastOn != null)
+            {
+                var adapter = ((CommsInterface)multicastOn).NativeNetworkAdapter;
+                await _backingDatagramSocket.BindServiceNameAsync(sn, adapter);
+            }
+            else
+#endif
+                await _backingDatagramSocket.BindServiceNameAsync(sn);
+
             _backingDatagramSocket.Control.OutboundUnicastHopLimit = (byte) TTL;
             await Task.Run(() => _backingDatagramSocket.JoinMulticastGroup(hn));
 

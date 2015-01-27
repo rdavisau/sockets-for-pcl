@@ -1,4 +1,6 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
@@ -17,14 +19,21 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Binds the <code>UdpSocketServer</code> to the specified port on all endpoints and listens for UDP traffic.
         /// </summary>
-        /// <param name="port">The port to listen on.</param>
+        /// <param name="port">The port to listen on.</param>        
+        /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port)
+        public async Task StartListeningAsync(int port, ICommsInterface listenOn = null)
         {
+            if (listenOn != null && !listenOn.IsUsable)
+                throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
+
             await Task.Run(() =>
             {
+                var ip = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
+                var ep = new IPEndPoint(ip, port);
+
                 _messageCanceller = new CancellationTokenSource();
-                _backingUdpClient = new UdpClient(port);
+                _backingUdpClient = new UdpClient(ep);
 
                 RunMessageReceiver(_messageCanceller.Token);
             });

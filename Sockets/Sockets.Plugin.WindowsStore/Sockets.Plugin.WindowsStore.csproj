@@ -109,6 +109,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Sockets.Implementation.WinRT\CommsInterface.cs">
+      <Link>CommsInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.WinRT\NetworkExtensions.cs">
+      <Link>NetworkExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Sockets.Implementation.WinRT\TcpSocketClient.cs">
       <Link>TcpSocketClient.cs</Link>
     </Compile>
