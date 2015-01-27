@@ -5,14 +5,14 @@ _This changelog refers to nuget package releases._
 Features:
   
   - Added ````CommsInterface```` class that abstracts over native network interface representations. Use ````GetAllInterfacesAsync```` to retrieve the available interfaces.
-  - Added optional parameters to all listen methods that allows a specific ````CommsInterface```` to be bound. Ignored on WP8.0. 
+  - Added optional parameter to listen methods that allows a specific ````CommsInterface```` to be bound. Ignored on WP8.0. 
 
 Other:
 
-  - Now with ````ERR DIV BY ZERO```` more SemVer. 
+  - Now with ````ERR DIV BY ZERO````% more SemVer. 
 
 
-#### 1.0.1.0 (2014-12-04)
+#### 1.0.0.1 (2014-12-04)
 
 Bugfixes:
   
