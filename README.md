@@ -126,13 +126,29 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
     // the same multicast group. 
     await receiver.SendMulticastAsync(msgBytes);
 
+##### Binding to a specific interface
+For a majority of mobile use cases, binding to all interfaces is a good approach. However, when working with multicast or on a machine with many interfaces, it may be useful to bind to a specific interface. The ````TcpSocketListener````, ````UdpSocketReceiver```` and ````UdpSocketMulitcastClient```` classes include an optional ````CommsInterface```` parameter on their listen/join methods, allowing them to be bound to a specific interface only. If this parameter is not specified, all interfaces will be bound. ````CommsInterface```` has a static method ````GetAllInterfacesAsync```` that can be used to enumerate the available interfaces.
+
+    // retrieve the list of interfaces from the device
+    var allInterfaces = await CommsInterface.GetAllInterfacesAsync();
+    
+    // get the first interface with an ip address
+    var firstUsable = allInterfaces.FirstOrDefault(ci => ci.IsUsable);
+    
+    if (firstUsable == null)
+        return; // no connected interfaces, too bad!
+        
+    var listener = new TcpSocketListener(); 
+    await listener.StartListeningAsync(11000, firstUsable); 
+    
+    Console.WriteLine("Listening on interface with ip: {0}", firstUsable.IpAddress);
 
 ### Platform Considerations
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of ````privateNetworkClientServer````, ````internetClient```` and/or  ````internetClientServer```` capabilities. 
- - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between seperate apps (i.e. no IPC) 
+ - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between separate apps (i.e. no IPC) 
+ - Binding to specific interfaces is not supported on Windows Phone 8.0 (8.1 is fine). All interfaces will be bound, even if a specific ````CommsInterface```` is provided. 
 
 ### Planned Features
- - Select interface/s to bind to - currently all available interfaces are bound. This should be OK for most purposes, particularly for mobile platforms, but might make udp multicast more difficult on a desktop with many interfaces.  
  - API for socket connection settings. Very few settings are exposed through 
  the standard WinRT classes, but there is suppport for low level WinSock calls 
  which can be investigated. Currently you get the defaults, which should be relatively sane. If there's something you need, please raise an issue or submit a pull request. 
