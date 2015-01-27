@@ -16,7 +16,7 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="port">The port to listen on.</param>
         /// <returns></returns>
-        public Task StartListeningAsync(int port)
+        public Task StartListeningAsync(int port, ICommsInterface listenOn)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }

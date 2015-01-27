@@ -73,7 +73,7 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<CommsInterface>> GetAllNetworkInterfacesAsync()
+        public static async Task<List<CommsInterface>> GetAllInterfacesAsync()
         {
             return await Task.Run(() =>
             {

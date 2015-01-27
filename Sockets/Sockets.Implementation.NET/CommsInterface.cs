@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
@@ -64,9 +65,15 @@ namespace Sockets.Plugin
             get { return _loopbackAddresses.Contains(IpAddress); }
         }
 
-        protected internal System.Net.NetworkInformation.NetworkInterface NativeInterface;
-        
-        internal static CommsInterface FromNativeInterface(System.Net.NetworkInformation.NetworkInterface nativeInterface)
+        protected internal NetworkInterface NativeInterface;
+        protected internal IPAddress NativeIpAddress;
+
+        protected internal IPEndPoint EndPoint(int port)
+        {
+            return new IPEndPoint(NativeIpAddress, port);
+        }
+
+        internal static CommsInterface FromNativeInterface(NetworkInterface nativeInterface)
         {           
             var ip = 
                 nativeInterface
@@ -89,6 +96,7 @@ namespace Sockets.Plugin
             return new CommsInterface
             {
                 NativeInterfaceId = nativeInterface.Id,
+                NativeIpAddress = ip != null ? ip.Address : null,
                 Name = nativeInterface.Name,
                 IpAddress = ip != null ? ip.Address.ToString() : null,
                 GatewayAddress = gateway,
@@ -103,7 +111,7 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<CommsInterface>> GetAllNetworkInterfacesAsync()
+        public static async Task<List<CommsInterface>> GetAllInterfacesAsync()
         {
             var interfaces = await Task.Run(() =>
                 System.Net.NetworkInformation.NetworkInterface

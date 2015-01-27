@@ -83,7 +83,7 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<CommsInterface>> GetAllNetworkInterfacesAsync()
+        public static Task<List<CommsInterface>> GetAllInterfacesAsync()
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }

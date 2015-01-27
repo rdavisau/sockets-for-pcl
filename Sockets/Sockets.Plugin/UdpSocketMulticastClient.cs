@@ -17,7 +17,7 @@ namespace Sockets.Plugin
         /// <param name="multicastAddress">The address for the multicast group.</param>
         /// <param name="port">The port for the multicast group.</param>
         /// <returns></returns>
-        public Task JoinMulticastGroupAsync(string multicastAddress, int port)
+        public Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }

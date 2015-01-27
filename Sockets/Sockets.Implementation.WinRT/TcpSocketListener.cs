@@ -29,9 +29,13 @@ namespace Sockets.Plugin
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
         /// </summary>
         /// <param name="port">The port to listen on.</param>
+        /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port)
+        public async Task StartListeningAsync(int port, ICommsInterface listenOn = null)
         {
+            if (listenOn != null && !listenOn.IsUsable)
+                throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
+            
             _listenCanceller = new CancellationTokenSource();
             _backingStreamSocketListener = new StreamSocketListener();
 
@@ -45,15 +49,24 @@ namespace Sockets.Plugin
                     ConnectionReceived(this, eventArgs);
             };
 
-            await _backingStreamSocketListener.BindServiceNameAsync(port.ToString());
+#if !WP80    
+            if (listenOn != null)
+            {
+                var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
+  
+                await _backingStreamSocketListener.BindServiceNameAsync(port.ToString(), SocketProtectionLevel.PlainSocket, adapter);
+            }
+            else
+#endif
+                await _backingStreamSocketListener.BindServiceNameAsync(port.ToString());
         }
-
+        
         /// <summary>
         ///     Stops the <code>TcpSocketListener</code> from listening for new tcp connections.
         ///     This does not disconnect existing connections.
         /// </summary>
         public async Task StopListeningAsync()
-        {
+        {   
             await Task.Run(() =>
             {
                 _listenCanceller.Cancel();

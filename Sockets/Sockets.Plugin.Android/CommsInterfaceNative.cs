@@ -25,9 +25,8 @@ namespace Sockets.Plugin
             if (ip == null)
                 return null;
 
-
-            // TODO: Use native java network library rather than incomplete mono/.NET implementation. 
-            //       Move this into CommsInterface rather than iterating all adapters for each GetSubnetMaskCall. 
+            // TODO: Use native java network library rather than incomplete mono/.NET implementation: 
+            // Move this into CommsInterface.cs and call once rather than iterating all adapters for each GetSubnetMaskCall. 
             var interfaces = NetworkInterface.NetworkInterfaces.GetEnumerable<NetworkInterface>().ToList();
             var interfacesWithIPv4Addresses = interfaces
                                                 .Where(ni => ni.InterfaceAddresses != null)    
@@ -37,11 +36,15 @@ namespace Sockets.Plugin
                                                 .ToList();
 
             var ipAddress = ip.Address.ToString();
+
+            // match the droid interface with the NetworkInterface interface on the IpAddress string
             var match = interfacesWithIPv4Addresses.FirstOrDefault(ni => ni.Address.Address.HostAddress == ipAddress);
 
+            // no match, no good
             if (match == null)
                 return null;
             
+            // use the network prefix length to calculate the subnet address
             var networkPrefixLength = match.Address.NetworkPrefixLength;
             var netMask = AndroidNetworkExtensions.GetSubnetAddress(ipAddress, networkPrefixLength);
             

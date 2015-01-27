@@ -14,8 +14,9 @@ namespace Sockets.Plugin.Abstractions
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
         /// </summary>
         /// <param name="port">The port to listen on.</param>
+        /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        Task StartListeningAsync(int port);
+        Task StartListeningAsync(int port, ICommsInterface listenOn);
 
         /// <summary>
         ///     Stops the <code>TcpSocketListener</code> from listening for new TCP connections.

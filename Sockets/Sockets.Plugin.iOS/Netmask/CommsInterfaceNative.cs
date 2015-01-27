@@ -17,7 +17,10 @@ namespace Sockets.Plugin
         /// <returns></returns>
         protected static IPAddress GetSubnetMask(UnicastIPAddressInformation ip)
         {
+            // use native calls to get comprehensive interface info
             var nativeInterfaceInfo = NetInfo.GetInterfaceInfo();
+
+            // match or nothing
             var match = nativeInterfaceInfo.FirstOrDefault(ni => ni != null && ni.Address != null && ip != null && ip.Address != null && Equals(ni.Address, ip.Address));
 
             return match != null ? match.Netmask : null;
