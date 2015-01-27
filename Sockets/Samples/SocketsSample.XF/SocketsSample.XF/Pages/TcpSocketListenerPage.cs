@@ -53,6 +53,7 @@ namespace SocketsSample.XF
         {
             Content = new StackLayout()
             {
+				Padding = new Thickness(0, Device.OnPlatform(20,0,0), 0, 0),
                 Children =
                 {
                     new ListenerBindView(11000, this)
@@ -60,7 +61,7 @@ namespace SocketsSample.XF
                         StartListeningTapped = async i =>
                         {
                             Debug.WriteLine("Going to listen on {0}", i);
-                            await _listener.StartListeningAsync(i);
+                            await _listener.StartListeningAsync(i, Global.DefaultCommsInterface);
                             _canceller = new CancellationTokenSource();
                             return true;
                         },

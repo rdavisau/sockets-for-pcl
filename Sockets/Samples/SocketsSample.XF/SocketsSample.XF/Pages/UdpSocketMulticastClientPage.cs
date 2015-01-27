@@ -27,13 +27,14 @@ namespace SocketsSample.XF
         {
             Content = new StackLayout()
             {
+				Padding = new Thickness(0, Device.OnPlatform(20,0,0), 0, 0),
                 Children =
                 {
                     new ClientConnectView("239.192.0.1", 11811, this)
                     {
                         ConnectTapped = async (s, i) =>
                         {
-                            await _client.JoinMulticastGroupAsync(s, i);
+                            await _client.JoinMulticastGroupAsync(s, i, Global.DefaultCommsInterface);
                             _canceller = new CancellationTokenSource();
 
                             _client.MessageReceived += (sender, args) =>

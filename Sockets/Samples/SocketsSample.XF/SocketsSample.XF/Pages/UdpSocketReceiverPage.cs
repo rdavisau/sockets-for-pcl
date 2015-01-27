@@ -39,13 +39,14 @@ namespace SocketsSample.XF
         {
             Content = new StackLayout
             {
+				Padding = new Thickness(0, Device.OnPlatform(20,0,0), 0, 0),
                 Children =
                 {
                     new ListenerBindView(11011, this)
                     {
                         StartListeningTapped = async i =>
                         {
-                            await _receiver.StartListeningAsync(i);
+                            await _receiver.StartListeningAsync(i, Global.DefaultCommsInterface);
                             return true;
                         },
                         StopListeningTapped = async () =>

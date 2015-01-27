@@ -28,7 +28,8 @@ namespace SocketsSample.XF
         private void InitView()
         {
             Content = new StackLayout()
-            {
+			{	
+				Padding = new Thickness(0, Device.OnPlatform(20,0,0), 0, 0),
                 Children =
                 {
                     new ClientConnectView("127.0.0.1", 11011, this)

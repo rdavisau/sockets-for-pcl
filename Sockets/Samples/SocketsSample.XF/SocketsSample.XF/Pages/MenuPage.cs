@@ -69,7 +69,12 @@ namespace SocketsSample.XF
             var tableRoot = new TableRoot() {new TableSection("Classes") { cells } };
             var tableView = new TableView(tableRoot);
 
-            this.Content = tableView;
+			this.Content = new StackLayout {
+				Padding = new Thickness (0, Device.OnPlatform (20, 0, 0), 0, 0),
+				Children = { 
+					tableView
+				}
+			};
         }
     }
 }
