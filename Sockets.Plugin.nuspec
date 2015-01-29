@@ -3,17 +3,32 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
     <licenseUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/rdavisau/sockets-for-pcl</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>
-      Cross-platform socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop.
+    <copyright>2015 Ryan Davis</copyright>
+    <releaseNotes>
+1.1.1 (2015-01-30)
 
-      Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
+Other:
+
+- Fixed an error in the .nuspec that resulted in `Sockets.Plugin.Abstractions` not being available under Windows Desktop.
+
+1.1.0 (2015-01-27)
+
+Features:
+- Added `CommsInterface` class that abstracts over native network interface representations. Use `GetAllInterfacesAsync` to retrieve the available interfaces.
+- Added optional parameter to listen methods that allows a specific `CommsInterface` to be bound. Ignored on WP8.0.
+
+Other:
+- Now with `ERR DIV BY ZERO`% more SemVer.
+    </releaseNotes>
+    <description>
+      Cross-platform socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
     </description>
     <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop.</summary>
     <tags>sockets, tcp, udp, multicast, xamarin, pcl, xam.pcl, windows phone, winphone, wp8, winrt, android, xamarin.forms, ios</tags>
@@ -114,11 +129,11 @@
     <file src="Sockets\Sockets.Plugin.WindowsDesktop\bin\Release\Sockets.Plugin.pdb"
           target="lib\net45\Sockets.Plugin.pdb" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\wpa81\Sockets.Plugin.Abstractions.dll" />
+          target="lib\net45\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\wpa81\Sockets.Plugin.Abstractions.xml" />
+          target="lib\net45\Sockets.Plugin.Abstractions.xml" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.pdb"
-          target="lib\wpa81\Sockets.Plugin.Abstractions.pdb" />
+          target="lib\net45\Sockets.Plugin.Abstractions.pdb" />
 
   </files>
 </package>

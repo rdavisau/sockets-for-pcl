@@ -1,5 +1,11 @@
 _This changelog refers to nuget package releases._
 
+#### 1.1.1 (2015-01-30)
+
+Other:
+  
+  - Fixed an error in the .nuspec that resulted in `Sockets.Plugin.Abstractions` not being available under Windows Desktop. Whoops :shipit:.
+
 #### 1.1.0 (2015-01-27)
 
 Features:
