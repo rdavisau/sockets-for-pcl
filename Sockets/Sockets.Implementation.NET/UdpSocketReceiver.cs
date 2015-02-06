@@ -74,6 +74,9 @@ namespace Sockets.Plugin
                 {
                     await base.SendToAsync(data, address, port);
                 }
+
+                // clear _backingUdpClient because it has been disposed and is unusable. 
+                _backingUdpClient = null;
             }
             else
             {
