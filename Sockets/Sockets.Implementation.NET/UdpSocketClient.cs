@@ -22,7 +22,10 @@ namespace Sockets.Plugin
         /// </summary>
         public UdpSocketClient()
         {
-            _backingUdpClient = new UdpClient();
+            _backingUdpClient = new UdpClient
+            {
+                EnableBroadcast = true
+            };
         }
 
         /// <summary>

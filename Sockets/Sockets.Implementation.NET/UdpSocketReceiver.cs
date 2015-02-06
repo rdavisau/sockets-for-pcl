@@ -33,7 +33,10 @@ namespace Sockets.Plugin
                 var ep = new IPEndPoint(ip, port);
 
                 _messageCanceller = new CancellationTokenSource();
-                _backingUdpClient = new UdpClient(ep);
+                _backingUdpClient = new UdpClient(ep)
+                {
+                    EnableBroadcast = true
+                };
 
                 RunMessageReceiver(_messageCanceller.Token);
             });
@@ -67,7 +70,7 @@ namespace Sockets.Plugin
                 // instantiated on call to StartListeningAsync(). If we are here, user
                 // is sending before having 'bound' to a port, so just create a temporary
                 // backing client to send this data. 
-                using (_backingUdpClient = new UdpClient())
+                using (_backingUdpClient = new UdpClient { EnableBroadcast = true } )
                 {
                     await base.SendToAsync(data, address, port);
                 }

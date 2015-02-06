@@ -1,5 +1,11 @@
 _This changelog refers to nuget package releases._
 
+#### 1.1.2 (2015-02-06)
+
+Bugfixes:
+
+- The backing `UdpClient` instances for the .NET UdpSocket* classes now have the `EnableBroadcast` property set to true. This should prevent `Access Denied` exceptions from occuring when attempting to send data to a broadcast address.  
+
 #### 1.1.1 (2015-01-30)
 
 Other:

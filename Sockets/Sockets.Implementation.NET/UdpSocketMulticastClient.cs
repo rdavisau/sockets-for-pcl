@@ -38,8 +38,11 @@ namespace Sockets.Plugin
             var bindingEp = new IPEndPoint(bindingIp, port);
 
             var multicastIp = IPAddress.Parse(multicastAddress);
-            
-            _backingUdpClient = new UdpClient(bindingEp);
+
+            _backingUdpClient = new UdpClient(bindingEp)
+            {
+                EnableBroadcast = true
+            };
             _messageCanceller = new CancellationTokenSource();
             
             await Task.Run(() => _backingUdpClient.JoinMulticastGroup(multicastIp,TTL));
