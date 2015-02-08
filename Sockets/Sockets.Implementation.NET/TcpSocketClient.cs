@@ -38,14 +38,14 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
-        /// <param name="secure">Is this connection secure?</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
         public async Task ConnectAsync(string address, int port, bool secure = false)
         {
             await _backingTcpClient.ConnectAsync(address, port);
             if (secure)
             {
                 var secureStream = new SslStream(_backingTcpClient.GetStream(), true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender,cert,chain,sslPolicy));
-                _secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
+                secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                 _secureStream = secureStream;
             }            
         }
@@ -95,7 +95,7 @@ namespace Sockets.Plugin
             {
                 if (_secureStream != null)
                 {
-                    return _secureStream;
+                    return _secureStream as Stream;
                 }
                 return _backingTcpClient.GetStream();
             }
@@ -110,7 +110,7 @@ namespace Sockets.Plugin
             {
                 if (_secureStream != null)
                 {
-                    return _secureStream;
+                    return _secureStream as Stream;
                 }
                 return _backingTcpClient.GetStream();
             }

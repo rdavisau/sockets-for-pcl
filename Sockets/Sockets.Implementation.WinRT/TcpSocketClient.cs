@@ -17,6 +17,11 @@ namespace Sockets.Plugin
     /// </summary>
     public class TcpSocketClient : ITcpSocketClient
     {
+#if WP80
+        private SocketProtectionLevel _secureSocketProtectionLevel = SocketProtectionLevel.Ssl;
+#else
+        private SocketProtectionLevel _secureSocketProtectionLevel = SocketProtectionLevel.Tls10;
+#endif               
         private readonly StreamSocket _backingStreamSocket;
 
         /// <summary>
@@ -38,12 +43,14 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
         public async Task ConnectAsync(string address, int port, bool secure = false)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
+            var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            await _backingStreamSocket.ConnectAsync(hn, sn, secure ? SocketProtectionLevel.Tls10 : SocketProtectionLevel.PlainSocket);
+            await _backingStreamSocket.ConnectAsync(hn, sn, spl);
         }
 
         /// <summary>
