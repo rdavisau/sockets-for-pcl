@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Sockets.Plugin
 {
@@ -17,6 +18,7 @@ namespace Sockets.Plugin
     public class TcpSocketClient : ITcpSocketClient
     {
         private readonly TcpClient _backingTcpClient;
+        private SslStream _secureStream;
 
         /// <summary>
         ///     Default constructor for <code>TcpSocketClient</code>.
@@ -36,10 +38,41 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
-        public async Task ConnectAsync(string address, int port)
+        /// <param name="secure">Is this connection secure?</param>
+        public async Task ConnectAsync(string address, int port, bool secure = false)
         {
             await _backingTcpClient.ConnectAsync(address, port);
+            if (secure)
+            {
+                var secureStream = new SslStream(_backingTcpClient.GetStream(), true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender,cert,chain,sslPolicy));
+                _secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
+                _secureStream = secureStream;
+            }            
         }
+
+        #region Secure Sockets Details
+        
+        private bool ServerValidationCallback (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            switch (sslPolicyErrors)
+            {
+                case SslPolicyErrors.RemoteCertificateNameMismatch:
+                    Console.WriteLine("Server name mismatch. End communication ...\n");
+                    return false;
+                case SslPolicyErrors.RemoteCertificateNotAvailable:
+                    Console.WriteLine("Server's certificate not available. End communication ...\n");
+                    return false;
+                case SslPolicyErrors.RemoteCertificateChainErrors:
+                    Console.WriteLine("Server's certificate validation failed. End communication ...\n");
+                    return false;
+            }
+            //TODO: Perform others checks using the "certificate" and "chain" objects ...
+
+            Console.WriteLine("Server's authentication succeeded ...\n");
+            return true;
+        }
+
+        #endregion
 
         /// <summary>
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.
@@ -47,7 +80,10 @@ namespace Sockets.Plugin
         /// </summary>
         public async Task DisconnectAsync()
         {
-            await Task.Run(() => _backingTcpClient.Close());
+            await Task.Run(() => {
+                _backingTcpClient.Close();
+                _secureStream = null;
+            });
         }
 
         /// <summary>
@@ -55,7 +91,14 @@ namespace Sockets.Plugin
         /// </summary>
         public Stream ReadStream
         {
-            get { return _backingTcpClient.GetStream(); }
+            get
+            {
+                if (_secureStream != null)
+                {
+                    return _secureStream;
+                }
+                return _backingTcpClient.GetStream();
+            }
         }
 
         /// <summary>
@@ -63,7 +106,14 @@ namespace Sockets.Plugin
         /// </summary>
         public Stream WriteStream
         {
-            get { return _backingTcpClient.GetStream(); }
+            get
+            {
+                if (_secureStream != null)
+                {
+                    return _secureStream;
+                }
+                return _backingTcpClient.GetStream();
+            }
         }
 
         private IPEndPoint RemoteEndpoint

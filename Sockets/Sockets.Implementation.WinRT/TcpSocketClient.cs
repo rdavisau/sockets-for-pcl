@@ -38,12 +38,12 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
-        public async Task ConnectAsync(string address, int port)
+        public async Task ConnectAsync(string address, int port, bool secure = false)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
 
-            await _backingStreamSocket.ConnectAsync(hn, sn);
+            await _backingStreamSocket.ConnectAsync(hn, sn, secure ? SocketProtectionLevel.Tls10 : SocketProtectionLevel.PlainSocket);
         }
 
         /// <summary>
