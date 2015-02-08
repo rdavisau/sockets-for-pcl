@@ -17,7 +17,8 @@ namespace Sockets.Plugin.Abstractions
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
-        Task ConnectAsync(string address, int port);
+        /// <param name="secure">Is this socket secure?</param>
+        Task ConnectAsync(string address, int port, bool secure = false);
 
         /// <summary>
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.
