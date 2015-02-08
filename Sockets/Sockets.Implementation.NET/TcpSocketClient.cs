@@ -42,10 +42,11 @@ namespace Sockets.Plugin
         public async Task ConnectAsync(string address, int port, bool secure = false)
         {
             await _backingTcpClient.ConnectAsync(address, port);
-            if (!secure)
+            if (secure)
             {
-                _secureStream = new SslStream(_backingTcpClient.GetStream(), true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender,cert,chain,sslPolicy));
+                var secureStream = new SslStream(_backingTcpClient.GetStream(), true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender,cert,chain,sslPolicy));
                 _secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
+                _secureStream = secureStream;
             }            
         }
 
@@ -79,7 +80,10 @@ namespace Sockets.Plugin
         /// </summary>
         public async Task DisconnectAsync()
         {
-            await Task.Run(() => _backingTcpClient.Close());
+            await Task.Run(() => {
+                _backingTcpClient.Close();
+                _secureStream = null;
+            });
         }
 
         /// <summary>
