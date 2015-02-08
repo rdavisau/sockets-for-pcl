@@ -43,14 +43,7 @@ namespace Sockets.Plugin
             var hn = new HostName(address);
             var sn = port.ToString();
 
-            if (!secure)
-            {
-                await _backingStreamSocket.ConnectAsync(hn, sn);
-            }
-            else
-            {
-                await _backingStreamSocket.ConnectAsync(hn, sn, SocketProtectionLevel.Tls10);
-            }
+            await _backingStreamSocket.ConnectAsync(hn, sn, secure ? SocketProtectionLevel.Tls10 : SocketProtectionLevel.PlainSocket);
         }
 
         /// <summary>
