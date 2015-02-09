@@ -143,6 +143,9 @@ For a majority of mobile use cases, binding to all interfaces is a good approach
     
     Console.WriteLine("Listening on interface with ip: {0}", firstUsable.IpAddress);
 
+##### TLS Support
+`TcpSocketClient` supports TLS connections (server certificate only). Pass `true` to the optional parameter `useTls` on `ConnectAsync` to enable secure communication. 
+
 ### Platform Considerations
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of ````privateNetworkClientServer````, ````internetClient```` and/or  ````internetClientServer```` capabilities. 
  - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between separate apps (i.e. no IPC) 
@@ -155,6 +158,9 @@ For a majority of mobile use cases, binding to all interfaces is a good approach
 
 Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
 
+### Contributors
+ - @rdavisau
+ - @galvesribeiro (TLS support)
 
 ### Contributions, Issues, Feedback
 All welcome!!

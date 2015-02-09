@@ -1,5 +1,11 @@
 _This changelog refers to nuget package releases._
 
+#### 1.1.4 (2015-02-09)
+
+Features:
+
+- `TcpSocketClient` supports TLS connections via optional parameter on `ConnectAsync`. Thanks @galvesribeiro.
+
 #### 1.1.2 / 1.1.3 (2015-02-06)
 
 Bugfixes:
