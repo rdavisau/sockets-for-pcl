@@ -1,5 +1,11 @@
 _This changelog refers to nuget package releases._
 
+#### 1.1.5 (2015-03-11)
+
+Bugfixes:
+
+- Fixed a `NullReferenceException` that could occur in `CommsInterface.GetAllInterfacesAsync` if an interface had no IPv4 unicast address. 
+
 #### 1.1.4 (2015-02-09)
 
 Features:
@@ -34,7 +40,7 @@ Other:
 
 Bugfixes:
   
-  - Fixed a NullReferenceException in the .NET abstraction that would occur if a ````UdpSocketReceiver````'s ````SendToAsync```` method was called before ````StartListeningAsync````.
+  - Fixed a `NullReferenceException` in the .NET abstraction that would occur if a ````UdpSocketReceiver````'s ````SendToAsync```` method was called before ````StartListeningAsync````.
 
 #### 1.0.0.0 (2014-12-03)
 

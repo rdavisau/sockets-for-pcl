@@ -101,7 +101,7 @@ namespace Sockets.Plugin
                     .Select(a => a.Address.ToString())
                     .FirstOrDefault();
 
-            var netmask = GetSubnetMask(ip); // implemented natively for each .NET platform
+            var netmask = ip != null ? GetSubnetMask(ip) : null; // implemented natively for each .NET platform
 
             var broadcast = (ip != null && netmask != null) ? ip.Address.GetBroadcastAddress(netmask).ToString() : null;
 
