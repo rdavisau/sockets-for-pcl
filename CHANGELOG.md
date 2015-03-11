@@ -17,6 +17,7 @@ Features:
 Bugfixes:
 
 - The backing `UdpClient` instances for the .NET UdpSocket* classes now have the `EnableBroadcast` property set to true. This should prevent `Access Denied` exceptions from occuring when attempting to send data to a broadcast address.  
+- Fixed an `ObjectDisposedException` that would occur when `SendToAsync` was called a second time on a `UdpSocketReceiver` if it had not yet been bound using 'StartListeningAsync`.
 
 #### 1.1.1 (2015-01-30)
 
