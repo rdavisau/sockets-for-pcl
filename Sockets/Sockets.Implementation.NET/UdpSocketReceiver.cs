@@ -84,5 +84,16 @@ namespace Sockets.Plugin
             }
 
         }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            if (_messageCanceller != null && !_messageCanceller.IsCancellationRequested)
+                _messageCanceller.Cancel();
+
+            base.Dispose();
+        }
     }
 }
