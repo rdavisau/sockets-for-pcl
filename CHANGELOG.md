@@ -1,6 +1,6 @@
 _This changelog refers to nuget package releases._
 
-#### 1.1.6 (2015-04-12)
+#### 1.1.6 / 1.1.7 (2015-04-12)
 
 Features:
 
