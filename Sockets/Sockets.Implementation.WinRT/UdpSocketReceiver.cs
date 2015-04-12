@@ -14,7 +14,7 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Binds the <code>UdpSocketReceiver</code> to the specified port on all endpoints and listens for UDP traffic.
         /// </summary>
-        /// <param name="port">The port to listen on.</param>        
+        /// <param name="port">The port to listen on. If '0', selection is delegated to the operating system.</param>        
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
         public async Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)

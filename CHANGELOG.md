@@ -1,5 +1,15 @@
 _This changelog refers to nuget package releases._
 
+#### 1.1.6 (2015-04-12)
+
+Features:
+
+- `UdpSocketReceiver` can now be bound to a port chosen by the operating system. Pass `0` to the `port` argument of `StartListeningAsync`. 
+
+Bugfixes:
+
+- Calling `Dispose` on a bound `UdpSocketReceiver` or `UdpSocketMulticastClient` now cancels the internal message reading loop.
+
 #### 1.1.5 (2015-03-11)
 
 Bugfixes:
