@@ -22,7 +22,7 @@ namespace Sockets.Plugin
         /// <param name="port">The port to listen on.</param>        
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port, ICommsInterface listenOn = null)
+        public async Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
         {
             if (listenOn != null && !listenOn.IsUsable)
                 throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
