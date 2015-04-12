@@ -21,7 +21,7 @@ Features:
 
 Bugfixes:
 
-- Calling `Dispose` on a bound `UdpSocketReceiver` or `UdpSocketMulticastClient` now cancels the internal message reading loop. a
+- Calling `Dispose` on a bound `UdpSocketReceiver` or `UdpSocketMulticastClient` now cancels the internal message reading loop.
 
 1.1.5 (2015-03-11)
 
