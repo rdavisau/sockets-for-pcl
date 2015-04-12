@@ -19,7 +19,7 @@ Class|Description|.NET Abstraction|WinRT Abstraction
 
 Apart from the decisions made in order to merge the two APIs, the abstraction aims to be relatively non-prescriptive. 
 This means that there is little to no protection in the library against socket failures, reliablity, retry, etc., 
-and nothing in the way of help for sending or receiving data. To that end, [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) (code coming soon) is a longer term project with the aim of providing useful functionality around the base sockets-for-pcl classes, including hub-style communications, custom protocol helpers and support for typed messaging, and error handling/life cycle and reliability options. 
+and nothing in the way of help for sending or receiving data. To that end, [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) is a longer term project with the aim of providing useful functionality around the base sockets-for-pcl classes, including hub-style communications, custom protocol helpers and support for typed messaging, and error handling/life cycle and reliability options. 
 
 ### Example Usage
 ````TcpSocketListener```` and ````TcpSocketClient```` each expose ````ReadStream```` and ````WriteStream```` 
