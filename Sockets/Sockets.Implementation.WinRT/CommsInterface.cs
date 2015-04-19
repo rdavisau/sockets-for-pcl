@@ -80,9 +80,9 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<CommsInterface>> GetAllInterfacesAsync()
+        public static Task<List<CommsInterface>> GetAllInterfacesAsync()
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var profiles = NetworkInformation
                     .GetConnectionProfiles()

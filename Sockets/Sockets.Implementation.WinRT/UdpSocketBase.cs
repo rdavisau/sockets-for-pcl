@@ -39,7 +39,6 @@ namespace Sockets.Plugin
             socket.MessageReceived += DatagramMessageReceived;
 
             _backingDatagramSocket = socket;
-            ;
         }
 
         /// <summary>
@@ -91,9 +90,9 @@ namespace Sockets.Plugin
                 MessageReceived(this, wrapperArgs);
         }
 
-        internal async Task CloseSocketAsync()
+        internal Task CloseSocketAsync()
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 _backingDatagramSocket.MessageReceived -= DatagramMessageReceived;
                 _backingDatagramSocket.Dispose();
