@@ -95,7 +95,13 @@ namespace Sockets.Plugin
         {
             await Task.Run(() =>
             {
-                _backingDatagramSocket.MessageReceived -= DatagramMessageReceived;
+                try
+                {
+                    _backingDatagramSocket.MessageReceived -= DatagramMessageReceived;
+                }
+                catch (Exception)
+                {
+                }
                 _backingDatagramSocket.Dispose();
                 SetBackingSocket();
             });
