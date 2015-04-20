@@ -51,11 +51,11 @@
     <Reference Include="mscorlib" />
     <Reference Include="Sockets.Plugin, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.7\lib\MonoAndroid10\Sockets.Plugin.dll</HintPath>
+      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.8\lib\MonoAndroid10\Sockets.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="Sockets.Plugin.Abstractions, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.7\lib\MonoAndroid10\Sockets.Plugin.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.8\lib\MonoAndroid10\Sockets.Plugin.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
