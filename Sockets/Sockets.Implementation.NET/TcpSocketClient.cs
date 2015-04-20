@@ -78,9 +78,9 @@ namespace Sockets.Plugin
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.
         ///     Should not be called on a <code>TcpSocketClient</code> that is not already connected.
         /// </summary>
-        public async Task DisconnectAsync()
+        public Task DisconnectAsync()
         {
-            await Task.Run(() => {
+            return Task.Run(() => {
                 _backingTcpClient.Close();
                 _secureStream = null;
             });

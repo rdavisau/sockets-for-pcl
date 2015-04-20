@@ -32,9 +32,9 @@ namespace Sockets.Plugin
         /// <param name="port">The port to listen on.</param>
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port, ICommsInterface listenOn = null)
+        public Task StartListeningAsync(int port, ICommsInterface listenOn = null)
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 if (listenOn != null && !listenOn.IsUsable)
                     throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
@@ -54,9 +54,9 @@ namespace Sockets.Plugin
         ///     Stops the <code>TcpSocketListener</code> from listening for new TCP connections.
         ///     This does not disconnect existing connections.
         /// </summary>
-        public async Task StopListeningAsync()
+        public Task StopListeningAsync()
         {
-            await Task.Run(
+            return Task.Run(
                 () =>
                 {
                     _listenCanceller.Cancel();

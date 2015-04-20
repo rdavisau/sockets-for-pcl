@@ -22,12 +22,12 @@ namespace Sockets.Plugin
         /// <param name="port">The port to listen on. If '0', selection is delegated to the operating system.</param>        
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
+        public Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
         {
             if (listenOn != null && !listenOn.IsUsable)
                 throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
 
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var ip = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
                 var ep = new IPEndPoint(ip, port);
@@ -46,9 +46,9 @@ namespace Sockets.Plugin
         ///     Unbinds a bound <code>UdpSocketServer</code>. Should not be called if the <code>UdpSocketServer</code> has not yet
         ///     been unbound.
         /// </summary>
-        public async Task StopListeningAsync()
+        public Task StopListeningAsync()
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 _messageCanceller.Cancel();
                 _backingUdpClient.Close();
