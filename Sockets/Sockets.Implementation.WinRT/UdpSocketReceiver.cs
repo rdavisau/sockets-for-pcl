@@ -17,7 +17,7 @@ namespace Sockets.Plugin
         /// <param name="port">The port to listen on. If '0', selection is delegated to the operating system.</param>        
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public async Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
+        public Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
         {
             if (listenOn != null && !listenOn.IsUsable)
                 throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
@@ -27,20 +27,20 @@ namespace Sockets.Plugin
             if (listenOn != null)
             {
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
-                await _backingDatagramSocket.BindServiceNameAsync(sn, adapter);
+                return _backingDatagramSocket.BindServiceNameAsync(sn, adapter).AsTask();
             }
             else
 #endif
-                await _backingDatagramSocket.BindServiceNameAsync(sn);
+                return _backingDatagramSocket.BindServiceNameAsync(sn).AsTask();
         }
 
         /// <summary>   
         ///     Unbinds a bound <code>UdpSocketReceiver</code>. Should not be called if the <code>UdpSocketReceiver</code> has not
         ///     yet been unbound.
         /// </summary>
-        public async Task StopListeningAsync()
+        public Task StopListeningAsync()
         {
-            await CloseSocketAsync();
+            return CloseSocketAsync();
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to send.</param>
         /// <param name="address">The remote address to which the data should be sent.</param>
         /// <param name="port">The remote port to which the data should be sent.</param>
-        public new async Task SendToAsync(byte[] data, string address, int port)
+        public new Task SendToAsync(byte[] data, string address, int port)
         {
-            await base.SendToAsync(data, address, port);
+            return base.SendToAsync(data, address, port);
         }
     }
 }

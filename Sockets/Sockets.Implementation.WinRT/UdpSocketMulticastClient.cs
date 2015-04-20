@@ -41,10 +41,10 @@ namespace Sockets.Plugin
             }
             else
 #endif
-                await _backingDatagramSocket.BindServiceNameAsync(sn);
+            await _backingDatagramSocket.BindServiceNameAsync(sn);
 
             _backingDatagramSocket.Control.OutboundUnicastHopLimit = (byte) TTL;
-            await Task.Run(() => _backingDatagramSocket.JoinMulticastGroup(hn));
+            _backingDatagramSocket.JoinMulticastGroup(hn);
 
             _multicastAddress = multicastAddress;
             _multicastPort = port;
@@ -55,12 +55,12 @@ namespace Sockets.Plugin
         ///     If a group has not been set, calls will have no effect.
         /// </summary>
         /// <param name="data">A byte array of data to be sent.</param>
-        public async Task SendMulticastAsync(byte[] data)
+        public Task SendMulticastAsync(byte[] data)
         {
             if (_multicastAddress == null)
                 throw new InvalidOperationException("Must join a multicast group before sending.");
 
-            await base.SendToAsync(data, _multicastAddress, _multicastPort);
+            return base.SendToAsync(data, _multicastAddress, _multicastPort);
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Removes the <code>UdpSocketMulticastClient</code> from a joined multicast group.
         /// </summary>
-        public async Task DisconnectAsync()
+        public Task DisconnectAsync()
         {
-            await CloseSocketAsync();
+            return CloseSocketAsync();
         }
     }
 }

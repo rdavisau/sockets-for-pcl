@@ -21,21 +21,21 @@ namespace Sockets.Plugin
         /// </summary>
         /// <param name="address">The remote address for the default target.</param>
         /// <param name="port">The remote port for the default target.</param>
-        public async Task ConnectAsync(string address, int port)
+        public Task ConnectAsync(string address, int port)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
 
-            await _backingDatagramSocket.ConnectAsync(hn, sn);
+            return _backingDatagramSocket.ConnectAsync(hn, sn).AsTask();
         }
 
         /// <summary>
         ///     Unsets the 'default' target of sent data.
         ///     After calling <code>DisconnectAsync</code>, calls to <code>SendAsync</code> will have no effect.
         /// </summary>
-        public async Task DisconnectAsync()
+        public Task DisconnectAsync()
         {
-            await CloseSocketAsync();
+            return CloseSocketAsync();
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace Sockets.Plugin
         ///     If the 'default' target has not been set, calls will have no effect.
         /// </summary>
         /// <param name="data">A byte array of data to be sent.</param>
-        public new async Task SendAsync(byte[] data)
+        public new Task SendAsync(byte[] data)
         {
-            await base.SendAsync(data);
+            return base.SendAsync(data);
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to send.</param>
         /// <param name="address">The remote address to which the data should be sent.</param>
         /// <param name="port">The remote port to which the data should be sent.</param>
-        public new async Task SendToAsync(byte[] data, string address, int port)
+        public new Task SendToAsync(byte[] data, string address, int port)
         {
-            await base.SendToAsync(data, address, port);
+            return base.SendToAsync(data, address, port);
         }
     }
 }

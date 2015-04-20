@@ -30,7 +30,6 @@ namespace Sockets.Plugin
         public TcpSocketClient()
         {
             _backingStreamSocket = new StreamSocket();
-            ;
         }
 
         internal TcpSocketClient(StreamSocket nativeSocket)
@@ -44,22 +43,22 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public async Task ConnectAsync(string address, int port, bool secure = false)
+        public Task ConnectAsync(string address, int port, bool secure = false)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            await _backingStreamSocket.ConnectAsync(hn, sn, spl);
+            return _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask();
         }
 
         /// <summary>
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.
         ///     Should not be called on a <code>TcpSocketClient</code> that is not already connected.
         /// </summary>
-        public async Task DisconnectAsync()
+        public Task DisconnectAsync()
         {
-            await Task.Run(() => _backingStreamSocket.Dispose());
+            return Task.Run(() => _backingStreamSocket.Dispose());
         }
 
         /// <summary>

@@ -123,9 +123,9 @@ namespace Sockets.Plugin
         /// Retrieves information on the IPv4 network interfaces available.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<CommsInterface>> GetAllInterfacesAsync()
+        public static Task<List<CommsInterface>> GetAllInterfacesAsync()
         {
-            var interfaces = await Task.Run(() =>
+            var interfaces = Task.Run(() =>
                 System.Net.NetworkInformation.NetworkInterface
                     .GetAllNetworkInterfaces()
                     .Select(FromNativeInterface)
