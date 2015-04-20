@@ -1,5 +1,15 @@
 _This changelog refers to nuget package releases._
 
+#### 1.1.8 (2015-04-20)
+
+Bugfixes:
+
+- Fixed 'A method was called at an unexpected time' exception when that occured when disconnecting a `UdpSocketMulticastClient` on WinRT. Thanks @aghajani for discovering.
+
+Other: 
+
+- Removed unneccessary `async` modifiers and `await` calls.
+
 #### 1.1.6 / 1.1.7 (2015-04-12)
 
 Features:

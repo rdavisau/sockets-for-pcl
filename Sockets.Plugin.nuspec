@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>1.1.8-pre</version>
+    <version>1.1.8</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
@@ -13,6 +13,16 @@
     <copyright>2015 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
+1.1.8 (2015-04-20)
+
+Bugfixes:
+
+- Fixed 'A method was called at an unexpected time' exception when disconnecting a `UdpSocketMulticastClient` on WinRT. Thanks @aghajani for discovering.
+
+Other: 
+
+- Removed unneccessary `async` modifiers and `await` calls.
+
 1.1.6 / 1.1.7 (2015-04-12)
 
 Features:
@@ -22,18 +32,6 @@ Features:
 Bugfixes:
 
 - Calling `Dispose` on a bound `UdpSocketReceiver` or `UdpSocketMulticastClient` now cancels the internal message reading loop.
-
-1.1.5 (2015-03-11)
-
-Bugfixes:
-
-- Fixed a `NullReferenceException` that could occur in `CommsInterface.GetAllInterfacesAsync` if an interface had no IPv4 unicast address. 
-
-1.1.4 (2015-02-09)
-
-Features:
-
-- `TcpSocketClient` supports TLS connections on `TcpSocketClient` via optional parameter on `ConnectAsync`. Thanks @galvesribeiro.
     </releaseNotes>
     <description>
       Cross-platform socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.

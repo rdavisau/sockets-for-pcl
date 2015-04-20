@@ -94,7 +94,6 @@ namespace Sockets.Plugin
         {
             return Task.Run(() =>
             {
-                _backingDatagramSocket.MessageReceived -= DatagramMessageReceived;
                 _backingDatagramSocket.Dispose();
                 SetBackingSocket();
             });
