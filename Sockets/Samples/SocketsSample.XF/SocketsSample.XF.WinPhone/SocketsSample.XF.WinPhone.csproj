@@ -167,11 +167,11 @@
     </Reference>
     <Reference Include="Sockets.Plugin, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.8-pre\lib\wp8\Sockets.Plugin.dll</HintPath>
+      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.7\lib\wp8\Sockets.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="Sockets.Plugin.Abstractions, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.8-pre\lib\wp8\Sockets.Plugin.Abstractions.dll</HintPath>
+    <Reference Include="Sockets.Plugin.Abstractions">
+      <HintPath>..\..\..\..\packages\rda.SocketsForPCL.1.1.7\lib\wp8\Sockets.Plugin.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\..\..\..\packages\Rx-Core.2.2.5\lib\windowsphone8\System.Reactive.Core.dll</HintPath>
