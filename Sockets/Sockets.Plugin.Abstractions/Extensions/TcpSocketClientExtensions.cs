@@ -117,6 +117,18 @@ namespace Sockets.Plugin.Abstractions
         }
         #endregion
 
+        /// <summary>
+        ///  Wraps <see cref="ITcpSocketClient.ReadStream"/> and <see cref="ITcpSocketClient.WriteStream"/> into
+        ///  a single <see cref="System.IO.Stream"/>. This is primarily intended for migrations from existing code
+        ///  that uses <see cref="System.Net.TcpClient.GetStream"/>.
+        /// </summary>
+        /// <param name="client">
+        ///  The instance of <see cref="ITcpSocketClient"/>
+        /// </param>
+        /// <returns>
+        ///  A single stream that wraps <see cref="ITcpSocketClient.ReadStream"/> and
+        ///  <see cref="ITcpSocketClient.WriteStream"/>.
+        /// </returns>
         public static Stream GetStream(this ITcpSocketClient client)
         {
             Contract.Requires(client != null);
