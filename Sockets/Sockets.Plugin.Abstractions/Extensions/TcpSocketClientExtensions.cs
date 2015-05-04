@@ -9,7 +9,7 @@ namespace Sockets.Plugin.Abstractions
     public static class TcpSocketClientExtensions
     {
         #region TwoWayStream
-        public class TwoWayStream : Stream
+        private sealed class TwoWayStream : Stream
         {
             private readonly Stream _readStream;
             private readonly Stream _writeStream;
