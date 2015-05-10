@@ -161,6 +161,9 @@ Additional 'higher level' features will likely end up in the [sockethelpers-for-
 ### Contributors
  - @rdavisau
  - @galvesribeiro (TLS support)
+ - @NewtonARA (Mac support)
+ - @aghajani
+ - @danielcweber
 
 ### Contributions, Issues, Feedback
 All welcome!!
