@@ -136,7 +136,37 @@ Bugfixes:
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
           target="lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.xml" />
+          target="lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.xml" /
+
+    <!--Xamarin.Mac Unified-->
+    <file src="Sockets\Sockets.Plugin.MacUnified\bin\MacUnified\Release\Sockets.Plugin.dll"
+          target="lib\MacUnified\Sockets.Plugin.dll" />
+    <file src="Sockets\Sockets.Plugin.MacUnified\bin\MacUnified\Release\Sockets.Plugin.xml"
+          target="lib\MacUnified\Sockets.Plugin.xml" />
+    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
+          target="lib\MacUnified\Sockets.Plugin.Abstractions.dll" />
+    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
+          target="lib\MacUnified\Sockets.Plugin.Abstractions.xml" />
+
+    <!--Xamarin.Mac Classic-->
+    <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.dll"
+          target="lib\MacClassic\Sockets.Plugin.dll" />
+    <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.xml"
+          target="lib\MacClassic\Sockets.Plugin.xml" />
+    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
+          target="lib\MacClassic\Sockets.Plugin.Abstractions.dll" />
+    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
+          target="lib\MacClassic\Sockets.Plugin.Abstractions.xml" />
+
+    <!--MonoMac-->
+    <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.dll"
+          target="lib\MacOpenSource\Sockets.Plugin.dll" />
+    <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.xml"
+          target="lib\MacOpenSource\Sockets.Plugin.xml" />
+    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
+          target="lib\MacOpenSource\Sockets.Plugin.Abstractions.dll" />
+    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
+          target="lib\MacOpenSource\Sockets.Plugin.Abstractions.xml" />
 
     <!--Windows Desktop-->
     <file src="Sockets\Sockets.Plugin.WindowsDesktop\bin\Release\Sockets.Plugin.dll"
