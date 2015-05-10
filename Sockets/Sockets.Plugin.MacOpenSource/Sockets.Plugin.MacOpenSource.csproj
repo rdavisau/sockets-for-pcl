@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2882AEEB-D4CD-4EB9-8A6C-6653B33681F1}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Sockets.Plugin</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>Sockets.Plugin</AssemblyName>
+    <SuppressXamMacMigration>True</SuppressXamMacMigration>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\MacOpenSource\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseRefCounting>false</UseRefCounting>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <CreatePackage>false</CreatePackage>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <EnablePackageSigning>false</EnablePackageSigning>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\OpenSource\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <DocumentationFile>bin\OpenSource\Release\Sockets.Plugin.XML</DocumentationFile>
+    <UseRefCounting>false</UseRefCounting>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <CreatePackage>false</CreatePackage>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <EnablePackageSigning>false</EnablePackageSigning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Sockets.Implementation.NET\CommsInterface.cs">
+      <Link>CommsInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\NetworkExtensions.cs">
+      <Link>NetworkExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\TcpSocketClient.cs">
+      <Link>TcpSocketClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\TcpSocketListener.cs">
+      <Link>TcpSocketListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\UdpSocketBase.cs">
+      <Link>UdpSocketBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\UdpSocketClient.cs">
+      <Link>UdpSocketClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\UdpSocketMulticastClient.cs">
+      <Link>UdpSocketMulticastClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\UdpSocketReceiver.cs">
+      <Link>UdpSocketReceiver.cs</Link>
+    </Compile>
+    <Compile Include="Netmask\CommsInterfaceNative.cs" />
+    <Compile Include="Netmask\NetInfo.cs" />
+    <Compile Include="Netmask\NetInterfaceInfo.cs" />
+    <Compile Include="Netmask\StructsAndEnums.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sockets.Plugin.Abstractions\Sockets.Plugin.Abstractions.csproj">
+      <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
+      <Name>Sockets.Plugin.Abstractions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="MonoMac" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Netmask\README.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
