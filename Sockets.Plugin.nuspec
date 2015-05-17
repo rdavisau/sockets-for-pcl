@@ -136,7 +136,7 @@ Bugfixes:
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
           target="lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.xml" /
+          target="lib\Xamarin.iOS10\Sockets.Plugin.Abstractions.xml" />
 
     <!--Xamarin.Mac Unified-->
     <file src="Sockets\Sockets.Plugin.MacUnified\bin\MacUnified\Release\Sockets.Plugin.dll"
