@@ -48,7 +48,7 @@ Bugfixes:
       Cross-platform socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
     </description>
     <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop.</summary>
-    <tags>sockets, tcp, udp, multicast, xamarin, pcl, xam.pcl, windows phone, winphone, wp8, winrt, android, xamarin.forms, ios</tags>
+    <tags>sockets, tcp, udp, multicast, xamarin, pcl, xam.pcl, windows phone, winphone, wp8, winrt, android, xamarin.forms, ios, linqpad-samples</tags>
     <dependencies>
     </dependencies>
   </metadata>
@@ -181,6 +181,10 @@ Bugfixes:
           target="lib\net45\Sockets.Plugin.Abstractions.xml" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.pdb"
           target="lib\net45\Sockets.Plugin.Abstractions.pdb" />
+
+    <!-- LINQPad Samples -->
+    <file src="Sockets\linqpad-samples\**"
+          target="linqpad-samples"/>
 
   </files>
 </package>
