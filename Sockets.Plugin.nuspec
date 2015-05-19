@@ -23,32 +23,12 @@ Features:
 Other:
 
 - sockets-for-pcl now comes with LINQPad samples! When you add the package to a LINQPad query for the first time, a set of samples will be added to your Samples tab, demonstrating typical usage. 
-
-1.1.8 (2015-04-20)
-
-Bugfixes:
-
-- Fixed 'A method was called at an unexpected time' exception when disconnecting a `UdpSocketMulticastClient` on WinRT. Thanks @aghajani for discovering.
-
-Other: 
-
-- Removed unneccessary `async` modifiers and `await` calls.
-
-1.1.6 / 1.1.7 (2015-04-12)
-
-Features:
-
-- `UdpSocketReceiver` can now be bound to a port chosen by the operating system. Pass `0` to the `port` argument of `StartListeningAsync`. 
-
-Bugfixes:
-
-- Calling `Dispose` on a bound `UdpSocketReceiver` or `UdpSocketMulticastClient` now cancels the internal message reading loop.
     </releaseNotes>
     <description>
-      Cross-platform socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
+      Cross-platform socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
     </description>
-    <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store and Windows Desktop.</summary>
-    <tags>sockets, tcp, udp, multicast, xamarin, pcl, xam.pcl, windows phone, winphone, wp8, winrt, android, xamarin.forms, ios, linqpad-samples</tags>
+    <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store and Windows Desktop.</summary>
+    <tags>sockets, tcp, udp, multicast, xamarin, pcl, windows phone, winphone, wp8, winrt, android, xamarin.forms, ios, xamarin.mac, monomac, linqpad-samples</tags>
     <dependencies>
     </dependencies>
   </metadata>
