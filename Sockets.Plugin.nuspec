@@ -150,13 +150,13 @@ Bugfixes:
 
     <!--Xamarin.Mac Classic-->
     <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.dll"
-          target="lib\MacClassic\Sockets.Plugin.dll" />
+          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.dll" />
     <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.xml"
-          target="lib\MacClassic\Sockets.Plugin.xml" />
+          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.xml" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\MacClassic\Sockets.Plugin.Abstractions.dll" />
+          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\MacClassic\Sockets.Plugin.Abstractions.xml" />
+          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.Abstractions.xml" />
 
     <!--MonoMac-->
     <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.dll"
