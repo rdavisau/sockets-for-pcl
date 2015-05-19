@@ -1,8 +1,8 @@
 #Sockets Plugin for Xamarin and Windows (PCL)
 
-An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Windows Phone 8/8.1, Windows Store, and/or Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
+An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
 
-This library utilises the "Bait and Switch" pattern, so __must__ be installed via NuGet in _both_ the PCL _and_ your native projects. 
+This library utilises the "Bait and Switch" pattern, so must be installed via NuGet in _both_ the PCL and your native projects. 
 
 Get it on NuGet: ````Install-Package rda.SocketsForPCL````
 
@@ -17,9 +17,9 @@ Class|Description|.NET Abstraction|WinRT Abstraction
 **UdpSocketClient** | Send messages to arbitrary endpoints over UDP. | UdpClient | DatagramSocket
 **UdpSocketMulticastClient** | Send and receive UDP messages within a multicast group. | UdpClient | DatagramSocket
 
-Apart from the decisions made in order to merge the two APIs, the abstraction aims to be relatively non-prescriptive. 
-This means that there is little to no protection in the library against socket failures, reliablity, retry, etc., 
-and nothing in the way of help for sending or receiving data. To that end, [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) is a longer term project with the aim of providing useful functionality around the base sockets-for-pcl classes, including hub-style communications, custom protocol helpers and support for typed messaging, and error handling/life cycle and reliability options. 
+Apart from the decisions made in order to merge the two APIs, the abstraction aims to be relatively unprescriptive. 
+This means that there is little to no protection in the library against socket failures, reliablity, retry, and other considerations.
+[sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) is a longer term project with the aim of providing useful functionality around the base sockets-for-pcl classes, including hub-style communications, custom protocol helpers and support for typed messaging, and error handling/life cycle and reliability options. 
 
 ### Example Usage
 ````TcpSocketListener```` and ````TcpSocketClient```` each expose ````ReadStream```` and ````WriteStream```` 
@@ -147,14 +147,10 @@ For a majority of mobile use cases, binding to all interfaces is a good approach
 `TcpSocketClient` supports TLS connections (server certificate only). Pass `true` to the optional parameter `useTls` on `ConnectAsync` to enable secure communication. 
 
 ### Platform Considerations
+ - Xamarin.Mac Unified and MonoMac should work out of the box. For Xamarin.Mac Classic projects, after installing sockets-for-pcl you must manually alter the `HintPath` entries for `Sockets.Plugin` and `Sockets.Plugin.Abstractions` in your .csproj file, to replace references to `net45` with `MacClassic`. Without this, code interacting with portions of the `System.Net` namespace not implemented in mono, including methods on some classes required by `CommsInterface`, will fail. 
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of ````privateNetworkClientServer````, ````internetClient```` and/or  ````internetClientServer```` capabilities. 
  - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between separate apps (i.e. no IPC) 
  - Binding to specific interfaces is not supported on Windows Phone 8.0 (8.1 is fine). All interfaces will be bound, even if a specific ````CommsInterface```` is provided. 
-
-### Planned Features
- - API for socket connection settings. Very few settings are exposed through 
- the standard WinRT classes, but there is suppport for low level WinSock calls 
- which can be investigated. Currently you get the defaults, which should be relatively sane. If there's something you need, please raise an issue or submit a pull request. 
 
 Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
 

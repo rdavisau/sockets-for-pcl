@@ -13,16 +13,16 @@
     <copyright>2015 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
-1.2.0 (2015-04-12)
+1.2.0 (2015-05-20)
 
 Features:
 
-- Support for MonoMac, Xamarin.Mac 1.0, Xamarin.Mac 2.0 thanks to @NewtonARA.
-- Extension method `GetStream` added to `TcpSocketClient`, easing migration from .NET projects. Thanks @danielcweber.
+- Support for MonoMac, Xamarin.Mac Classic and Xamarin.Mac Unified. Thanks @NewtonARA.
+- Extension method `GetStream` added to `ITcpSocketClient`, easing migration from .NET projects. Thanks @danielcweber.
 
 Other:
 
-- Going to Try Real Hard to do SemVer properly from now on
+- sockets-for-pcl now comes with LINQPad samples! When you add the package to a LINQPad query for the first time, a set of samples will be added to your Samples tab, demonstrating typical usage. 
 
 1.1.8 (2015-04-20)
 
@@ -140,13 +140,13 @@ Bugfixes:
 
     <!--Xamarin.Mac Unified-->
     <file src="Sockets\Sockets.Plugin.MacUnified\bin\MacUnified\Release\Sockets.Plugin.dll"
-          target="lib\MacUnified\Sockets.Plugin.dll" />
+          target="lib\Xamarin.Mac\Sockets.Plugin.dll" />
     <file src="Sockets\Sockets.Plugin.MacUnified\bin\MacUnified\Release\Sockets.Plugin.xml"
-          target="lib\MacUnified\Sockets.Plugin.xml" />
+          target="lib\Xamarin.Mac\Sockets.Plugin.xml" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\MacUnified\Sockets.Plugin.Abstractions.dll" />
+          target="lib\Xamarin.Mac\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\MacUnified\Sockets.Plugin.Abstractions.xml" />
+          target="lib\Xamarin.Mac\Sockets.Plugin.Abstractions.xml" />
 
     <!--Xamarin.Mac Classic-->
     <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.dll"
@@ -160,13 +160,13 @@ Bugfixes:
 
     <!--MonoMac-->
     <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.dll"
-          target="lib\MacOpenSource\Sockets.Plugin.dll" />
+          target="lib\MonoMac\Sockets.Plugin.dll" />
     <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.xml"
-          target="lib\MacOpenSource\Sockets.Plugin.xml" />
+          target="lib\MonoMac\Sockets.Plugin.xml" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\MacOpenSource\Sockets.Plugin.Abstractions.dll" />
+          target="lib\MonoMac\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\MacOpenSource\Sockets.Plugin.Abstractions.xml" />
+          target="lib\MonoMac\Sockets.Plugin.Abstractions.xml" />
 
     <!--Windows Desktop-->
     <file src="Sockets\Sockets.Plugin.WindowsDesktop\bin\Release\Sockets.Plugin.dll"

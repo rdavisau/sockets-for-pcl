@@ -1,5 +1,17 @@
 _This changelog refers to nuget package releases._
 
+#### 1.2.0 (2015-05-20)
+
+Features:
+
+- Support for MonoMac, Xamarin.Mac Classic and Xamarin.Mac Unified. Thanks @NewtonARA.
+- Extension method `GetStream` added to `ITcpSocketClient`, easing migration from .NET projects. Thanks @danielcweber.
+
+Other:
+
+- sockets-for-pcl now comes with LINQPad samples! When you add the package to a LINQPad query for the first time, a set of samples will be added to your Samples tab, demonstrating typical usage. 
+- Will be trying Real Hard to do SemVer properly from now on.
+
 #### 1.1.8 (2015-04-20)
 
 Bugfixes:
