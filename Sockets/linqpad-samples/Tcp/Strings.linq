@@ -70,7 +70,7 @@ public static class StringHelpers
 			   .ReadAsync(sizeBuf, 0, sizeOfInt)
 			   .ConfigureAwait(false);
 		
-		// convert to long
+		// convert to int
 		var msgLength = BitConverter.ToInt32(sizeBuf, 0);
 		
 		// get the actual message
