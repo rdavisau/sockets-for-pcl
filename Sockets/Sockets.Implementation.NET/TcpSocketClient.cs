@@ -7,6 +7,9 @@ using Sockets.Plugin.Abstractions;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
+
 namespace Sockets.Plugin
 {
     /// <summary>
@@ -54,8 +57,17 @@ namespace Sockets.Plugin
         /// <param name="secure">True to enable TLS on the socket.</param>
         public async Task ConnectAsync(string address, int port, bool secure = false)
         {
-            await _backingTcpClient.ConnectAsync(address, port);
+            try
+            {
+                await _backingTcpClient.ConnectAsync(address, port);
+            }
+            catch(PlatformSocketException ex)
+            {
+                throw new PclSocketException(ex);
+            }
+
             InitializeWriteStream();
+
             if (secure)
             {
                 var secureStream = new SslStream(_writeStream, true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender, cert, chain, sslPolicy));
@@ -133,7 +145,17 @@ namespace Sockets.Plugin
 
         private IPEndPoint RemoteEndpoint
         {
-            get { return _backingTcpClient.Client.RemoteEndPoint as IPEndPoint; }
+            get
+            {
+                try
+                {
+                    return _backingTcpClient.Client.RemoteEndPoint as IPEndPoint;
+                }
+                catch(PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
+            }
         }
 
         /// <summary>

@@ -5,6 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
+
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -54,7 +57,15 @@ namespace Sockets.Plugin
                 _listenCanceller = new CancellationTokenSource();
 
                 _backingTcpListener = new TcpListener(ipAddress, port);
-                _backingTcpListener.Start();
+
+                try
+                {
+                    _backingTcpListener.Start();
+                }
+                catch(PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
 
                 WaitForConnections(_listenCanceller.Token);
             });
@@ -70,7 +81,16 @@ namespace Sockets.Plugin
                 () =>
                 {
                     _listenCanceller.Cancel();
-                    _backingTcpListener.Stop();
+
+                    try
+                    {
+                        _backingTcpListener.Stop();
+                    }
+                    catch (PlatformSocketException ex)
+                    {
+                        throw new PclSocketException(ex);
+                    }
+                   
                     _backingTcpListener = null;
                 });
         }

@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -33,10 +35,18 @@ namespace Sockets.Plugin
                 var ep = new IPEndPoint(ip, port);
 
                 _messageCanceller = new CancellationTokenSource();
-                _backingUdpClient = new UdpClient(ep)
+
+                try
                 {
-                    EnableBroadcast = true
-                };
+                    _backingUdpClient = new UdpClient(ep)
+                    {
+                        EnableBroadcast = true
+                    };
+                }
+                catch(PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
 
                 RunMessageReceiver(_messageCanceller.Token);
             });
@@ -70,7 +80,17 @@ namespace Sockets.Plugin
                 // instantiated on call to StartListeningAsync(). If we are here, user
                 // is sending before having 'bound' to a port, so just create a temporary
                 // backing client to send this data. 
-                using (_backingUdpClient = new UdpClient { EnableBroadcast = true } )
+
+                try
+                {
+                    _backingUdpClient = new UdpClient { EnableBroadcast = true };
+                }
+                catch(PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
+
+                using (_backingUdpClient)
                 {
                     await base.SendToAsync(data, address, port);
                 }
