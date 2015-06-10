@@ -18,16 +18,6 @@ namespace Sockets.Plugin
     {
         private TcpListener _backingTcpListener;
         private CancellationTokenSource _listenCanceller;
-        private readonly int _bufferSize;
-
-        public TcpSocketListener()
-        {
-        }
-
-        public TcpSocketListener(int bufferSize)
-        {
-            _bufferSize = bufferSize;
-        }
 
         /// <summary>
         ///     Fired when a new TCP connection has been received.
@@ -91,7 +81,7 @@ namespace Sockets.Plugin
                 while (!cancelToken.IsCancellationRequested)
                 {
                     var nativeClient = await Task.Run(() => _backingTcpListener.AcceptTcpClient(), cancelToken);
-                    var wrappedClient = new TcpSocketClient(nativeClient, _bufferSize);
+                    var wrappedClient = new TcpSocketClient(nativeClient);
 
                     var eventArgs = new TcpSocketListenerConnectEventArgs(wrappedClient);
                     if (ConnectionReceived != null)

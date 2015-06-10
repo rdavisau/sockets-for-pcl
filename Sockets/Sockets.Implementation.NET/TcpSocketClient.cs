@@ -18,9 +18,7 @@ namespace Sockets.Plugin
     public class TcpSocketClient : ITcpSocketClient
     {
         private readonly TcpClient _backingTcpClient;
-        private readonly int _bufferSize;
         private SslStream _secureStream;
-        private Stream _writeStream;
 
         /// <summary>
         ///     Default constructor for <code>TcpSocketClient</code>.
@@ -30,20 +28,9 @@ namespace Sockets.Plugin
             _backingTcpClient = new TcpClient();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TcpSocketClient"/> class.
-        /// </summary>
-        /// <param name="bufferSize">Size of the buffer for the write stream.</param>
-        public TcpSocketClient(int bufferSize) : this()
-        {
-            _bufferSize = bufferSize;
-        }
-
-        internal TcpSocketClient(TcpClient backingClient, int bufferSize)
+        internal TcpSocketClient(TcpClient backingClient)
         {
             _backingTcpClient = backingClient;
-            _bufferSize = bufferSize;
-            InitializeWriteStream();
         }
 
         /// <summary>
@@ -55,10 +42,9 @@ namespace Sockets.Plugin
         public async Task ConnectAsync(string address, int port, bool secure = false)
         {
             await _backingTcpClient.ConnectAsync(address, port);
-            InitializeWriteStream();
             if (secure)
             {
-                var secureStream = new SslStream(_writeStream, true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender, cert, chain, sslPolicy));
+                var secureStream = new SslStream(_backingTcpClient.GetStream(), true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender,cert,chain,sslPolicy));
                 secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                 _secureStream = secureStream;
             }            
@@ -126,7 +112,7 @@ namespace Sockets.Plugin
                 {
                     return _secureStream as Stream;
                 }
-                return _writeStream;
+                return _backingTcpClient.GetStream();
             }
         }
 
@@ -168,17 +154,10 @@ namespace Sockets.Plugin
             Dispose(false);
         }
 
-        private void InitializeWriteStream()
-        {
-            _writeStream = _bufferSize != 0 ? (Stream)new BufferedStream(_backingTcpClient.GetStream(), _bufferSize) : _backingTcpClient.GetStream();
-        }
-
         private void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (_writeStream != null)
-                    _writeStream.Dispose();
                 if (_backingTcpClient != null)
                     ((IDisposable)_backingTcpClient).Dispose();
             }
