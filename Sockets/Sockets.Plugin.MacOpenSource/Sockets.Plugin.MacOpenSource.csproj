@@ -34,7 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DocumentationFile>bin\OpenSource\Release\Sockets.Plugin.XML</DocumentationFile>
+    <DocumentationFile>bin\MacOpenSource\Release\Sockets.Plugin.XML</DocumentationFile>
     <UseRefCounting>false</UseRefCounting>
     <UseSGen>false</UseSGen>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
