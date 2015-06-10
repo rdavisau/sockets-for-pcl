@@ -1,5 +1,11 @@
 _This changelog refers to nuget package releases._
 
+#### 1.2.1 (2015-06-10)
+
+Bugfixes:
+
+- Fixed incorrect assembly version for WP8.
+
 #### 1.2.0 (2015-05-20)
 
 Features:
