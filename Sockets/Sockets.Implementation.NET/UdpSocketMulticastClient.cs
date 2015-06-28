@@ -55,17 +55,9 @@ namespace Sockets.Plugin
 
             _messageCanceller = new CancellationTokenSource();
             
-            await Task.Run(() =>
-            {
-                try
-                {
-                    _backingUdpClient.JoinMulticastGroup(multicastIp, TTL);
-                }
-                catch (PlatformSocketException ex)
-                {
-                    throw new PclSocketException(ex);
-                }
-            });
+            await Task
+                .Run(() => this._backingUdpClient.JoinMulticastGroup(multicastIp, this.TTL))
+                .WrapNativeSocketExceptions();
 
             _multicastAddress = multicastAddress;
             _multicastPort = port;

@@ -57,14 +57,9 @@ namespace Sockets.Plugin
         /// <param name="secure">True to enable TLS on the socket.</param>
         public async Task ConnectAsync(string address, int port, bool secure = false)
         {
-            try
-            {
-                await _backingTcpClient.ConnectAsync(address, port);
-            }
-            catch(PlatformSocketException ex)
-            {
-                throw new PclSocketException(ex);
-            }
+            await _backingTcpClient
+                .ConnectAsync(address, port)
+                .WrapNativeSocketExceptions();
 
             InitializeWriteStream();
 

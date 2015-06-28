@@ -36,15 +36,10 @@ namespace Sockets.Plugin
                 try
                 {
                     // attempt to read next datagram
-                    try
-                    {
-                        msg = await _backingUdpClient.ReceiveAsync();
-                    }
-                    catch(PlatformSocketException ex)
-                    {
-                        throw new PclSocketException(ex);
-                    }
-
+                    msg = await _backingUdpClient
+                        .ReceiveAsync()
+                        .WrapNativeSocketExceptions();
+                    
                     didReceive = true;
                 }
                 catch
@@ -79,14 +74,9 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to be sent.</param>
         protected Task SendAsync(byte[] data)
         {
-            try
-            {
-                return _backingUdpClient.SendAsync(data, data.Length);
-            }
-            catch (PlatformSocketException ex)
-            {
-                throw new PclSocketException(ex);
-            }
+            return _backingUdpClient
+                .SendAsync(data, data.Length)
+                .WrapNativeSocketExceptions();
         }
 
         /// <summary>
@@ -97,14 +87,9 @@ namespace Sockets.Plugin
         /// <param name="port">The remote port to which the data should be sent.</param>
         protected Task SendToAsync(byte[] data, string address, int port)
         {
-            try
-            {
-                return _backingUdpClient.SendAsync(data, data.Length, address, port);
-            }
-            catch (PlatformSocketException ex)
-            {
-                throw new PclSocketException(ex);
-            }
+            return _backingUdpClient
+                .SendAsync(data, data.Length, address, port)
+                .WrapNativeSocketExceptions();
         }
         
         /// <summary>

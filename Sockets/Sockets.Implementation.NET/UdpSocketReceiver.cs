@@ -29,27 +29,22 @@ namespace Sockets.Plugin
             if (listenOn != null && !listenOn.IsUsable)
                 throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
 
-            return Task.Run(() =>
-            {
-                var ip = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
-                var ep = new IPEndPoint(ip, port);
-
-                _messageCanceller = new CancellationTokenSource();
-
-                try
+            return Task
+                .Run(() =>
                 {
+                    var ip = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
+                    var ep = new IPEndPoint(ip, port);
+
+                    _messageCanceller = new CancellationTokenSource();
+
                     _backingUdpClient = new UdpClient(ep)
                     {
                         EnableBroadcast = true
                     };
-                }
-                catch(PlatformSocketException ex)
-                {
-                    throw new PclSocketException(ex);
-                }
 
-                RunMessageReceiver(_messageCanceller.Token);
-            });
+                    RunMessageReceiver(_messageCanceller.Token);
+                })
+                .WrapNativeSocketExceptions();
         }
 
         /// <summary>

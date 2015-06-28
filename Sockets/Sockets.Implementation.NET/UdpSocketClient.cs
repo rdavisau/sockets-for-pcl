@@ -32,7 +32,7 @@ namespace Sockets.Plugin
                     EnableBroadcast = true
                 };
             }
-            catch(PlatformSocketException ex)
+            catch (PlatformSocketException ex)
             {
                 throw new PclSocketException(ex);
             }
@@ -48,17 +48,9 @@ namespace Sockets.Plugin
         {
             _messageCanceller = new CancellationTokenSource();
 
-            return Task.Run(() =>
-            {
-                try
-                {
-                    _backingUdpClient.Connect(address, port);
-                }
-                catch(PlatformSocketException ex)
-                {
-                    throw new PclSocketException(ex);
-                }
-            });
+            return Task
+                .Run(() => this._backingUdpClient.Connect(address, port))
+                .WrapNativeSocketExceptions();
         }
 
         /// <summary>
