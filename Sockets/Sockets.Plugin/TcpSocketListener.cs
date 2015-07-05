@@ -12,6 +12,23 @@ namespace Sockets.Plugin
     public class TcpSocketListener : ITcpSocketListener
     {
         /// <summary>
+        ///     Default constructor for <code>TcpSocketListener</code>.
+        /// </summary>
+        public TcpSocketListener()
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TcpSocketListener"/> class.
+        /// </summary>
+        /// <param name="bufferSize">Size of the buffer for the write stream to any connected sockets.</param>
+        public TcpSocketListener(int bufferSize)
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
         /// </summary>
         /// <param name="port">The port to listen on.</param>
