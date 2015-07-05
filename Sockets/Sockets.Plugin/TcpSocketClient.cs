@@ -14,6 +14,23 @@ namespace Sockets.Plugin
     public class TcpSocketClient : ITcpSocketClient
     {
         /// <summary>
+        ///     Default constructor for <code>TcpSocketClient</code>.
+        /// </summary>
+        public TcpSocketClient()
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TcpSocketClient"/> class.
+        /// </summary>
+        /// <param name="bufferSize">Size of the buffer for the write stream.</param>
+        public TcpSocketClient(int bufferSize) : this()
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
         ///     Establishes a TCP connection with the endpoint at the specified address/port pair.
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
