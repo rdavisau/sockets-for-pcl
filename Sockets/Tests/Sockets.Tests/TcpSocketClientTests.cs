@@ -95,18 +95,35 @@ namespace Sockets.Tests
             Assert.True(ok);
         }
 
-        [Fact]
-        public async Task TcpSocketClient_ShouldSendReceiveDataSimultaneously()
+        [Theory]
+        [InlineData(-1)] // no buffered stream
+        [InlineData(0)]
+        [InlineData(1000)]
+        [InlineData(100000)]
+        public async Task TcpSocketClient_ShouldSendReceiveDataSimultaneously(int bufferSize)
         {
             var port = 51234;
 
-            // get both ends of a connected socket
+            TcpSocketListener listener = null;
+            TcpSocketClient socket1 = null;
+
+            // get both ends of a connected socket, with or without buffer
+            if (bufferSize != -1)
+            {
+                listener = new TcpSocketListener(bufferSize);
+                socket1 = new TcpSocketClient(bufferSize);
+            }
+            else
+            {
+                listener = new TcpSocketListener();
+                socket1 = new TcpSocketClient();
+            }
+
             var tcs = new TaskCompletionSource<ITcpSocketClient>();
-            var listener = new TcpSocketListener();
+            
             await listener.StartListeningAsync(port);
             listener.ConnectionReceived += (sender, args) => tcs.SetResult(args.SocketClient);
 
-            var socket1 = new TcpSocketClient();
             await socket1.ConnectAsync("localhost", port);
 
             var socket2 = await tcs.Task;
@@ -123,41 +140,50 @@ namespace Sockets.Tests
 
             // send random data and keep track of it
             // also keep track of what is received
-            Action<ITcpSocketClient, List<byte>, List<byte>, CancellationToken> sendAndReceive =
+            Func<ITcpSocketClient, List<byte>, List<byte>, CancellationToken, Task> sendAndReceive =
                 (socket, sent, recvd, token) =>
                 {
                     var r = new Random(socket.GetHashCode());
-                    Task.Run(async () =>
+                    var send = Task.Run(async () =>
                     {
-                        var buf = new byte[1];
-                        while (true)
+                        var buf = new byte[1000];
+                        while (!token.IsCancellationRequested)
                         {
                             r.NextBytes(buf);
                             sent.AddRange(buf);
-                            await socket.WriteStream.WriteAsync(buf,0,1, token);
+                            await socket.WriteStream.WriteAsync(buf, 0, buf.Length, token);
                             await socket.WriteStream.FlushAsync();
                         }
-                    }, token);
+                    });
 
-                    Task.Run(async () =>
+                    var recv = Task.Run(async () =>
                     {
-                        var buf = new byte[1];
-                        while (true)
+                        var buf = new byte[1000];
+                        while (!token.IsCancellationRequested)
                         {
-                            await socket.ReadStream.ReadAsync(buf,0,1, token);
+                            await socket.ReadStream.ReadAsync(buf, 0, buf.Length, token);
                             recvd.AddRange(buf);
                         }
-                    }, token);
+                    });
+
+                    return Task.WhenAll(send, recv);
                 };
 
             // let the sockets run for five seconds
             var cts = new CancellationTokenSource();
             var timer = Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(t => cts.Cancel()));
 
-            Task.Run(() => sendAndReceive(socket1, sentToSocket2, recvdBySocket1, cts.Token));
-            Task.Run(() => sendAndReceive(socket2, sentToSocket1, recvdBySocket2, cts.Token));
+            var socketRunners =
+                Task.WhenAll(
+                    Task.Run(() => sendAndReceive(socket1, sentToSocket2, recvdBySocket1, cts.Token)),
+                    Task.Run(() => sendAndReceive(socket2, sentToSocket1, recvdBySocket2, cts.Token))
+                    );
 
             await timer;
+            await socketRunners;
+
+            Debug.WriteLine("Sent to S1:{0}, Recvd by S1:{1}", sentToSocket1.Count, recvdBySocket1.Count);
+            Debug.WriteLine("Sent to S2:{0}, Recvd by S2:{1}", sentToSocket2.Count, recvdBySocket2.Count);
 
             // zip will join up to the lowest index of both lists (must be recvd)
             // it's ok if recvd is shorter than sent because we cancel abruptly,
