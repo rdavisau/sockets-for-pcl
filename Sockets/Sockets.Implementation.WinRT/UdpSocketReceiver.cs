@@ -27,11 +27,17 @@ namespace Sockets.Plugin
             if (listenOn != null)
             {
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
-                return _backingDatagramSocket.BindServiceNameAsync(sn, adapter).AsTask();
+                return _backingDatagramSocket
+                            .BindServiceNameAsync(sn, adapter)
+                            .AsTask()
+                            .WrapNativeSocketExceptions();
             }
             else
 #endif
-                return _backingDatagramSocket.BindServiceNameAsync(sn).AsTask();
+                return _backingDatagramSocket
+                            .BindServiceNameAsync(sn)
+                            .AsTask()
+                            .WrapNativeSocketExceptions();
         }
 
         /// <summary>   
@@ -51,7 +57,8 @@ namespace Sockets.Plugin
         /// <param name="port">The remote port to which the data should be sent.</param>
         public new Task SendToAsync(byte[] data, string address, int port)
         {
-            return base.SendToAsync(data, address, port);
+            return SendToAsync(data, address, port)
+                    .WrapNativeSocketExceptions();
         }
     }
 }

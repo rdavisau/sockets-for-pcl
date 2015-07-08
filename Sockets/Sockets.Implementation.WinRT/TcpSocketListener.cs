@@ -64,11 +64,17 @@ namespace Sockets.Plugin
             {
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
 
-                return _backingStreamSocketListener.BindServiceNameAsync(port.ToString(), SocketProtectionLevel.PlainSocket, adapter).AsTask();
+                return _backingStreamSocketListener
+                            .BindServiceNameAsync(port.ToString(), SocketProtectionLevel.PlainSocket, adapter)
+                            .AsTask()
+                            .WrapNativeSocketExceptions();
             }
             else
 #endif
-                return _backingStreamSocketListener.BindServiceNameAsync(port.ToString()).AsTask();
+                return _backingStreamSocketListener
+                            .BindServiceNameAsync(port.ToString())
+                            .AsTask()
+                            .WrapNativeSocketExceptions();
         }
         
         /// <summary>

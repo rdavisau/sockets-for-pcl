@@ -60,7 +60,10 @@ namespace Sockets.Plugin
             var sn = port.ToString();
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            return _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask();
+            return _backingStreamSocket
+                        .ConnectAsync(hn, sn, spl)
+                        .AsTask()
+                        .WrapNativeSocketExceptions();
         }
 
         /// <summary>
