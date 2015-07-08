@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -118,16 +117,12 @@
       <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
       <Name>Sockets.Plugin.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sockets.Tests\Sockets.Tests.csproj">
+      <Project>{44455b12-e32f-4367-84bc-f1d1a5677b97}</Project>
+      <Name>Sockets.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.0.0\build\monoandroid\xunit.core.props'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
-    <Error Condition="!Exists('..\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets'))" />
-  </Target>
   <Import Project="..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.4.0.6341\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets" Condition="Exists('..\packages\xunit.runner.devices.1.0.0\build\MonoAndroid\xunit.runner.devices.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
