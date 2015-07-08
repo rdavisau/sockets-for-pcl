@@ -167,9 +167,9 @@ namespace Sockets.Tests
                     return Task.WhenAll(send, recv);
                 };
 
-            // let the sockets run for five seconds
+            // let the sockets run for 2.5 seconds
             var cts = new CancellationTokenSource();
-            var timer = Task.Run(() => Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(t => cts.Cancel()));
+            var timer = Task.Run(() => Task.Delay(TimeSpan.FromSeconds(2.5)).ContinueWith(t => cts.Cancel()));
 
             var socketRunners =
                 Task.WhenAll(
@@ -230,7 +230,7 @@ namespace Sockets.Tests
             await sut.ConnectAsync("localhost", port);
             await sut.DisconnectAsync();
 
-            await sut.ConnectAsync("localhost", port);
+            await sut.ConnectAsync("localhost", port); 
             await sut.DisconnectAsync();
 
             await listener.StopListeningAsync();
