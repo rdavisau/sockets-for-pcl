@@ -17,7 +17,7 @@ namespace Sockets.Plugin
     /// </summary>
     public class TcpSocketClient : ITcpSocketClient
     {
-        private readonly TcpClient _backingTcpClient;
+        private TcpClient _backingTcpClient;
         private readonly int _bufferSize;
         private SslStream _secureStream;
         private Stream _writeStream;
@@ -97,6 +97,7 @@ namespace Sockets.Plugin
             return Task.Run(() => {
                 _backingTcpClient.Close();
                 _secureStream = null;
+                _backingTcpClient = new TcpClient();
             });
         }
 
