@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommsInterfaceTests.cs" />
     <Compile Include="PortGranter.cs" />
     <Compile Include="TcpSocketClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
