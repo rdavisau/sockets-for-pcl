@@ -10,8 +10,6 @@ using Sockets.Plugin;
 using Sockets.Plugin.Abstractions;
 using Xunit;
 
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
-
 namespace Sockets.Tests
 {
     public class TcpSocketClientTests
@@ -27,7 +25,7 @@ namespace Sockets.Tests
         [Fact]
         public async Task TcpSocketClient_ShouldBeAbleToConnect()
         {
-            var port = 51234;
+            var port = PortGranter.GrantPort();
             var listener = new TcpSocketListener();
             await listener.StartListeningAsync(port);
 
@@ -63,7 +61,7 @@ namespace Sockets.Tests
         {
             var bytesToSend = new byte[] {0x1, 0x2, 0x3, 0x4, 0x5};
             var len = bytesToSend.Length;
-            var port = 51234;
+            var port = PortGranter.GrantPort();
 
             var listener = new TcpSocketListener();
             await listener.StartListeningAsync(port);
@@ -102,7 +100,7 @@ namespace Sockets.Tests
         [InlineData(100000)]
         public async Task TcpSocketClient_ShouldSendReceiveDataSimultaneously(int bufferSize)
         {
-            var port = 51234;
+            var port = PortGranter.GrantPort();
 
             TcpSocketListener listener = null;
             TcpSocketClient socket1 = null;
@@ -213,14 +211,21 @@ namespace Sockets.Tests
             await socket2.DisconnectAsync();
         }
 
-        [Fact]
-        public async Task TcpSocketClient_ShouldBeAbleToDisconnectThenReconnect()
+        [Theory]
+        [InlineData(-1)] // no buffered stream
+        [InlineData(1000)] // yes buffered stream
+        public async Task TcpSocketClient_ShouldBeAbleToDisconnectThenReconnect(int bufferSize)
         {
-            var port = 51234;
+            TcpSocketClient sut = null;
+
+            var port = PortGranter.GrantPort();
             var listener = new TcpSocketListener();
             await listener.StartListeningAsync(port);
 
-            var sut = new TcpSocketClient();
+            if (bufferSize != -1)
+                sut = new TcpSocketClient(bufferSize);
+            else
+                sut = new TcpSocketClient();
 
             await sut.ConnectAsync("localhost", port);
             await sut.DisconnectAsync();
@@ -232,6 +237,4 @@ namespace Sockets.Tests
         }
 
     }
-
-
 }
