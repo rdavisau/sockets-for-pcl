@@ -182,7 +182,29 @@ namespace Sockets.Tests
             // eww, but does the job we need
             Assert.True(recvdBySocket1.Count > 5000, String.Format("Socket 1 received data count was less than 5000 : {0}", recvdBySocket1.Count));
             Assert.True(recvdBySocket2.Count > 5000, String.Format("Socket 2 received data count was less than 5000 : {0}", recvdBySocket2.Count));
+
+            await socket1.DisconnectAsync();
+            await socket2.DisconnectAsync();
         }
+
+        [Fact]
+        public async Task TcpSocketClient_ShouldBeAbleToDisconnectThenReconnect()
+        {
+            var port = 51234;
+            var listener = new TcpSocketListener();
+            await listener.StartListeningAsync(port);
+
+            var sut = new TcpSocketClient();
+
+            await sut.ConnectAsync("localhost", port);
+            await sut.DisconnectAsync();
+
+            await sut.ConnectAsync("localhost", port);
+            await sut.DisconnectAsync();
+
+            await listener.StopListeningAsync();
+        }
+
     }
 
 
