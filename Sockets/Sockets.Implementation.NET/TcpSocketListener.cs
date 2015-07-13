@@ -42,7 +42,7 @@ namespace Sockets.Plugin
         /// <param name="port">The port to listen on. If '0', selection is delegated to the operating system.</param>
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
+        public Task StartListeningAsync(int port, ICommsInterface listenOn = null)
         {
             return Task.Run(() =>
             {
