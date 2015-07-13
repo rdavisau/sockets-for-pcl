@@ -38,10 +38,10 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
         /// </summary>
-        /// <param name="port">The port to listen on.</param>
+        /// <param name="port">The port to listen on. If '0', selection is delegated to the operating system.</param>
         /// <param name="listenOn">The <code>CommsInterface</code> to listen on. If unspecified, all interfaces will be bound.</param>
         /// <returns></returns>
-        public Task StartListeningAsync(int port, ICommsInterface listenOn = null)
+        public Task StartListeningAsync(int port = 0, ICommsInterface listenOn = null)
         {
             if (listenOn != null && !listenOn.IsUsable)
                 throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
@@ -59,20 +59,21 @@ namespace Sockets.Plugin
                     ConnectionReceived(this, eventArgs);
             };
 
+            var sn = port == 0 ? "" : port.ToString();
 #if !WP80    
             if (listenOn != null)
             {
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
 
                 return _backingStreamSocketListener
-                            .BindServiceNameAsync(port.ToString(), SocketProtectionLevel.PlainSocket, adapter)
+                            .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
                             .AsTask()
                             .WrapNativeSocketExceptions();
             }
             else
 #endif
                 return _backingStreamSocketListener
-                            .BindServiceNameAsync(port.ToString())
+                            .BindServiceNameAsync(sn)
                             .AsTask()
                             .WrapNativeSocketExceptions();
         }
