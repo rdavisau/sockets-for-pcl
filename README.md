@@ -2,7 +2,7 @@
 
 An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
 
-This library utilises the "Bait and Switch" pattern, so must be installed via NuGet in _both_ the PCL and your native projects. 
+This library utilises the "Bait and Switch" pattern, so must be installed via NuGet in both the PCL and your native projects. 
 
 Get it on NuGet: ````Install-Package rda.SocketsForPCL````
 
@@ -34,11 +34,10 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
     {
       var client = args.SocketClient; 
       
-      int nextByte = 0; 
-      while (nextByte != -1)
+      while (true)
       {
         // read from the 'ReadStream' property of the socket client to receive data
-        nextByte = await Task.Run(()=> client.ReadStream.ReadByte());
+        var nextByte = await Task.Run(()=> client.ReadStream.ReadByte());
         Debug.Write(nextByte);
       }
     };
@@ -160,6 +159,7 @@ Additional 'higher level' features will likely end up in the [sockethelpers-for-
  - @NewtonARA (Mac support)
  - @aghajani
  - @danielcweber
+ - @xen2
 
 ### Contributions, Issues, Feedback
 All welcome!!
