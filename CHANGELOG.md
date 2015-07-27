@@ -1,5 +1,13 @@
 _This changelog refers to nuget package releases._
 
+#### 1.2.2 (2015-07-27)
+
+Features: 
+
+- `TcpSocketClient` and `TcpSocketListener` now supports setting of the buffer size used when sending data. If unset, this defaults to zero (unbuffered). This also addresses an inconsistency in default buffer sizes between .NET platforms and WinRT platforms. Thanks @xen2
+- `TcpSocketListener` now supports os-based/ephemeral port selection. When passing `0` to the `port` parameter of `StartListeningAsync`, the selection of bound port is deferred to the operating system. You can determine what port was bound by checking the `LocalPort` property. 
+      
+
 #### 1.2.1 (2015-06-10)
 
 Bugfixes:

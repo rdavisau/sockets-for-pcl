@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
@@ -13,22 +13,18 @@
     <copyright>2015 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
+1.2.2 (2015-07-27)
+
+Features: 
+
+- `TcpSocketClient` and `TcpSocketListener` now supports setting of the buffer size used when sending data. If unset, this defaults to zero (unbuffered). This also addresses an inconsistency in default buffer sizes between .NET platforms and WinRT platforms. Thanks @xen2
+- `TcpSocketListener` now supports os-based/ephemeral port selection. When passing `0` to the `port` parameter of `StartListeningAsync`, the selection of bound port is deferred to the operating system. You can determine what port was bound by checking the `LocalPort` property. 
+      
 1.2.1 (2015-06-10)
 
 Bugfixes:
 
 - Fixed incorrect assembly version for WP8.
-
-1.2.0 (2015-05-20)
-
-Features:
-
-- Support for MonoMac, Xamarin.Mac Classic and Xamarin.Mac Unified. Thanks @NewtonARA.
-- Extension method `GetStream` added to `ITcpSocketClient`, easing migration from .NET projects. Thanks @danielcweber.
-
-Other:
-
-- sockets-for-pcl now comes with LINQPad samples! When you add the package to a LINQPad query for the first time, a set of samples will be added to your Samples tab, demonstrating typical usage. 
     </releaseNotes>
     <description>
       Cross-platform socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
