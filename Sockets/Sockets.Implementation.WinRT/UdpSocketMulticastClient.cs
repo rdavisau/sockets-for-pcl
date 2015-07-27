@@ -37,17 +37,11 @@ namespace Sockets.Plugin
             if (multicastOn != null)
             {
                 var adapter = ((CommsInterface)multicastOn).NativeNetworkAdapter;
-                await _backingDatagramSocket
-                        .BindServiceNameAsync(sn, adapter)
-                        .AsTask()
-                        .WrapNativeSocketExceptions();
+                await _backingDatagramSocket.BindServiceNameAsync(sn, adapter);
             }
             else
 #endif
-            await _backingDatagramSocket
-                        .BindServiceNameAsync(sn)
-                        .AsTask()
-                        .WrapNativeSocketExceptions();
+            await _backingDatagramSocket.BindServiceNameAsync(sn);
 
             _backingDatagramSocket.Control.OutboundUnicastHopLimit = (byte) TTL;
             _backingDatagramSocket.JoinMulticastGroup(hn);
@@ -66,8 +60,7 @@ namespace Sockets.Plugin
             if (_multicastAddress == null)
                 throw new InvalidOperationException("Must join a multicast group before sending.");
 
-            return SendToAsync(data, _multicastAddress, _multicastPort)
-                    .WrapNativeSocketExceptions();
+            return base.SendToAsync(data, _multicastAddress, _multicastPort);
         }
 
         /// <summary>

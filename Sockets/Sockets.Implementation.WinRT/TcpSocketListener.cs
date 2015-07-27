@@ -63,19 +63,17 @@ namespace Sockets.Plugin
 #if !WP80    
             if (listenOn != null)
             {
-                var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
+                var adapter = ((CommsInterface)listenOn).NativeNetworkAdapter;
 
                 return _backingStreamSocketListener
                             .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
-                            .AsTask()
-                            .WrapNativeSocketExceptions();
+                            .AsTask();
             }
             else
 #endif
                 return _backingStreamSocketListener
                             .BindServiceNameAsync(sn)
-                            .AsTask()
-                            .WrapNativeSocketExceptions();
+                            .AsTask();
         }
         
         /// <summary>
