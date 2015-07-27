@@ -30,7 +30,7 @@ namespace Sockets.Tests
             await listener.StartListeningAsync(port);
 
             var sut = new TcpSocketClient();
-            await sut.ConnectAsync("localhost", port);
+            await sut.ConnectAsync("127.0.0.1", port);
 
             await listener.StopListeningAsync();
 
@@ -53,7 +53,7 @@ namespace Sockets.Tests
             var sut = new TcpSocketClient();
             var tooHighForAPort = Int32.MaxValue;
 
-            return Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => sut.ConnectAsync("localhost", tooHighForAPort));
+            return Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => sut.ConnectAsync("127.0.0.1", tooHighForAPort));
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Sockets.Tests
             };
 
             var client = new TcpSocketClient();
-            await client.ConnectAsync("localhost", port);
+            await client.ConnectAsync("127.0.0.1", port);
             await client.WriteStream.WriteAsync(bytesToSend, 0, len);
 
             var ok = await tcs.Task;
@@ -122,7 +122,7 @@ namespace Sockets.Tests
             await listener.StartListeningAsync(port);
             listener.ConnectionReceived += (sender, args) => tcs.SetResult(args.SocketClient);
 
-            await socket1.ConnectAsync("localhost", port);
+            await socket1.ConnectAsync("127.0.0.1", port);
 
             var socket2 = await tcs.Task;
             await listener.StopListeningAsync();
@@ -227,10 +227,10 @@ namespace Sockets.Tests
             else
                 sut = new TcpSocketClient();
 
-            await sut.ConnectAsync("localhost", port);
+            await sut.ConnectAsync("127.0.0.1", port);
             await sut.DisconnectAsync();
 
-            await sut.ConnectAsync("localhost", port); 
+            await sut.ConnectAsync("127.0.0.1", port); 
             await sut.DisconnectAsync();
 
             await listener.StopListeningAsync();
