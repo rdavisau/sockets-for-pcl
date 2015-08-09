@@ -1,5 +1,7 @@
 #Sockets Plugin for Xamarin and Windows (PCL)
 
+[![Join the chat at https://gitter.im/rdavisau/sockets-for-pcl](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rdavisau/sockets-for-pcl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
 
 This library utilises the "Bait and Switch" pattern, so must be installed via NuGet in both the PCL and your native projects. 
