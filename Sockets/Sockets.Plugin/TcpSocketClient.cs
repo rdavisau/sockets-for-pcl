@@ -51,6 +51,15 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
+        /// Gets the interface the connection is using.
+        /// </summary>
+        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
+        public Task<ICommsInterface> GetConnectedInterfaceAsync()
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
         ///     A stream that can be used for receiving data from the remote endpoint.
         /// </summary>
         public Stream ReadStream
