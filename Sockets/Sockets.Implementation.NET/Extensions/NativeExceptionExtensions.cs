@@ -27,19 +27,14 @@ namespace Sockets.Plugin.Abstractions
 
         public static Task<T> WrapNativeSocketExceptions<T>(this Task<T> task)
         {
-            return task.ContinueWith(
+            return task.ContinueWith<T>(
                 t =>
                 {
-                    if (t.IsFaulted)
-                    {
-                        var ex = t.Exception.InnerException;
+                    var ex = t.Exception.InnerException;
 
-                        throw (NativeExceptionExtensions.NativeSocketExceptions.Contains(ex.GetType()))
-                            ? new PclSocketException(ex)
-                            : ex;
-                    }
-
-                    return t.Result;
+                    throw (NativeExceptionExtensions.NativeSocketExceptions.Contains(ex.GetType()))
+                        ? new PclSocketException(ex)
+                        : ex;
                 }, TaskContinuationOptions.OnlyOnFaulted);
         }
     }
