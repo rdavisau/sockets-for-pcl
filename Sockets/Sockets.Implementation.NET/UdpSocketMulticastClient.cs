@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -39,13 +41,23 @@ namespace Sockets.Plugin
 
             var multicastIp = IPAddress.Parse(multicastAddress);
 
-            _backingUdpClient = new UdpClient(bindingEp)
+            try
             {
-                EnableBroadcast = true
-            };
+                _backingUdpClient = new UdpClient(bindingEp)
+                {
+                    EnableBroadcast = true
+                };
+            }
+            catch (PlatformSocketException ex)
+            {
+                throw new PclSocketException(ex);
+            }
+
             _messageCanceller = new CancellationTokenSource();
             
-            await Task.Run(() => _backingUdpClient.JoinMulticastGroup(multicastIp,TTL));
+            await Task
+                .Run(() => this._backingUdpClient.JoinMulticastGroup(multicastIp, this.TTL))
+                .WrapNativeSocketExceptions();
 
             _multicastAddress = multicastAddress;
             _multicastPort = port;

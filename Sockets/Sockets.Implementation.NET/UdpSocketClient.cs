@@ -3,6 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
+
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -22,10 +25,17 @@ namespace Sockets.Plugin
         /// </summary>
         public UdpSocketClient()
         {
-            _backingUdpClient = new UdpClient
+            try
             {
-                EnableBroadcast = true
-            };
+                _backingUdpClient = new UdpClient
+                {
+                    EnableBroadcast = true
+                };
+            }
+            catch (PlatformSocketException ex)
+            {
+                throw new PclSocketException(ex);
+            }
         }
 
         /// <summary>
@@ -38,7 +48,9 @@ namespace Sockets.Plugin
         {
             _messageCanceller = new CancellationTokenSource();
 
-            return Task.Run(() => _backingUdpClient.Connect(address, port));
+            return Task
+                .Run(() => this._backingUdpClient.Connect(address, port))
+                .WrapNativeSocketExceptions();
         }
 
         /// <summary>

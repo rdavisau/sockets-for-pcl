@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -34,7 +36,10 @@ namespace Sockets.Plugin
                 try
                 {
                     // attempt to read next datagram
-                    msg = await _backingUdpClient.ReceiveAsync();
+                    msg = await _backingUdpClient
+                        .ReceiveAsync()
+                        .WrapNativeSocketExceptions();
+                    
                     didReceive = true;
                 }
                 catch
@@ -69,7 +74,9 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to be sent.</param>
         protected Task SendAsync(byte[] data)
         {
-            return _backingUdpClient.SendAsync(data, data.Length);
+            return _backingUdpClient
+                .SendAsync(data, data.Length)
+                .WrapNativeSocketExceptions();
         }
 
         /// <summary>
@@ -80,7 +87,9 @@ namespace Sockets.Plugin
         /// <param name="port">The remote port to which the data should be sent.</param>
         protected Task SendToAsync(byte[] data, string address, int port)
         {
-            return _backingUdpClient.SendAsync(data, data.Length, address, port);
+            return _backingUdpClient
+                .SendAsync(data, data.Length, address, port)
+                .WrapNativeSocketExceptions();
         }
         
         /// <summary>
