@@ -23,7 +23,7 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Fired when a udp datagram has been received.
         /// </summary>
-        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
+        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived;
 
         /// <summary>
         ///     Default constructor for <code>UdpSocketBase</code>
