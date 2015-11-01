@@ -40,6 +40,6 @@ namespace Sockets.Plugin.Abstractions
         /// <summary>
         ///     Fired when a udp datagram has been received.
         /// </summary>
-        EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
+        event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived;
     }
 }

@@ -43,10 +43,10 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Fired when a UDP datagram has been received.
         /// </summary>
-        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
+        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
         {
-            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
-            set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            add { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            remove { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
     }
 }

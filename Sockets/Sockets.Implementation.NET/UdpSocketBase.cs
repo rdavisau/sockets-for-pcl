@@ -24,7 +24,7 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Fired when a UDP datagram has been received.
         /// </summary>
-        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
+        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived;
 
         internal async void RunMessageReceiver(CancellationToken cancellationToken)
         {

@@ -33,7 +33,7 @@ namespace Sockets.Plugin
         ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
-        public EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived { get; set; }
+        public event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived;
 
         /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
