@@ -34,6 +34,6 @@ namespace Sockets.Plugin.Abstractions
         ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
-        EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived { get; set; }
+        event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived;
     }
 }
