@@ -146,7 +146,7 @@ namespace Sockets.Plugin
             if (disposing)
             {
                 if (_backingTcpListener != null)
-                    ((IDisposable)_backingTcpListener).Dispose();
+                    _backingTcpListener.Stop();
             }
         }
         
