@@ -36,9 +36,22 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false)
+        /// <param name="timeout">Client specified timout.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
+        ///     Establishes a TCP connection with the service at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service of the endpoint to connect to.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
+        /// <param name="timeout">Client specified timout.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -48,6 +61,14 @@ namespace Sockets.Plugin
         public Task DisconnectAsync()
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
+        ///     Returns the underlying backingField.
+        /// </summary>
+        public object Socket
+        {
+            get { throw new NotImplementedException(); }
         }
 
         /// <summary>

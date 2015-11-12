@@ -13,12 +13,27 @@ namespace Sockets.Plugin.Abstractions
     public interface ITcpSocketClient : IDisposable
     {
         /// <summary>
+        ///     Returns the underlying backingField.
+        /// </summary>
+        Object Socket { get; }
+
+        /// <summary>
         ///     Establishes a TCP connection with the endpoint at the specified address/port pair.
         /// </summary>
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">Is this socket secure?</param>
-        Task ConnectAsync(string address, int port, bool secure = false);
+        /// <param name="timeout">Client specified timout.</param>
+        Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0);
+
+        /// <summary>
+        ///     Establishes a TCP connection with the service at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service to connect to.</param>
+        /// <param name="secure">Is this socket secure?</param>
+        /// <param name="timeout">Client specified timout.</param>
+        Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0);
 
         /// <summary>
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.
