@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
 using Sockets.Plugin.Abstractions;
+using System.Threading;
 
 // ReSharper disable once CheckNamespace
 
@@ -54,13 +55,43 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false)
+        /// <param name="timeout">Client specified timout.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            return _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask();
+            // create connection timeout token
+            // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx.
+
+            var token = timeout > 0
+                            ? new CancellationTokenSource(timeout).Token
+                            : CancellationToken.None;
+
+            return  _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask(CancellationToken.None);
+        }
+
+        /// <summary>
+        ///     Establishes a TCP connection with the service at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service to connect to.</param>
+        /// <param name="timeout">Connection timout in msec.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
+        /// <param name="timeout">Client specified timout.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0)
+        {
+            var hn = new HostName(address);
+            var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
+
+            // create connection timeout token
+            // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx
+            var token = timeout > 0
+                            ? new CancellationTokenSource(timeout).Token
+                            : CancellationToken.None;
+
+            return _backingStreamSocket.ConnectAsync(hn, service, spl).AsTask(token);
         }
 
         /// <summary>
@@ -70,6 +101,17 @@ namespace Sockets.Plugin
         public Task DisconnectAsync()
         {
             return Task.Run(() => _backingStreamSocket.Dispose());
+        }
+
+        /// <summary>
+        ///     Returns the underlying backingField.
+        /// </summary>
+        public object Socket
+        {
+            get
+            {
+                return _backingStreamSocket;
+            }
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 namespace Sockets.Plugin
 {
@@ -52,9 +53,21 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public async Task ConnectAsync(string address, int port, bool secure = false)
+        /// <param name="timeout">Client specified timout.</param>
+        public async Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0)
         {
-            await _backingTcpClient.ConnectAsync(address, port);
+            //create connection timeout token
+            var token = timeout > 0
+                            ? new CancellationTokenSource(timeout).Token
+                            : CancellationToken.None;
+
+            // close connection when timeout is invoked
+            // See https://www.symbolsource.org/Public/Metadata/NuGet/Project/CqlSharp/0.34.0.0/Release/.NETFramework,Version%3Dv4.5/CqlSharp/CqlSharp/Network/SocketExtensions.cs?ImageName=CqlSharp
+            using (token.Register((cl) => ((TcpClient)cl).Close(), _backingTcpClient))
+            {
+                await _backingTcpClient.ConnectAsync(address, port).ConfigureAwait(false);
+            }
+
             InitializeWriteStream();
             if (secure)
             {
@@ -62,6 +75,44 @@ namespace Sockets.Plugin
                 secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                 _secureStream = secureStream;
             }            
+        }
+
+        /// <summary>
+        ///     Establishes a TCP connection with the service at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service of the endpoint to connect to.</param>
+        /// <param name="timeout">Connection timout in msec.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
+        /// <param name="timeout">Client specified timout.</param>
+        public async Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0)
+        {
+            var lcService = service.ToLower();
+
+            if (lcService.Equals("http"))
+            {
+                //create connection timeout token
+                var token = timeout > 0
+                                ? new CancellationTokenSource(timeout).Token
+                                : CancellationToken.None;
+
+                // close connection when timeout is invoked
+                // See https://www.symbolsource.org/Public/Metadata/NuGet/Project/CqlSharp/0.34.0.0/Release/.NETFramework,Version%3Dv4.5/CqlSharp/CqlSharp/Network/SocketExtensions.cs?ImageName=CqlSharp
+                using (token.Register((cl) => ((TcpClient)cl).Close(), _backingTcpClient))
+                {
+                    await _backingTcpClient.ConnectAsync(address, 80).ConfigureAwait(false);
+                }
+
+                InitializeWriteStream();
+                if (secure)
+                {
+                    var secureStream = new SslStream(_writeStream, true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender, cert, chain, sslPolicy));
+                    secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
+                    _secureStream = secureStream;
+                }            
+        }
+            else
+                throw new InvalidOperationException();
         }
 
         #region Secure Sockets Details
@@ -99,6 +150,14 @@ namespace Sockets.Plugin
                 _secureStream = null;
                 _backingTcpClient = new TcpClient();
             });
+        }
+
+        /// <summary>
+        ///     Returns the underlying backingField.
+        /// </summary>
+        public object Socket
+        {
+            get { return _backingTcpClient; }
         }
 
         /// <summary>
