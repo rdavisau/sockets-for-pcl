@@ -62,7 +62,9 @@ namespace Sockets.Plugin
             var sn = port.ToString();
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            //create connection timeout token
+            // create connection timeout token
+            // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx.
+
             var token = timeout > 0
                             ? new CancellationTokenSource(timeout).Token
                             : CancellationToken.None;
@@ -83,7 +85,8 @@ namespace Sockets.Plugin
             var hn = new HostName(address);
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            //create connection timeout token
+            // create connection timeout token
+            // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx
             var token = timeout > 0
                             ? new CancellationTokenSource(timeout).Token
                             : CancellationToken.None;

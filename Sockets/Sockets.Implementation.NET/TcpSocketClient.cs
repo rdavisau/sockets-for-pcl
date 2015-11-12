@@ -61,7 +61,8 @@ namespace Sockets.Plugin
                             ? new CancellationTokenSource(timeout).Token
                             : CancellationToken.None;
 
-            //close connection when timeout is invoked
+            // close connection when timeout is invoked
+            // See https://www.symbolsource.org/Public/Metadata/NuGet/Project/CqlSharp/0.34.0.0/Release/.NETFramework,Version%3Dv4.5/CqlSharp/CqlSharp/Network/SocketExtensions.cs?ImageName=CqlSharp
             using (token.Register((cl) => ((TcpClient)cl).Close(), _backingTcpClient))
             {
                 await _backingTcpClient.ConnectAsync(address, port).ConfigureAwait(false);
@@ -95,7 +96,8 @@ namespace Sockets.Plugin
                                 ? new CancellationTokenSource(timeout).Token
                                 : CancellationToken.None;
 
-                //close connection when timeout is invoked
+                // close connection when timeout is invoked
+                // See https://www.symbolsource.org/Public/Metadata/NuGet/Project/CqlSharp/0.34.0.0/Release/.NETFramework,Version%3Dv4.5/CqlSharp/CqlSharp/Network/SocketExtensions.cs?ImageName=CqlSharp
                 using (token.Register((cl) => ((TcpClient)cl).Close(), _backingTcpClient))
                 {
                     await _backingTcpClient.ConnectAsync(address, 80).ConfigureAwait(false);
