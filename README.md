@@ -31,7 +31,7 @@ properties of type ````System.IO.Stream```` for receiving and sending data. ````
     var listenPort = 11000;
     var listener = new TcpSocketListener();
     
-    // when we get connections, read bytes until we get -1 (eof)
+    // when we get connections, read byte-by-byte from the socket's read stream
     listener.ConnectionReceived += async (sender, args) => 
     {
       var client = args.SocketClient; 
