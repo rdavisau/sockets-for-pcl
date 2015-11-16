@@ -55,21 +55,20 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="timeout">Client specified timout.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0)
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, CancellationTokenSource cts = null)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            // create connection timeout token
+            // Get the cancellation token if there is one
             // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx.
-
-            var token = timeout > 0
-                            ? new CancellationTokenSource(timeout).Token
+            var token = cts != null
+                            ? cts.Token
                             : CancellationToken.None;
 
-            return  _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask(CancellationToken.None);
+            return _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask(CancellationToken.None);
         }
 
         /// <summary>
@@ -79,16 +78,16 @@ namespace Sockets.Plugin
         /// <param name="service">The service to connect to.</param>
         /// <param name="timeout">Connection timout in msec.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="timeout">Client specified timout.</param>
-        public Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0)
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false, CancellationTokenSource cts = null)
         {
             var hn = new HostName(address);
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            // create connection timeout token
-            // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx
-            var token = timeout > 0
-                            ? new CancellationTokenSource(timeout).Token
+            // Get the cancellation token if there is one
+            // See https://msdn.microsoft.com/en-us/library/windows/apps/xaml/jj710176.aspx.
+            var token = cts != null
+                            ? cts.Token
                             : CancellationToken.None;
 
             return _backingStreamSocket.ConnectAsync(hn, service, spl).AsTask(token);

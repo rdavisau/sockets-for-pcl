@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
+using System.Threading;
 
 namespace Sockets.Plugin
 {
@@ -36,8 +37,8 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="timeout">Client specified timout.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0)
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, CancellationTokenSource cts = null)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }
@@ -49,7 +50,7 @@ namespace Sockets.Plugin
         /// <param name="service">The service of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
         /// <param name="timeout">Client specified timout.</param>
-        public Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0)
+        public Task ConnectAsync(string address, string service, bool secure = false, CancellationTokenSource cts = null)
         {
             throw new NotImplementedException();
         }

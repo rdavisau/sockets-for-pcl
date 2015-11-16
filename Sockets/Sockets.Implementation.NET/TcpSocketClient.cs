@@ -53,12 +53,12 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="timeout">Client specified timout.</param>
-        public async Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0)
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        public async Task ConnectAsync(string address, int port, bool secure = false, CancellationTokenSource cts = null)
         {
-            //create connection timeout token
-            var token = timeout > 0
-                            ? new CancellationTokenSource(timeout).Token
+            // Get the cancellation token if there is one
+            var token = cts != null
+                            ? cts.Token
                             : CancellationToken.None;
 
             // close connection when timeout is invoked
@@ -84,16 +84,16 @@ namespace Sockets.Plugin
         /// <param name="service">The service of the endpoint to connect to.</param>
         /// <param name="timeout">Connection timout in msec.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="timeout">Client specified timout.</param>
-        public async Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0)
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        public async Task ConnectAsync(string address, string service, bool secure = false, CancellationTokenSource cts = null)
         {
             var lcService = service.ToLower();
 
             if (lcService.Equals("http"))
             {
-                //create connection timeout token
-                var token = timeout > 0
-                                ? new CancellationTokenSource(timeout).Token
+                // Get the cancellation token if there is one
+                var token = cts != null
+                                ? cts.Token
                                 : CancellationToken.None;
 
                 // close connection when timeout is invoked
@@ -110,7 +110,7 @@ namespace Sockets.Plugin
                     secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                     _secureStream = secureStream;
                 }            
-        }
+            }
             else
                 throw new InvalidOperationException();
         }

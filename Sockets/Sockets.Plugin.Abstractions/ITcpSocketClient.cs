@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sockets.Plugin.Abstractions
@@ -23,8 +24,8 @@ namespace Sockets.Plugin.Abstractions
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">Is this socket secure?</param>
-        /// <param name="timeout">Client specified timout.</param>
-        Task ConnectAsync(string address, int port, bool secure = false, int timeout = 0);
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        Task ConnectAsync(string address, int port, bool secure = false, CancellationTokenSource cts = null);
 
         /// <summary>
         ///     Establishes a TCP connection with the service at the specified address/port pair.
@@ -32,8 +33,8 @@ namespace Sockets.Plugin.Abstractions
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="service">The service to connect to.</param>
         /// <param name="secure">Is this socket secure?</param>
-        /// <param name="timeout">Client specified timout.</param>
-        Task ConnectAsync(string address, string service, bool secure = false, int timeout = 0);
+        /// <param name="cts">Client specified CancellationTokenSource object.</param>
+        Task ConnectAsync(string address, string service, bool secure = false, CancellationTokenSource cts = null);
 
         /// <summary>
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.
