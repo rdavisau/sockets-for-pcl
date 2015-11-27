@@ -4,12 +4,24 @@ using System.Threading.Tasks;
 namespace Sockets.Plugin.Abstractions
 {
     /// <summary>
+    /// Defines the MessageReceived event callback used in multiple interfaces
+    /// </summary>
+    public interface IUdpMessageProvider
+    {
+        /// <summary>
+        ///     Fired when a UDP datagram has been received.
+        /// </summary>
+        event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived;// { get; set; }
+    }
+
+
+    /// <summary>
     ///     Sends UDP data to arbitrary endpoints.
     ///     If data is to be sent to a single endpoint only, use <code>ConnectAsync</code> to specify a default endpoint to
     ///     which data will be sent,
     ///     and send data with <code>SendAsync</code>.
     /// </summary>
-    public interface IUdpSocketClient : IDisposable
+    public interface IUdpSocketClient : IDisposable, IUdpMessageProvider
     {
         /// <summary>
         ///     Sets the endpoint at the specified address/port pair as the 'default' target of sent data.
@@ -41,9 +53,6 @@ namespace Sockets.Plugin.Abstractions
         /// <param name="port">The remote port to which the data should be sent.</param>
         Task SendToAsync(byte[] data, string address, int port);
 
-        /// <summary>
-        ///     Fired when a UDP datagram has been received.
-        /// </summary>
-        EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
+
     }
 }

@@ -8,7 +8,7 @@ namespace Sockets.Plugin.Abstractions
     ///     Join a udp multicast address using <code>JoinMulticastGroupAsync</code>, then send data using
     ///     <code>SendMulticastAsync</code>.
     /// </summary>
-    public interface IUdpSocketMulticastClient : IDisposable
+    public interface IUdpSocketMulticastClient : IDisposable, IUdpMessageProvider
     {
         /// <summary>
         ///     Joins the multicast group at the specified endpoint.
@@ -37,9 +37,9 @@ namespace Sockets.Plugin.Abstractions
         /// </summary>
         int TTL { get; set; }
 
-        /// <summary>
-        ///     Fired when a udp datagram has been received.
-        /// </summary>
-        EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
+        ///// <summary>
+        /////     Fired when a udp datagram has been received.
+        ///// </summary>
+        //EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
     }
 }
