@@ -11,7 +11,7 @@ namespace Sockets.Plugin
     /// <summary>
     ///     Base class for .NET UDP socket wrapper.
     /// </summary>
-    public abstract class UdpSocketBase
+    public abstract class UdpSocketBase:IUdpMessageProvider
     {
         // ReSharper disable once InconsistentNaming
         /// <summary>
@@ -22,7 +22,31 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Fired when a UDP datagram has been received.
         /// </summary>
-        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
+        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
+        {
+            add { rxHandlers += value; }
+            remove { rxHandlers -= value; }
+        }
+        /// <summary>
+        /// This private member coupled with the public property follows the 
+        /// .NET event pattern allowing auto-complete to work in Visual studio,
+        /// and other editors (Xamarin).  Code written to the old API will
+        /// still work, unless direct assungment was used.
+        /// 
+        /// ex: var udp = new UdpCLient();
+        /// usp.MessageReceived += DataHandler;//now auto complete works here.
+        /// </summary>
+        private EventHandler<UdpSocketMessageReceivedEventArgs> rxHandlers;
+
+        /// <summary>
+        /// raises the event if there are any subscribers
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnMessageReceived(UdpSocketMessageReceivedEventArgs e)
+        {
+            if (rxHandlers != null)
+                rxHandlers(this, e);
+        }
 
         internal async void RunMessageReceiver(CancellationToken cancellationToken)
         {
@@ -57,8 +81,7 @@ namespace Sockets.Plugin
                 var wrapperArgs = new UdpSocketMessageReceivedEventArgs(remoteAddress, remotePort, data);
 
                 // fire
-                if (MessageReceived != null)
-                    MessageReceived(this, wrapperArgs);
+                OnMessageReceived(wrapperArgs);
             }
         }
 
