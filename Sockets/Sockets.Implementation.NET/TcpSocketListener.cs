@@ -34,7 +34,25 @@ namespace Sockets.Plugin
         ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
-        public EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived { get; set; }
+        public event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived
+        {
+            add
+            {
+                ConnectionReceivedHandlers +=value;
+            }
+            remove
+            {
+                ConnectionReceivedHandlers -= value;
+            }
+        
+        }
+        private EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceivedHandlers;
+
+        protected virtual void OnConnectionRx(TcpSocketListenerConnectEventArgs e)
+        {
+            if (ConnectionReceivedHandlers != null)
+                ConnectionReceivedHandlers(this, e);
+        }
 
         /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
@@ -94,8 +112,7 @@ namespace Sockets.Plugin
                     var wrappedClient = new TcpSocketClient(nativeClient, _bufferSize);
 
                     var eventArgs = new TcpSocketListenerConnectEventArgs(wrappedClient);
-                    if (ConnectionReceived != null)
-                        ConnectionReceived(this, eventArgs);
+                    OnConnectionRx(eventArgs);
                 }
             },
                 cancelToken,
