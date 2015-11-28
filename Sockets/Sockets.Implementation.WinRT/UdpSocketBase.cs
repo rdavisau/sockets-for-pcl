@@ -46,7 +46,18 @@ namespace Sockets.Plugin
         ///     There may be no 'default' target. depending on the state of the object.
         /// </summary>
         /// <param name="data">A byte array of data to be sent.</param>
-        protected async Task SendAsync(byte[] data)
+        protected Task SendAsync(byte[] data)
+        {
+            return SendAsync(data, data.Length);
+        }
+
+        /// <summary>
+        ///     Sends the specified data to the 'default' target of the underlying DatagramSocket.
+        ///     There may be no 'default' target. depending on the state of the object.
+        /// </summary>
+        /// <param name="data">A byte array of data to be sent.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        public async Task SendAsync(byte[] data, int length)
         {
             var stream = _backingDatagramSocket.OutputStream.AsStreamForWrite();
 
@@ -60,14 +71,26 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to send.</param>
         /// <param name="address">The remote address to which the data should be sent.</param>
         /// <param name="port">The remote port to which the data should be sent.</param>
-        protected async Task SendToAsync(byte[] data, string address, int port)
+        protected Task SendToAsync(byte[] data, string address, int port)
+        {
+            return SendToAsync(data, data.Length, address, port);
+        }
+
+        /// <summary>
+        ///     Sends the specified data to the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        /// <param name="address">The remote address to which the data should be sent.</param>
+        /// <param name="port">The remote port to which the data should be sent.</param>
+        protected async Task SendToAsync(byte[] data, int length, string address, int port)
         {
             var hn = new HostName(address);
             var sn = port.ToString();
 
             var stream = (await _backingDatagramSocket.GetOutputStreamAsync(hn, sn)).AsStreamForWrite();
 
-            await stream.WriteAsync(data, 0, data.Length);
+            await stream.WriteAsync(data, 0, length);
             await stream.FlushAsync();
         }
 

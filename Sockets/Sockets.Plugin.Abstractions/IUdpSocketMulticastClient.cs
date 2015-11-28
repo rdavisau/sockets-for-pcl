@@ -32,6 +32,14 @@ namespace Sockets.Plugin.Abstractions
         Task SendMulticastAsync(byte[] data);
 
         /// <summary>
+        ///     Sends the specified data to the multicast group, previously set using <code>JoinMulticastGroupAsync</code>.
+        ///     If a group has not been set, calls will have no effect.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        Task SendMulticastAsync(byte[] data, int length);
+
+        /// <summary>
         ///     Gets or sets the Time To Live value for the <code>UdpSocketMulticastClient</code>.
         ///     Must be called before joining a multicast group. 
         /// </summary>

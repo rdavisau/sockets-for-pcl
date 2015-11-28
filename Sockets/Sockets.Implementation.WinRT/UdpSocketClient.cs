@@ -50,6 +50,17 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
+        ///     Sends the specified data to the 'default' target of the underlying DatagramSocket.
+        ///     There may be no 'default' target. depending on the state of the object.
+        /// </summary>
+        /// <param name="data">A byte array of data to be sent.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        public new Task SendAsync(byte[] data, int length)
+        {
+            return base.SendAsync(data, length);
+        }
+
+        /// <summary>
         ///     Sends the specified data to the endpoint at the specified address/port pair.
         /// </summary>
         /// <param name="data">A byte array of data to send.</param>
@@ -58,6 +69,18 @@ namespace Sockets.Plugin
         public new Task SendToAsync(byte[] data, string address, int port)
         {
             return base.SendToAsync(data, address, port);
+        }
+
+        /// <summary>
+        ///     Sends the specified data to the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        /// <param name="address">The remote address to which the data should be sent.</param>
+        /// <param name="port">The remote port to which the data should be sent.</param>
+        public new Task SendToAsync(byte[] data, int length, string address, int port)
+        {
+            return base.SendToAsync(data, length, address, port);
         }
     }
 }
