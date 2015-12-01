@@ -26,7 +26,9 @@ namespace Sockets.Plugin
             var hn = new HostName(address);
             var sn = port.ToString();
 
-            return _backingDatagramSocket.ConnectAsync(hn, sn).AsTask();
+            return _backingDatagramSocket
+                    .ConnectAsync(hn, sn)
+                    .WrapNativeSocketExceptionsAsTask();
         }
 
         /// <summary>

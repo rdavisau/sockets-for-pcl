@@ -27,11 +27,15 @@ namespace Sockets.Plugin
             if (listenOn != null)
             {
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
-                return _backingDatagramSocket.BindServiceNameAsync(sn, adapter).AsTask();
+                return _backingDatagramSocket
+                            .BindServiceNameAsync(sn, adapter)
+                            .WrapNativeSocketExceptionsAsTask();
             }
             else
 #endif
-                return _backingDatagramSocket.BindServiceNameAsync(sn).AsTask();
+                return _backingDatagramSocket
+                            .BindServiceNameAsync(sn)
+                            .WrapNativeSocketExceptionsAsTask();
         }
 
         /// <summary>   

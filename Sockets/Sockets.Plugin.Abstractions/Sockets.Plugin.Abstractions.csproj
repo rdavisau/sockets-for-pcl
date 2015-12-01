@@ -38,6 +38,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\SocketException.cs" />
     <Compile Include="Extensions\TcpSocketClientExtensions.cs" />
     <Compile Include="ICommsInterface.cs" />
     <Compile Include="IUdpSocketMulticastClient.cs" />

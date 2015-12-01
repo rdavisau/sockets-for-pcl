@@ -88,7 +88,11 @@ namespace Sockets.Plugin
             var hn = new HostName(address);
             var sn = port.ToString();
 
-            var stream = (await _backingDatagramSocket.GetOutputStreamAsync(hn, sn)).AsStreamForWrite();
+            var stream = 
+                (await _backingDatagramSocket
+                        .GetOutputStreamAsync(hn, sn)
+                        .WrapNativeSocketExceptions())
+                    .AsStreamForWrite();
 
             await stream.WriteAsync(data, 0, length);
             await stream.FlushAsync();

@@ -45,6 +45,7 @@
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\NativeExceptionExtensions.cs" />
     <Compile Include="NetworkExtensions.cs" />
     <Compile Include="CommsInterface.cs" />
     <Compile Include="UdpSocketMulticastClient.cs" />

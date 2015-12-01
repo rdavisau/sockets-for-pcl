@@ -60,20 +60,20 @@ namespace Sockets.Plugin
             };
 
             var sn = port == 0 ? "" : port.ToString();
-#if !WP80    
+#if !WP80
             if (listenOn != null)
             {
-                var adapter = ((CommsInterface)listenOn).NativeNetworkAdapter;
+                var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
 
                 return _backingStreamSocketListener
-                            .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
-                            .AsTask();
+                    .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
+                    .WrapNativeSocketExceptionsAsTask();
             }
             else
 #endif
                 return _backingStreamSocketListener
-                            .BindServiceNameAsync(sn)
-                            .AsTask();
+                    .BindServiceNameAsync(sn)
+                    .WrapNativeSocketExceptionsAsTask();
         }
         
         /// <summary>
