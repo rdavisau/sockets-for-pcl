@@ -16,13 +16,15 @@ namespace Sockets.Plugin.Abstractions
             return task.ContinueWith(
                 t =>
                 {
+                    if (!t.IsFaulted)
+                        return t;
+
                     var ex = t.Exception.InnerException;
 
                     throw (NativeExceptionExtensions.NativeSocketExceptions.Contains(ex.GetType())) 
                         ? new PclSocketException(ex)
                         : ex;
-                },
-                TaskContinuationOptions.OnlyOnFaulted);
+                });
         }
 
         public static Task<T> WrapNativeSocketExceptions<T>(this Task<T> task)
@@ -30,12 +32,15 @@ namespace Sockets.Plugin.Abstractions
             return task.ContinueWith<T>(
                 t =>
                 {
+                    if (!t.IsFaulted)
+                        return t.Result;
+
                     var ex = t.Exception.InnerException;
 
                     throw (NativeExceptionExtensions.NativeSocketExceptions.Contains(ex.GetType()))
                         ? new PclSocketException(ex)
                         : ex;
-                }, TaskContinuationOptions.OnlyOnFaulted);
+                });
         }
     }
 }

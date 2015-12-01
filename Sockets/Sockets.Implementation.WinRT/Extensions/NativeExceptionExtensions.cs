@@ -17,8 +17,6 @@ namespace Sockets.Plugin
 
             task.Completed = delegate(IAsyncAction info, AsyncStatus status)
             {
-                Debug.WriteLine("1" + status);
-                Debug.WriteLine("1" + info);
                 switch (status)
                 {
                     case AsyncStatus.Canceled:
