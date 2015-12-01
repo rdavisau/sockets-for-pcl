@@ -44,7 +44,7 @@ namespace Sockets.Tests
             var sut = new TcpSocketClient();
             var unreachableHostName = ":/totallynotvalid@#$";
 
-            return Assert.ThrowsAsync<Exception>(() => sut.ConnectAsync(unreachableHostName, 8000));
+            return Assert.ThrowsAsync<SocketException>(() => sut.ConnectAsync(unreachableHostName, 8000));
         }
 
         [Fact]
