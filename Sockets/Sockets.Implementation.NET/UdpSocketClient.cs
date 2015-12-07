@@ -24,7 +24,8 @@ namespace Sockets.Plugin
         {
             _backingUdpClient = new UdpClient
             {
-                EnableBroadcast = true
+                EnableBroadcast = true,
+
             };
         }
 
@@ -38,7 +39,11 @@ namespace Sockets.Plugin
         {
             _messageCanceller = new CancellationTokenSource();
 
-            return Task.Run(() => _backingUdpClient.Connect(address, port));
+            return Task.Run(() => {
+                _backingUdpClient.Connect(address, port);
+                base.RunMessageReceiver(_messageCanceller.Token);
+            });
+
         }
 
         /// <summary>
@@ -47,10 +52,17 @@ namespace Sockets.Plugin
         /// </summary>
         public Task DisconnectAsync()
         {
-            return Task.Run(() =>
-            {
-                _messageCanceller.Cancel();
-                _backingUdpClient.Close();
+            return Task.Run(() => {
+                if (_messageCanceller != null)
+                {
+                    _messageCanceller.Cancel();
+                    _messageCanceller.Dispose();
+                    _messageCanceller = null;
+                }
+                if (_backingUdpClient != null)
+                {
+                    _backingUdpClient.Close();
+                }
             });
         }
 
@@ -74,6 +86,12 @@ namespace Sockets.Plugin
         public new Task SendToAsync(byte[] data, string address, int port)
         {
             return base.SendToAsync(data, address, port);
+        }
+
+        public override void Dispose()
+        {
+            DisconnectAsync().Wait();
+            base.Dispose();
         }
     }
 }

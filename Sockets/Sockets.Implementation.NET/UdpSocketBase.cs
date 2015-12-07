@@ -82,7 +82,8 @@ namespace Sockets.Plugin
         {
             return _backingUdpClient.SendAsync(data, data.Length, address, port);
         }
-        
+
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -105,7 +106,10 @@ namespace Sockets.Plugin
             if (disposing)
             {
                 if (_backingUdpClient != null)
+                {
                     ((IDisposable)_backingUdpClient).Dispose();
+                    _backingUdpClient = null;
+                }
             }
         }
         
