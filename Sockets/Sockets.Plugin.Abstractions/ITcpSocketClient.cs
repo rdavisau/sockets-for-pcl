@@ -57,4 +57,9 @@ namespace Sockets.Plugin.Abstractions
         /// </summary>
         int RemotePort { get; }
     }
+
+    public interface IExposeBackingSocket
+    {
+        object Socket { get; }
+    }
 }

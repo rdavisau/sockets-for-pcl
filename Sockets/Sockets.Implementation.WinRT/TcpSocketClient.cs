@@ -16,7 +16,7 @@ namespace Sockets.Plugin
     ///     Use the <code>WriteStream</code> and <code>ReadStream</code> properties for sending and receiving data
     ///     respectively.
     /// </summary>
-    public class TcpSocketClient : ITcpSocketClient
+    public class TcpSocketClient : ITcpSocketClient, IExposeBackingSocket
     {
 #if WP80
         private SocketProtectionLevel _secureSocketProtectionLevel = SocketProtectionLevel.Ssl;
@@ -150,5 +150,15 @@ namespace Sockets.Plugin
                     (_backingStreamSocket).Dispose();
             }
         }
+        
+        /// <summary>
+        /// Exposes the backing socket 
+        /// </summary>
+        public StreamSocket Socket => _backingStreamSocket;
+
+        /// <summary>
+        /// Exposes the backing socket. 
+        /// </summary>
+        object IExposeBackingSocket.Socket => Socket;
     }
 }
