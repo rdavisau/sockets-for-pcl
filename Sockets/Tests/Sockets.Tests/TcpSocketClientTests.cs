@@ -236,5 +236,17 @@ namespace Sockets.Tests
             await listener.StopListeningAsync();
         }
 
+        [Fact]
+        public Task TcpSocketClient_Connect_ShouldCancelByCancellationToken()
+        {
+            var sut = new TcpSocketClient();
+            
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var ct = cts.Token;
+
+            // let's just hope no one's home :)
+            return Assert.ThrowsAsync<OperationCanceledException>(()=> sut.ConnectAsync("99.99.99.99", 51234, cancellationToken: cts.Token));
+        }
+
     }
 }

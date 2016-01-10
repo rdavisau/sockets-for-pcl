@@ -16,10 +16,11 @@ namespace Sockets.Plugin.Abstractions
             return task.ContinueWith(
                 t =>
                 {
+
                     if (!t.IsFaulted)
                         return t;
-
-                    var ex = t.Exception.InnerException;
+                  
+                    var ex = t.Exception?.InnerException ?? t.Exception;
 
                     throw (NativeExceptionExtensions.NativeSocketExceptions.Contains(ex.GetType())) 
                         ? new PclSocketException(ex)
@@ -35,7 +36,7 @@ namespace Sockets.Plugin.Abstractions
                     if (!t.IsFaulted)
                         return t.Result;
 
-                    var ex = t.Exception.InnerException;
+                    var ex = t.Exception?.InnerException ?? t.Exception;
 
                     throw (NativeExceptionExtensions.NativeSocketExceptions.Contains(ex.GetType()))
                         ? new PclSocketException(ex)
