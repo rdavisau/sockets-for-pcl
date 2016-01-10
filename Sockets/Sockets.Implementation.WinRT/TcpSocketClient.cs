@@ -58,8 +58,21 @@ namespace Sockets.Plugin
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var service = port.ToString();
+            return ConnectAsync(address, service, secure, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Establishes a TCP connection with the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service of the endpoint to connect to.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
             var hn = new HostName(address);
-            var sn = port.ToString();
+            var sn = service;
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
             return _backingStreamSocket
