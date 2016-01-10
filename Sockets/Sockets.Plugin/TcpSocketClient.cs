@@ -12,7 +12,7 @@ namespace Sockets.Plugin
     ///     Use the <code>WriteStream</code> and <code>ReadStream</code> properties for sending and receiving data
     ///     respectively.
     /// </summary>
-    public class TcpSocketClient : ITcpSocketClient
+    public class TcpSocketClient : ITcpSocketClient, IExposeBackingSocket
     {
         /// <summary>
         ///     Default constructor for <code>TcpSocketClient</code>.
@@ -101,6 +101,14 @@ namespace Sockets.Plugin
         public void Dispose()
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
+        /// Exposes the backing socket. 
+        /// </summary>
+        object IExposeBackingSocket.Socket
+        {
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
     }
 }

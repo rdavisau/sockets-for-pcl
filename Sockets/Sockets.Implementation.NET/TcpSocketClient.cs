@@ -19,7 +19,7 @@ namespace Sockets.Plugin
     ///     Use the <code>WriteStream</code> and <code>ReadStream</code> properties for sending and receiving data
     ///     respectively.
     /// </summary>
-    public class TcpSocketClient : ITcpSocketClient
+    public class TcpSocketClient : ITcpSocketClient, IExposeBackingSocket
     {
         private TcpClient _backingTcpClient;
         private readonly int _bufferSize;
@@ -233,5 +233,14 @@ namespace Sockets.Plugin
             }
         }
         
+        /// <summary>
+        /// Exposes the backing socket.
+        /// </summary>
+        public TcpClient Socket => _backingTcpClient;
+
+        /// <summary>
+        /// Exposes the backing socket. 
+        /// </summary>
+        object IExposeBackingSocket.Socket => Socket;
     }
 }
