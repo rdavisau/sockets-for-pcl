@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/rdavisau/sockets-for-pcl](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rdavisau/sockets-for-pcl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
+An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, UWP, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
 
 This library utilises the "Bait and Switch" pattern, so must be installed via NuGet in both the PCL and your native projects. 
 
@@ -155,13 +155,29 @@ For a majority of mobile use cases, binding to all interfaces is a good approach
 
 Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
 
-### Contributors
- - @rdavisau
- - @galvesribeiro (TLS support)
- - @NewtonARA (Mac support)
- - @aghajani
- - @danielcweber
- - @xen2
+### Contributions
+Many members of the community have contributed to improving sockets-for-pcl:
 
-### Contributions, Issues, Feedback
-All welcome!! Please point your pull request at the `dev` branch.
+ - @rdavisau (that's me!)
+ - @jamesmontemagno (project and NuGet templates)
+ - @galvesribeiro (TLS support)
+ - @SatoshiARA (Mac support)
+ - @aghajani (bugfixes)
+ - @danielcweber (`GetStream()`, PCL-friendly `SocketException`)
+ - @xen2 (configurable and consistent buffering between .NET and WinRT)
+ - @NVentimiglia (bugfixes, design considerations)
+ - @fubar-coder (auto/ephemeral port selection, support for getting connected interface)
+ - @mattleibow (Xamarin Component Store submission)
+ - @Waty (proper events, bugfixes)
+ - @SparkStream (TcpSocketClient cancellation support, service name support)
+ - @usasos000 (bugfixes)
+ - @jasells (udpclient design considerations)
+
+ <small>if I missed you, let me know!</small>
+
+If you have a bugfix or a feature you'd like to add, please open an issue. 
+All pull requests should be opened against the `dev` branch.
+
+### Sponsors
+
+Thanks to Xamarin and ReSharper who provide open-source licenses for the project.
