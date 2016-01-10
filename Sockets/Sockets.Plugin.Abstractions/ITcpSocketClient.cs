@@ -38,6 +38,12 @@ namespace Sockets.Plugin.Abstractions
         Task DisconnectAsync();
 
         /// <summary>
+        /// Gets the interface the connection is using.
+        /// </summary>
+        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
+        Task<ICommsInterface> GetConnectedInterfaceAsync();
+
+        /// <summary>
         ///     A stream that can be used for receiving data from the remote endpoint.
         /// </summary>
         Stream ReadStream { get; }

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
@@ -91,6 +92,14 @@ namespace Sockets.Plugin
                 _backingStreamSocket.Dispose();
                 _backingStreamSocket = new StreamSocket();
             });
+        }
+
+        /// </summary>
+        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
+        public async Task<ICommsInterface> GetConnectedInterfaceAsync()
+        {
+            var interfaces = await CommsInterface.GetAllInterfacesAsync();
+            return interfaces.FirstOrDefault(x => x.NativeHostName.IsEqual(_backingStreamSocket.Information.LocalAddress));
         }
 
         /// <summary>

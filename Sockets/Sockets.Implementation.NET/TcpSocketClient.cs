@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -137,6 +138,17 @@ namespace Sockets.Plugin
                 _secureStream = null;
                 _backingTcpClient = new TcpClient();
             });
+        }
+
+        /// <summary>
+        /// Gets the interface the connection is using.
+        /// </summary>
+        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
+        public async Task<ICommsInterface> GetConnectedInterfaceAsync()
+        {
+            var ipEndpoint = (IPEndPoint)_backingTcpClient.Client.LocalEndPoint;
+            var interfaces = await CommsInterface.GetAllInterfacesAsync();
+            return interfaces.FirstOrDefault(x => x.NativeIpAddress.Equals(ipEndpoint.Address));
         }
 
         /// <summary>
