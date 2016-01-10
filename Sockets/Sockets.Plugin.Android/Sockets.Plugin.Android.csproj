@@ -49,6 +49,9 @@
     <Compile Include="..\Sockets.Implementation.NET\CommsInterface.cs">
       <Link>CommsInterface.cs</Link>
     </Compile>
+    <Compile Include="..\Sockets.Implementation.NET\Extensions\NativeExceptionExtensions.cs">
+      <Link>Extensions\NativeExceptionExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Sockets.Implementation.NET\NetworkExtensions.cs">
       <Link>NetworkExtensions.cs</Link>
     </Compile>

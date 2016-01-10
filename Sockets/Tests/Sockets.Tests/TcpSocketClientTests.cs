@@ -44,7 +44,7 @@ namespace Sockets.Tests
             var sut = new TcpSocketClient();
             var unreachableHostName = ":/totallynotvalid@#$";
 
-            return Assert.ThrowsAsync<Exception>(() => sut.ConnectAsync(unreachableHostName, 8000));
+            return Assert.ThrowsAsync<SocketException>(() => sut.ConnectAsync(unreachableHostName, 8000));
         }
 
         [Fact]
@@ -234,6 +234,18 @@ namespace Sockets.Tests
             await sut.DisconnectAsync();
 
             await listener.StopListeningAsync();
+        }
+
+        [Fact]
+        public Task TcpSocketClient_Connect_ShouldCancelByCancellationToken()
+        {
+            var sut = new TcpSocketClient();
+            
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var ct = cts.Token;
+
+            // let's just hope no one's home :)
+            return Assert.ThrowsAsync<OperationCanceledException>(()=> sut.ConnectAsync("99.99.99.99", 51234, cancellationToken: cts.Token));
         }
 
     }

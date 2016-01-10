@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -27,19 +29,22 @@ namespace Sockets.Plugin
             if (listenOn != null && !listenOn.IsUsable)
                 throw new InvalidOperationException("Cannot listen on an unusable interface. Check the IsUsable property before attemping to bind.");
 
-            return Task.Run(() =>
-            {
-                var ip = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
-                var ep = new IPEndPoint(ip, port);
-
-                _messageCanceller = new CancellationTokenSource();
-                _backingUdpClient = new UdpClient(ep)
+            return Task
+                .Run(() =>
                 {
-                    EnableBroadcast = true
-                };
+                    var ip = listenOn != null ? ((CommsInterface)listenOn).NativeIpAddress : IPAddress.Any;
+                    var ep = new IPEndPoint(ip, port);
 
-                RunMessageReceiver(_messageCanceller.Token);
-            });
+                    _messageCanceller = new CancellationTokenSource();
+
+                    _backingUdpClient = new UdpClient(ep)
+                    {
+                        EnableBroadcast = true
+                    };
+
+                    RunMessageReceiver(_messageCanceller.Token);
+                })
+                .WrapNativeSocketExceptions();
         }
 
         /// <summary>
@@ -61,7 +66,19 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to send.</param>
         /// <param name="address">The remote address to which the data should be sent.</param>
         /// <param name="port">The remote port to which the data should be sent.</param>
-        public new async Task SendToAsync(byte[] data, string address, int port)
+        public new Task SendToAsync(byte[] data, string address, int port)
+        {
+            return SendToAsync(data, data.Length, address, port);
+        }
+
+        /// <summary>
+        ///     Sends the specified data to the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        /// <param name="address">The remote address to which the data should be sent.</param>
+        /// <param name="port">The remote port to which the data should be sent.</param>
+        public new async Task SendToAsync(byte[] data, int length, string address, int port)
         {
             if (_backingUdpClient == null)
             {
@@ -70,9 +87,19 @@ namespace Sockets.Plugin
                 // instantiated on call to StartListeningAsync(). If we are here, user
                 // is sending before having 'bound' to a port, so just create a temporary
                 // backing client to send this data. 
-                using (_backingUdpClient = new UdpClient { EnableBroadcast = true } )
+
+                try
                 {
-                    await base.SendToAsync(data, address, port);
+                    _backingUdpClient = new UdpClient { EnableBroadcast = true };
+                }
+                catch (PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
+
+                using (_backingUdpClient)
+                {
+                    await base.SendToAsync(data, length, address, port);
                 }
 
                 // clear _backingUdpClient because it has been disposed and is unusable. 
@@ -80,9 +107,8 @@ namespace Sockets.Plugin
             }
             else
             {
-                await base.SendToAsync(data, address, port);
+                await base.SendToAsync(data, length, address, port);
             }
-
         }
 
         /// <summary>

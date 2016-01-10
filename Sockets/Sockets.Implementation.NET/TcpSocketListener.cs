@@ -5,6 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
+
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -34,7 +37,7 @@ namespace Sockets.Plugin
         ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
-        public EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived { get; set; }
+        public event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived;
 
         /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
@@ -54,7 +57,15 @@ namespace Sockets.Plugin
                 _listenCanceller = new CancellationTokenSource();
 
                 _backingTcpListener = new TcpListener(ipAddress, port);
-                _backingTcpListener.Start();
+
+                try
+                {
+                    _backingTcpListener.Start();
+                }
+                catch(PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
 
                 WaitForConnections(_listenCanceller.Token);
             });
@@ -70,7 +81,16 @@ namespace Sockets.Plugin
                 () =>
                 {
                     _listenCanceller.Cancel();
-                    _backingTcpListener.Stop();
+
+                    try
+                    {
+                        _backingTcpListener.Stop();
+                    }
+                    catch (PlatformSocketException ex)
+                    {
+                        throw new PclSocketException(ex);
+                    }
+                   
                     _backingTcpListener = null;
                 });
         }
@@ -126,7 +146,7 @@ namespace Sockets.Plugin
             if (disposing)
             {
                 if (_backingTcpListener != null)
-                    ((IDisposable)_backingTcpListener).Dispose();
+                    _backingTcpListener.Stop();
             }
         }
         
