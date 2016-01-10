@@ -78,18 +78,12 @@ namespace Sockets.Plugin
             switch (sslPolicyErrors)
             {
                 case SslPolicyErrors.RemoteCertificateNameMismatch:
-                    Console.WriteLine("Server name mismatch. End communication ...\n");
                     return false;
                 case SslPolicyErrors.RemoteCertificateNotAvailable:
-                    Console.WriteLine("Server's certificate not available. End communication ...\n");
                     return false;
                 case SslPolicyErrors.RemoteCertificateChainErrors:
-                    Console.WriteLine("Server's certificate validation failed. End communication ...\n");
                     return false;
             }
-            //TODO: Perform others checks using the "certificate" and "chain" objects ...
-
-            Console.WriteLine("Server's authentication succeeded ...\n");
             return true;
         }
 
