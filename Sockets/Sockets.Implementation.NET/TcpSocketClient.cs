@@ -7,6 +7,7 @@ using Sockets.Plugin.Abstractions;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using Sockets.Plugin.Abstractions.Resources;
 using PlatformSocketException = System.Net.Sockets.SocketException;
 using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 
@@ -91,6 +92,20 @@ namespace Sockets.Plugin
                 secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                 _secureStream = secureStream;
             }            
+        }
+
+        /// <summary>
+        ///     Establishes a TCP connection with the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service name of the endpoint to connect to.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var port = ServiceNames.PortForTcpServiceName(service);
+            return ConnectAsync(address, port, secure, cancellationToken);
         }
 
         #region Secure Sockets Details
