@@ -41,6 +41,7 @@ namespace Sockets.Plugin
                     {
                         EnableBroadcast = true
                     };
+                    ProtectAgainstICMPUnreachable(_backingUdpClient);
 
                     RunMessageReceiver(_messageCanceller.Token);
                 })
@@ -91,6 +92,7 @@ namespace Sockets.Plugin
                 try
                 {
                     _backingUdpClient = new UdpClient { EnableBroadcast = true };
+                    ProtectAgainstICMPUnreachable(_backingUdpClient);
                 }
                 catch (PlatformSocketException ex)
                 {

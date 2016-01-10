@@ -47,6 +47,7 @@ namespace Sockets.Plugin
                 {
                     EnableBroadcast = true
                 };
+                ProtectAgainstICMPUnreachable(_backingUdpClient);
             }
             catch (PlatformSocketException ex)
             {
