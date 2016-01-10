@@ -30,6 +30,7 @@ namespace Sockets.Plugin
                 _backingUdpClient = new UdpClient
                 {
                     EnableBroadcast = true
+
                 };
             }
             catch (PlatformSocketException ex)
@@ -48,9 +49,11 @@ namespace Sockets.Plugin
         {
             _messageCanceller = new CancellationTokenSource();
 
-            return Task
-                .Run(() => this._backingUdpClient.Connect(address, port))
-                .WrapNativeSocketExceptions();
+            return Task.Run(() => {
+                _backingUdpClient.Connect(address, port);
+                base.RunMessageReceiver(_messageCanceller.Token);
+            })
+            .WrapNativeSocketExceptions();
         }
 
         /// <summary>
@@ -59,10 +62,17 @@ namespace Sockets.Plugin
         /// </summary>
         public Task DisconnectAsync()
         {
-            return Task.Run(() =>
-            {
-                _messageCanceller.Cancel();
-                _backingUdpClient.Close();
+            return Task.Run(() => {
+                if (_messageCanceller != null)
+                {
+                    _messageCanceller.Cancel();
+                    _messageCanceller.Dispose();
+                    _messageCanceller = null;
+                }
+                if (_backingUdpClient != null)
+                {
+                    _backingUdpClient.Close();
+                }
             });
         }
 
@@ -109,6 +119,17 @@ namespace Sockets.Plugin
         public new Task SendToAsync(byte[] data, int length, string address, int port)
         {
             return base.SendToAsync(data, length, address, port);
+        }
+        
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            if (_messageCanceller != null && !_messageCanceller.IsCancellationRequested)
+                _messageCanceller.Cancel();
+
+            base.Dispose();
         }
     }
 }

@@ -119,6 +119,7 @@ namespace Sockets.Plugin
                 .WrapNativeSocketExceptions();
         }
 
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -141,7 +142,10 @@ namespace Sockets.Plugin
             if (disposing)
             {
                 if (_backingUdpClient != null)
+                {
                     ((IDisposable)_backingUdpClient).Dispose();
+                    _backingUdpClient = null;
+                }
             }
         }
         
