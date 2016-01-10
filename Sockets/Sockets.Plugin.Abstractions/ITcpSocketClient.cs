@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sockets.Plugin.Abstractions
@@ -18,7 +19,8 @@ namespace Sockets.Plugin.Abstractions
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">Is this socket secure?</param>
-        Task ConnectAsync(string address, int port, bool secure = false);
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         ///     Disconnects from an endpoint previously connected to using <code>ConnectAsync</code>.

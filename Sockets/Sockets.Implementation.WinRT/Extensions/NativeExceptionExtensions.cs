@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Networking.Sockets;
@@ -11,9 +12,11 @@ namespace Sockets.Plugin
 {
     public static class NativeExceptionExtensions
     {
-        public static Task WrapNativeSocketExceptionsAsTask(this IAsyncAction task)
+        public static Task WrapNativeSocketExceptionsAsTask(this IAsyncAction task, CancellationToken cancellationToken = default(CancellationToken))
         {
             var tcs = new TaskCompletionSource<bool>();
+            if (cancellationToken != default(CancellationToken))
+                cancellationToken.Register(task.Cancel);
 
             task.Completed = delegate(IAsyncAction info, AsyncStatus status)
             {
@@ -34,10 +37,13 @@ namespace Sockets.Plugin
                         break;
                 }
             };
-
+            
             return tcs.Task.ContinueWith(
                 t =>
                 {
+                    if (t.IsCanceled)
+                        cancellationToken.ThrowIfCancellationRequested();
+
                     if (!t.IsFaulted)
                         return t;
                     

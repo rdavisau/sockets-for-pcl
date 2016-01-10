@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-
+using System.Threading;
 using PlatformSocketException = System.Net.Sockets.SocketException;
 using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 
@@ -55,11 +55,33 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public async Task ConnectAsync(string address, int port, bool secure = false)
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        public async Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _backingTcpClient
-                .ConnectAsync(address, port)
-                .WrapNativeSocketExceptions();
+            // standard connect
+            var connectTask =
+                _backingTcpClient
+                    .ConnectAsync(address, port)
+                    .WrapNativeSocketExceptions();
+
+            // set up cancellation trigger
+            var ret = new TaskCompletionSource<bool>();
+            var canceller = cancellationToken.Register(() => ret.SetCanceled());
+
+            // if cancellation comes before connect completes, we honour it
+            var okOrCancelled = await Task.WhenAny(connectTask, ret.Task);
+
+            if (okOrCancelled == ret.Task)
+            {
+                // reset the backing field.
+                // depending on the state of the socket this may throw ODE which it is appropriate to ignore
+                try { await DisconnectAsync(); } catch (ObjectDisposedException) { }
+
+                // notify that we did cancel
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+            else
+                canceller.Dispose();
 
             InitializeWriteStream();
 

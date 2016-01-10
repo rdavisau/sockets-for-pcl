@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
@@ -22,7 +23,7 @@ namespace Sockets.Plugin
 #else
         private SocketProtectionLevel _secureSocketProtectionLevel = SocketProtectionLevel.Tls10;
 #endif               
-        private readonly StreamSocket _backingStreamSocket;
+        private StreamSocket _backingStreamSocket;
         private readonly int _bufferSize;
 
         /// <summary>
@@ -54,7 +55,8 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false)
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
         {
             var hn = new HostName(address);
             var sn = port.ToString();
@@ -62,7 +64,7 @@ namespace Sockets.Plugin
 
             return _backingStreamSocket
                 .ConnectAsync(hn, sn, spl)
-                .WrapNativeSocketExceptionsAsTask();
+                .WrapNativeSocketExceptionsAsTask(cancellationToken);
         }
 
         /// <summary>
@@ -71,7 +73,11 @@ namespace Sockets.Plugin
         /// </summary>
         public Task DisconnectAsync()
         {
-            return Task.Run(() => _backingStreamSocket.Dispose());
+            return Task.Run(() =>
+            {
+                _backingStreamSocket.Dispose();
+                _backingStreamSocket = new StreamSocket();
+            });
         }
 
         /// <summary>
