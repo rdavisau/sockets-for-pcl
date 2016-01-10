@@ -1,3 +1,4 @@
+using System;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,8 +31,8 @@ namespace Sockets.Plugin
                 _backingUdpClient = new UdpClient
                 {
                     EnableBroadcast = true
-
                 };
+                ProtectAgainstICMPUnreachable(_backingUdpClient);
             }
             catch (PlatformSocketException ex)
             {
