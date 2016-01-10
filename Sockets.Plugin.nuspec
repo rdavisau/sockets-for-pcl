@@ -100,16 +100,6 @@ Bugfixes:
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.pdb"
           target="lib\MonoAndroid10\Sockets.Plugin.Abstractions.pdb" />
 
-    <!--Xamarin.iOS-->
-    <file src="Sockets\Sockets.Plugin.iOS\bin\iPhone\Release\Sockets.Plugin.dll"
-          target="lib\MonoTouch10\Sockets.Plugin.dll" />
-    <file src="Sockets\Sockets.Plugin.iOS\bin\iPhone\Release\Sockets.Plugin.xml"
-          target="lib\MonoTouch10\Sockets.Plugin.xml" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\MonoTouch10\Sockets.Plugin.Abstractions.dll" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\MonoTouch10\Sockets.Plugin.Abstractions.xml" />
-
     <!--Xamarin.iOS Unified-->
     <file src="Sockets\Sockets.Plugin.iOSUnified\bin\iPhone\Release\Sockets.Plugin.dll"
           target="lib\Xamarin.iOS10\Sockets.Plugin.dll" />
