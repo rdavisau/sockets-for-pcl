@@ -4,8 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
-using PlatformSocketException = System.Net.Sockets.SocketException;
-using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -24,7 +22,7 @@ namespace Sockets.Plugin
         /// <summary>
         ///     Fired when a UDP datagram has been received.
         /// </summary>
-        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived;
+        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
 
         internal async void RunMessageReceiver(CancellationToken cancellationToken)
         {
@@ -36,10 +34,7 @@ namespace Sockets.Plugin
                 try
                 {
                     // attempt to read next datagram
-                    msg = await _backingUdpClient
-                        .ReceiveAsync()
-                        .WrapNativeSocketExceptions();
-                    
+                    msg = await _backingUdpClient.ReceiveAsync();
                     didReceive = true;
                 }
                 catch
@@ -74,22 +69,7 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to be sent.</param>
         protected Task SendAsync(byte[] data)
         {
-            return _backingUdpClient
-                .SendAsync(data, data.Length)
-                .WrapNativeSocketExceptions();
-        }
-
-        /// <summary>
-        ///     Sends the specified data to the 'default' target of the underlying DatagramSocket.
-        ///     There may be no 'default' target. depending on the state of the object.
-        /// </summary>
-        /// <param name="data">A byte array of data to be sent.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        protected Task SendAsync(byte[] data, int length)
-        {
-            return _backingUdpClient
-                .SendAsync(data, length)
-                .WrapNativeSocketExceptions();
+            return _backingUdpClient.SendAsync(data, data.Length);
         }
 
         /// <summary>
@@ -100,26 +80,9 @@ namespace Sockets.Plugin
         /// <param name="port">The remote port to which the data should be sent.</param>
         protected Task SendToAsync(byte[] data, string address, int port)
         {
-            return _backingUdpClient
-                .SendAsync(data, data.Length, address, port)
-                .WrapNativeSocketExceptions();
+            return _backingUdpClient.SendAsync(data, data.Length, address, port);
         }
-
-        /// <summary>
-        ///     Sends the specified data to the endpoint at the specified address/port pair.
-        /// </summary>
-        /// <param name="data">A byte array of data to send.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        /// <param name="address">The remote address to which the data should be sent.</param>
-        /// <param name="port">The remote port to which the data should be sent.</param>
-        protected Task SendToAsync(byte[] data, int length, string address, int port)
-        {
-            return _backingUdpClient
-                .SendAsync(data, length, address, port)
-                .WrapNativeSocketExceptions();
-        }
-
-
+        
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -142,10 +105,7 @@ namespace Sockets.Plugin
             if (disposing)
             {
                 if (_backingUdpClient != null)
-                {
                     ((IDisposable)_backingUdpClient).Dispose();
-                    _backingUdpClient = null;
-                }
             }
         }
         

@@ -192,8 +192,3 @@ ModelManifest.xml
 nuget.exe
 *.nupkg
 *.DotSettings
-/Sockets/Sockets.Plugin.Abstractions/Properties/Resources.resx
-/Sockets/Sockets.Plugin.Abstractions/Properties/Resources.Designer.cs
-/Sockets/Sockets.Plugin.Abstractions/Properties
-/Sockets/Samples/SocketsSample.XF/SocketsSample.XF.Droid/SocketsSample.XF.Droid.csproj.bak
-/Sockets/Samples/SocketsSample.XF/SocketsSample.XF.Droid

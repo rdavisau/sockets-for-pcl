@@ -34,15 +34,6 @@ namespace Sockets.Plugin.Abstractions
         Task SendAsync(byte[] data);
 
         /// <summary>
-        ///     Sends the specified data to the 'default' target of the <code>UdpSocketClient</code>, previously set using
-        ///     <code>ConnectAsync</code>.
-        ///     If the 'default' target has not been set, calls will have no effect.
-        /// </summary>
-        /// <param name="data">A byte array of data to be sent.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        Task SendAsync(byte[] data, int length);
-
-        /// <summary>
         ///     Sends the specified data to the endpoint at the specified address/port pair.
         /// </summary>
         /// <param name="data">A byte array of data to send.</param>
@@ -51,17 +42,8 @@ namespace Sockets.Plugin.Abstractions
         Task SendToAsync(byte[] data, string address, int port);
 
         /// <summary>
-        ///     Sends the specified data to the endpoint at the specified address/port pair.
-        /// </summary>
-        /// <param name="data">A byte array of data to send.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        /// <param name="address">The remote address to which the data should be sent.</param>
-        /// <param name="port">The remote port to which the data should be sent.</param>
-        Task SendToAsync(byte[] data, int length, string address, int port);
-        
-        /// <summary>
         ///     Fired when a UDP datagram has been received.
         /// </summary>
-        event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived;
+        EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived { get; set; }
     }
 }

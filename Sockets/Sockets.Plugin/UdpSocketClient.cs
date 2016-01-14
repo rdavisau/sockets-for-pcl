@@ -44,18 +44,6 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
-        ///     Sends the specified data to the 'default' target of the <code>UdpSocketClient</code>, previously set using
-        ///     <code>ConnectAsync</code>.
-        ///     If the 'default' target has not been set, calls will have no effect.
-        /// </summary>
-        /// <param name="data">A byte array of data to be sent.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        public Task SendAsync(byte[] data, int length)
-        {
-            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
-        }
-
-        /// <summary>
         ///     Sends the specified data to the endpoint at the specified address/port pair.
         /// </summary>
         /// <param name="data">A byte array of data to send.</param>
@@ -67,24 +55,12 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
-        ///     Sends the specified data to the endpoint at the specified address/port pair.
-        /// </summary>
-        /// <param name="data">A byte array of data to send.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        /// <param name="address">The remote address to which the data should be sent.</param>
-        /// <param name="port">The remote port to which the data should be sent.</param>
-        public Task SendToAsync(byte[] data, int length, string address, int port)
-        {
-            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
-        }
-
-        /// <summary>
         ///     Fired when a udp datagram has been received.
         /// </summary>
-        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
+        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
         {
-            add { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
-            remove { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
     }
 }

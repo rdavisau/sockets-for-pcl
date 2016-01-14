@@ -3,9 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
-using PlatformSocketException = System.Net.Sockets.SocketException;
-using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
-
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -25,18 +22,10 @@ namespace Sockets.Plugin
         /// </summary>
         public UdpSocketClient()
         {
-            try
+            _backingUdpClient = new UdpClient
             {
-                _backingUdpClient = new UdpClient
-                {
-                    EnableBroadcast = true
-
-                };
-            }
-            catch (PlatformSocketException ex)
-            {
-                throw new PclSocketException(ex);
-            }
+                EnableBroadcast = true
+            };
         }
 
         /// <summary>
@@ -49,11 +38,7 @@ namespace Sockets.Plugin
         {
             _messageCanceller = new CancellationTokenSource();
 
-            return Task.Run(() => {
-                _backingUdpClient.Connect(address, port);
-                base.RunMessageReceiver(_messageCanceller.Token);
-            })
-            .WrapNativeSocketExceptions();
+            return Task.Run(() => _backingUdpClient.Connect(address, port));
         }
 
         /// <summary>
@@ -62,17 +47,10 @@ namespace Sockets.Plugin
         /// </summary>
         public Task DisconnectAsync()
         {
-            return Task.Run(() => {
-                if (_messageCanceller != null)
-                {
-                    _messageCanceller.Cancel();
-                    _messageCanceller.Dispose();
-                    _messageCanceller = null;
-                }
-                if (_backingUdpClient != null)
-                {
-                    _backingUdpClient.Close();
-                }
+            return Task.Run(() =>
+            {
+                _messageCanceller.Cancel();
+                _backingUdpClient.Close();
             });
         }
 
@@ -88,17 +66,6 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
-        ///     Sends the specified data to the 'default' target of the underlying DatagramSocket.
-        ///     There may be no 'default' target. depending on the state of the object.
-        /// </summary>
-        /// <param name="data">A byte array of data to be sent.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        public new Task SendAsync(byte[] data, int length)
-        {
-            return base.SendAsync(data, length);
-        }
-
-        /// <summary>
         ///     Sends the specified data to the endpoint at the specified address/port pair.
         /// </summary>
         /// <param name="data">A byte array of data to send.</param>
@@ -107,29 +74,6 @@ namespace Sockets.Plugin
         public new Task SendToAsync(byte[] data, string address, int port)
         {
             return base.SendToAsync(data, address, port);
-        }
-
-        /// <summary>
-        ///     Sends the specified data to the endpoint at the specified address/port pair.
-        /// </summary>
-        /// <param name="data">A byte array of data to send.</param>
-        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
-        /// <param name="address">The remote address to which the data should be sent.</param>
-        /// <param name="port">The remote port to which the data should be sent.</param>
-        public new Task SendToAsync(byte[] data, int length, string address, int port)
-        {
-            return base.SendToAsync(data, length, address, port);
-        }
-        
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            if (_messageCanceller != null && !_messageCanceller.IsCancellationRequested)
-                _messageCanceller.Cancel();
-
-            base.Dispose();
         }
     }
 }

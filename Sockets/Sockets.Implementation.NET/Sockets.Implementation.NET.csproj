@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommsInterfaceNative.cs" />
-    <Compile Include="Extensions\NativeExceptionExtensions.cs" />
     <Compile Include="NetworkExtensions.cs" />
     <Compile Include="CommsInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
