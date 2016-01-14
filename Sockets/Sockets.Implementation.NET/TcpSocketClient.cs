@@ -85,6 +85,9 @@ namespace Sockets.Plugin
             else
                 canceller.Dispose();
 
+            if (okOrCancelled.IsFaulted)
+                throw okOrCancelled.Exception.InnerException;
+
             InitializeWriteStream();
 
             if (secure)
