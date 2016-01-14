@@ -87,6 +87,9 @@
     <Compile Include="..\Sockets.Implementation.WinRT\CommsInterface.cs">
       <Link>CommsInterface.cs</Link>
     </Compile>
+    <Compile Include="..\Sockets.Implementation.WinRT\Extensions\NativeExceptionExtensions.cs">
+      <Link>Extensions\NativeExceptionExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Sockets.Implementation.WinRT\NetworkExtensions.cs">
       <Link>NetworkExtensions.cs</Link>
     </Compile>

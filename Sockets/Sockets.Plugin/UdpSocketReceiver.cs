@@ -41,12 +41,24 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
+        ///     Sends the specified data to the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        /// <param name="address">The remote address to which the data should be sent.</param>
+        /// <param name="port">The remote port to which the data should be sent.</param>
+        public Task SendToAsync(byte[] data, int length, string address, int port)
+        {
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
+        }
+
+        /// <summary>
         ///     Fired when a UDP datagram has been received.
         /// </summary>
-        public EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
+        public event EventHandler<UdpSocketMessageReceivedEventArgs> MessageReceived
         {
-            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
-            set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            add { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            remove { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
     }
 }

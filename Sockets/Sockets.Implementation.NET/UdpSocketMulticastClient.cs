@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 // ReSharper disable once CheckNamespace
 
 namespace Sockets.Plugin
@@ -39,13 +41,23 @@ namespace Sockets.Plugin
 
             var multicastIp = IPAddress.Parse(multicastAddress);
 
-            _backingUdpClient = new UdpClient(bindingEp)
+            try
             {
-                EnableBroadcast = true
-            };
+                _backingUdpClient = new UdpClient(bindingEp)
+                {
+                    EnableBroadcast = true
+                };
+            }
+            catch (PlatformSocketException ex)
+            {
+                throw new PclSocketException(ex);
+            }
+
             _messageCanceller = new CancellationTokenSource();
             
-            await Task.Run(() => _backingUdpClient.JoinMulticastGroup(multicastIp,TTL));
+            await Task
+                .Run(() => this._backingUdpClient.JoinMulticastGroup(multicastIp, this.TTL))
+                .WrapNativeSocketExceptions();
 
             _multicastAddress = multicastAddress;
             _multicastPort = port;
@@ -85,10 +97,21 @@ namespace Sockets.Plugin
         /// <param name="data">A byte array of data to be sent.</param>
         public Task SendMulticastAsync(byte[] data)
         {
+            return SendMulticastAsync(data, data.Length);
+        }
+
+        /// <summary>
+        ///     Sends the specified data to the multicast group, previously set using <code>JoinMulticastGroupAsync</code>.
+        ///     If a group has not been set, calls will have no effect.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        public Task SendMulticastAsync(byte[] data, int length)
+        {
             if (_multicastAddress == null)
                 throw new InvalidOperationException("Must join a multicast group before sending.");
 
-            return base.SendToAsync(data, _multicastAddress, _multicastPort);
+            return base.SendToAsync(data, length, _multicastAddress, _multicastPort);
         }
 
         /// <summary>

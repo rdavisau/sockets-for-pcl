@@ -1,11 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Sockets.Plugin.Abstractions;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using Sockets.Plugin.Abstractions.Resources;
+using PlatformSocketException = System.Net.Sockets.SocketException;
+using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 
 namespace Sockets.Plugin
 {
@@ -15,7 +20,7 @@ namespace Sockets.Plugin
     ///     Use the <code>WriteStream</code> and <code>ReadStream</code> properties for sending and receiving data
     ///     respectively.
     /// </summary>
-    public class TcpSocketClient : ITcpSocketClient
+    public class TcpSocketClient : ITcpSocketClient, IExposeBackingSocket
     {
         private TcpClient _backingTcpClient;
         private readonly int _bufferSize;
@@ -52,16 +57,56 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        public async Task ConnectAsync(string address, int port, bool secure = false)
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        public async Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await _backingTcpClient.ConnectAsync(address, port);
+            // standard connect
+            var connectTask =
+                _backingTcpClient
+                    .ConnectAsync(address, port)
+                    .WrapNativeSocketExceptions();
+
+            // set up cancellation trigger
+            var ret = new TaskCompletionSource<bool>();
+            var canceller = cancellationToken.Register(() => ret.SetCanceled());
+
+            // if cancellation comes before connect completes, we honour it
+            var okOrCancelled = await Task.WhenAny(connectTask, ret.Task);
+
+            if (okOrCancelled == ret.Task)
+            {
+                // reset the backing field.
+                // depending on the state of the socket this may throw ODE which it is appropriate to ignore
+                try { await DisconnectAsync(); } catch (ObjectDisposedException) { }
+
+                // notify that we did cancel
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+            else
+                canceller.Dispose();
+
             InitializeWriteStream();
+
             if (secure)
             {
                 var secureStream = new SslStream(_writeStream, true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender, cert, chain, sslPolicy));
                 secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                 _secureStream = secureStream;
             }            
+        }
+
+        /// <summary>
+        ///     Establishes a TCP connection with the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="address">The address of the endpoint to connect to.</param>
+        /// <param name="service">The service name of the endpoint to connect to.</param>
+        /// <param name="secure">True to enable TLS on the socket.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var port = ServiceNames.PortForTcpServiceName(service);
+            return ConnectAsync(address, port, secure, cancellationToken);
         }
 
         #region Secure Sockets Details
@@ -71,18 +116,12 @@ namespace Sockets.Plugin
             switch (sslPolicyErrors)
             {
                 case SslPolicyErrors.RemoteCertificateNameMismatch:
-                    Console.WriteLine("Server name mismatch. End communication ...\n");
                     return false;
                 case SslPolicyErrors.RemoteCertificateNotAvailable:
-                    Console.WriteLine("Server's certificate not available. End communication ...\n");
                     return false;
                 case SslPolicyErrors.RemoteCertificateChainErrors:
-                    Console.WriteLine("Server's certificate validation failed. End communication ...\n");
                     return false;
             }
-            //TODO: Perform others checks using the "certificate" and "chain" objects ...
-
-            Console.WriteLine("Server's authentication succeeded ...\n");
             return true;
         }
 
@@ -99,6 +138,17 @@ namespace Sockets.Plugin
                 _secureStream = null;
                 _backingTcpClient = new TcpClient();
             });
+        }
+
+        /// <summary>
+        /// Gets the interface the connection is using.
+        /// </summary>
+        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
+        public async Task<ICommsInterface> GetConnectedInterfaceAsync()
+        {
+            var ipEndpoint = (IPEndPoint)_backingTcpClient.Client.LocalEndPoint;
+            var interfaces = await CommsInterface.GetAllInterfacesAsync();
+            return interfaces.FirstOrDefault(x => x.NativeIpAddress.Equals(ipEndpoint.Address));
         }
 
         /// <summary>
@@ -133,7 +183,17 @@ namespace Sockets.Plugin
 
         private IPEndPoint RemoteEndpoint
         {
-            get { return _backingTcpClient.Client.RemoteEndPoint as IPEndPoint; }
+            get
+            {
+                try
+                {
+                    return _backingTcpClient.Client.RemoteEndPoint as IPEndPoint;
+                }
+                catch(PlatformSocketException ex)
+                {
+                    throw new PclSocketException(ex);
+                }
+            }
         }
 
         /// <summary>
@@ -185,5 +245,14 @@ namespace Sockets.Plugin
             }
         }
         
+        /// <summary>
+        /// Exposes the backing socket.
+        /// </summary>
+        public TcpClient Socket => _backingTcpClient;
+
+        /// <summary>
+        /// Exposes the backing socket. 
+        /// </summary>
+        object IExposeBackingSocket.Socket => Socket;
     }
 }

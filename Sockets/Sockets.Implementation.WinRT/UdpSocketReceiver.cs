@@ -27,11 +27,15 @@ namespace Sockets.Plugin
             if (listenOn != null)
             {
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
-                return _backingDatagramSocket.BindServiceNameAsync(sn, adapter).AsTask();
+                return _backingDatagramSocket
+                            .BindServiceNameAsync(sn, adapter)
+                            .WrapNativeSocketExceptionsAsTask();
             }
             else
 #endif
-                return _backingDatagramSocket.BindServiceNameAsync(sn).AsTask();
+                return _backingDatagramSocket
+                            .BindServiceNameAsync(sn)
+                            .WrapNativeSocketExceptionsAsTask();
         }
 
         /// <summary>   
@@ -52,6 +56,18 @@ namespace Sockets.Plugin
         public new Task SendToAsync(byte[] data, string address, int port)
         {
             return base.SendToAsync(data, address, port);
+        }
+
+        /// <summary>
+        ///     Sends the specified data to the endpoint at the specified address/port pair.
+        /// </summary>
+        /// <param name="data">A byte array of data to send.</param>
+        /// <param name="length">The number of bytes from <c>data</c> to send.</param>
+        /// <param name="address">The remote address to which the data should be sent.</param>
+        /// <param name="port">The remote port to which the data should be sent.</param>
+        public new Task SendToAsync(byte[] data, int length, string address, int port)
+        {
+            return base.SendToAsync(data, length, address, port);
         }
     }
 }

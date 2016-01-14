@@ -149,9 +149,9 @@
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Sockets.Plugin.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sockets.Plugin.iOS\Sockets.Plugin.iOS.csproj">
-      <Project>{d7f3aa16-8ef1-4924-9e0a-dad4ab46b2eb}</Project>
-      <Name>Sockets.Plugin.iOS</Name>
+    <ProjectReference Include="..\..\Sockets.Plugin.iOSUnified\Sockets.Plugin.iOSUnified.csproj">
+      <Project>{2882aeeb-d4cd-4eb9-8a6c-6653b33681f0}</Project>
+      <Name>Sockets.Plugin.iOSUnified</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>

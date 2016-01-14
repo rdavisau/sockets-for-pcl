@@ -33,7 +33,7 @@ namespace Sockets.Plugin
         ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
-        public EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived { get; set; }
+        public event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived;
 
         /// <summary>
         ///     Binds the <code>TcpSocketListener</code> to the specified port on all endpoints and listens for TCP connections.
@@ -60,20 +60,20 @@ namespace Sockets.Plugin
             };
 
             var sn = port == 0 ? "" : port.ToString();
-#if !WP80    
+#if !WP80
             if (listenOn != null)
             {
-                var adapter = ((CommsInterface)listenOn).NativeNetworkAdapter;
+                var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
 
                 return _backingStreamSocketListener
-                            .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
-                            .AsTask();
+                    .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
+                    .WrapNativeSocketExceptionsAsTask();
             }
             else
 #endif
                 return _backingStreamSocketListener
-                            .BindServiceNameAsync(sn)
-                            .AsTask();
+                    .BindServiceNameAsync(sn)
+                    .WrapNativeSocketExceptionsAsTask();
         }
         
         /// <summary>

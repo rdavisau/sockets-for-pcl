@@ -38,23 +38,48 @@ namespace Sockets.Tests
             Assert.True(true);
         }
 
+        // different things cause different exceptions on .NET vs WinRT
+        // so we swap the method that's called.
+        // mfw
+
         [Fact]
         public Task TcpSocketClient_ShouldThrowPCLException_InPlaceOfNativeSocketException()
         {
-            var sut = new TcpSocketClient();
-            var unreachableHostName = ":/totallynotvalid@#$";
-
-            return Assert.ThrowsAsync<Exception>(() => sut.ConnectAsync(unreachableHostName, 8000));
+#if WINDOWS_UWP
+            var t = OnlyThrowsSocketExceptionOnWinRT();
+#else
+            var t = OnlyThrowsSocketExceptionOnNet();
+#endif
+            return Assert.ThrowsAnyAsync<SocketException>(() => t);
         }
 
         [Fact]
         public Task TcpSocketClient_ShouldThrowNormalException_WhenNotPlatformSpecific()
         {
+#if WINDOWS_UWP
+            return Assert.ThrowsAsync<ArgumentException>(OnlyThrowsSocketExceptionOnNet);
+#else
+            return Assert.ThrowsAsync<ArgumentOutOfRangeException>(OnlyThrowsSocketExceptionOnWinRT);
+#endif
+
+        }
+
+        private Task OnlyThrowsSocketExceptionOnNet()
+        {
+            var sut = new TcpSocketClient();
+            var unreachableHostName = ":/totallynotvalid@#$";
+
+            return sut.ConnectAsync(unreachableHostName, 8000);
+        }
+
+        private Task OnlyThrowsSocketExceptionOnWinRT()
+        {
             var sut = new TcpSocketClient();
             var tooHighForAPort = Int32.MaxValue;
 
-            return Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => sut.ConnectAsync("127.0.0.1", tooHighForAPort));
+            return sut.ConnectAsync("127.0.0.1", tooHighForAPort);
         }
+
 
         [Fact]
         public async Task TcpSocketClient_ShouldSendReceiveData()
@@ -150,7 +175,7 @@ namespace Sockets.Tests
                             r.NextBytes(buf);
                             sent.AddRange(buf);
                             await socket.WriteStream.WriteAsync(buf, 0, buf.Length, token);
-                            await socket.WriteStream.FlushAsync();
+                            await socket.WriteStream.FlushAsync(token);
                         }
                     });
 
@@ -159,25 +184,24 @@ namespace Sockets.Tests
                         var buf = new byte[1000];
                         while (!token.IsCancellationRequested)
                         {
-                            await socket.ReadStream.ReadAsync(buf, 0, buf.Length, token);
-                            recvd.AddRange(buf);
+                            var len = await socket.ReadStream.ReadAsync(buf, 0, buf.Length, token);
+                            recvd.AddRange(buf.Take(len));
                         }
                     });
 
-                    return Task.WhenAll(send, recv);
+                    var innerTcs = new TaskCompletionSource<bool>();
+                    token.Register(() => innerTcs.SetResult(true));
+
+                    return innerTcs.Task;
                 };
 
             // let the sockets run for 2.5 seconds
-            var cts = new CancellationTokenSource();
-            var timer = Task.Run(() => Task.Delay(TimeSpan.FromSeconds(2.5)).ContinueWith(t => cts.Cancel()));
-
             var socketRunners =
                 Task.WhenAll(
-                    Task.Run(() => sendAndReceive(socket1, sentToSocket2, recvdBySocket1, cts.Token)),
-                    Task.Run(() => sendAndReceive(socket2, sentToSocket1, recvdBySocket2, cts.Token))
+                    Task.Run(() => sendAndReceive(socket1, sentToSocket2, recvdBySocket1, new CancellationTokenSource(TimeSpan.FromSeconds(2.5)).Token).ContinueWith(t=> Debug.WriteLine($"Socket 1 task completed: {t}"))),
+                    Task.Run(() => sendAndReceive(socket2, sentToSocket1, recvdBySocket2, new CancellationTokenSource(TimeSpan.FromSeconds(2.5)).Token).ContinueWith(t => Debug.WriteLine($"Socket 2 task completed: {t}")))
                     );
 
-            await timer;
             await socketRunners;
 
             Debug.WriteLine("Sent to S1:{0}, Recvd by S1:{1}", sentToSocket1.Count, recvdBySocket1.Count);
@@ -188,21 +212,45 @@ namespace Sockets.Tests
             // but we want to be sure that everything that was received matches 
             // everything that sent, and that we did both send and receive.
 
-            var socket1OK =
-                Enumerable.Zip(sentToSocket1,
-                            recvdBySocket1,
-                            (s, r) => s == r)
-                        .All(b => b);
+            var socket1Errors =
+                Enumerable.Zip(recvdBySocket1, sentToSocket1,
+                            (r, s) => s == r)
+                        .Count(b => !b);
 
-            var socket2OK =
-                Enumerable.Zip(sentToSocket1,
-                            recvdBySocket1,
-                            (s, r) => s == r)
-                        .All(b => b);
+            var socket2Errors =
+                Enumerable.Zip(recvdBySocket2, 
+                                sentToSocket2,
+                            (r, s) => s == r)
+                        .Count(b => !b);
+            
+            var max = new[] {recvdBySocket1.Count, recvdBySocket2.Count, sentToSocket1.Count, sentToSocket2.Count}.Max();
+            Func<List<byte>, int, string> getValueOrStars =
+                (bytes, i) => bytes.Count > i ? ((int) bytes[i]).ToString().PadLeft(3, '0') : "***";
 
-            Assert.True(socket1OK, "Socket1 received data did not match what was sent to it");
-            Assert.True(socket2OK, "Socket2 received data did not match what was sent to it");
+            var rows =
+                Enumerable.Range(0, max - 1)
+                    .Select(i =>
+                    {
+                        var sTo1 = getValueOrStars(sentToSocket1, i);
+                        var rBy1 = getValueOrStars(recvdBySocket1, i);
+                        var sTo2 = getValueOrStars(sentToSocket2, i);
+                        var rBy2 = getValueOrStars(recvdBySocket2, i);
 
+                        return new { Index = i, SentTo1 = sTo1, ReceivedBy1 = rBy1, SentTo2 = sTo2, ReceivedBy2 = rBy2};
+                    })
+                    .Where(r => (r.SentTo1 != r.ReceivedBy1 && r.ReceivedBy1 != "***") || (r.SentTo2 != r.ReceivedBy2 && r.ReceivedBy2 != "***"))
+                    .Select(r=> $"{r.Index}: \t{r.SentTo1}\t{r.ReceivedBy1}\t{r.SentTo2}\t{r.ReceivedBy2}\t")
+                    .Take(1000);
+            
+            Func<IEnumerable<byte>, string> show = bs => $"[ {String.Join(", ", bs.Take(5).Select(b => (int) b))} ]";
+
+            if (socket1Errors > 0 || socket2Errors > 0)
+            {
+                Assert.True(socket1Errors == 0,
+                    $"Socket1 received {socket1Errors} byte/s that did not match what was sent to it{Environment.NewLine}{String.Join(Environment.NewLine, rows)}");
+                Assert.True(socket2Errors == 0,
+                    $"Socket2 received {socket2Errors} byte/s that did not match what was sent to it{Environment.NewLine}{String.Join(Environment.NewLine, rows)}");
+            }
             // eww, but does the job we need
             Assert.True(recvdBySocket1.Count > 5000, String.Format("Socket 1 received data count was less than 5000 : {0}", recvdBySocket1.Count));
             Assert.True(recvdBySocket2.Count > 5000, String.Format("Socket 2 received data count was less than 5000 : {0}", recvdBySocket2.Count));
@@ -234,6 +282,18 @@ namespace Sockets.Tests
             await sut.DisconnectAsync();
 
             await listener.StopListeningAsync();
+        }
+
+        [Fact]
+        public Task TcpSocketClient_Connect_ShouldCancelByCancellationToken()
+        {
+            var sut = new TcpSocketClient();
+            
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var ct = cts.Token;
+
+            // let's just hope no one's home :)
+            return Assert.ThrowsAsync<OperationCanceledException>(()=> sut.ConnectAsync("99.99.99.99", 51234, cancellationToken: cts.Token));
         }
 
     }
