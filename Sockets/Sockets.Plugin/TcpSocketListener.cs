@@ -61,10 +61,10 @@ namespace Sockets.Plugin
         ///     Use the <code>SocketClient</code> property of the <code>TcpSocketListenerConnectEventArgs</code>
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
-        public event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived
+        public EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived
         {
-            add { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
-            remove { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
         }
 
         /// <summary>

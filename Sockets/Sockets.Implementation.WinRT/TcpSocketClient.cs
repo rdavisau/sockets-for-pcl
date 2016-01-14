@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Threading;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
@@ -17,14 +15,14 @@ namespace Sockets.Plugin
     ///     Use the <code>WriteStream</code> and <code>ReadStream</code> properties for sending and receiving data
     ///     respectively.
     /// </summary>
-    public class TcpSocketClient : ITcpSocketClient, IExposeBackingSocket
+    public class TcpSocketClient : ITcpSocketClient
     {
 #if WP80
         private SocketProtectionLevel _secureSocketProtectionLevel = SocketProtectionLevel.Ssl;
 #else
         private SocketProtectionLevel _secureSocketProtectionLevel = SocketProtectionLevel.Tls10;
 #endif               
-        private StreamSocket _backingStreamSocket;
+        private readonly StreamSocket _backingStreamSocket;
         private readonly int _bufferSize;
 
         /// <summary>
@@ -56,29 +54,13 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var service = port.ToString();
-            return ConnectAsync(address, service, secure, cancellationToken);
-        }
-
-        /// <summary>
-        ///     Establishes a TCP connection with the endpoint at the specified address/port pair.
-        /// </summary>
-        /// <param name="address">The address of the endpoint to connect to.</param>
-        /// <param name="service">The service of the endpoint to connect to.</param>
-        /// <param name="secure">True to enable TLS on the socket.</param>
-        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public Task ConnectAsync(string address, string service, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        public Task ConnectAsync(string address, int port, bool secure = false)
         {
             var hn = new HostName(address);
-            var sn = service;
+            var sn = port.ToString();
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
 
-            return _backingStreamSocket
-                .ConnectAsync(hn, sn, spl)
-                .WrapNativeSocketExceptionsAsTask(cancellationToken);
+            return _backingStreamSocket.ConnectAsync(hn, sn, spl).AsTask();
         }
 
         /// <summary>
@@ -87,19 +69,7 @@ namespace Sockets.Plugin
         /// </summary>
         public Task DisconnectAsync()
         {
-            return Task.Run(() =>
-            {
-                _backingStreamSocket.Dispose();
-                _backingStreamSocket = new StreamSocket();
-            });
-        }
-
-        /// </summary>
-        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
-        public async Task<ICommsInterface> GetConnectedInterfaceAsync()
-        {
-            var interfaces = await CommsInterface.GetAllInterfacesAsync();
-            return interfaces.FirstOrDefault(x => x.NativeHostName.IsEqual(_backingStreamSocket.Information.LocalAddress));
+            return Task.Run(() => _backingStreamSocket.Dispose());
         }
 
         /// <summary>
@@ -159,15 +129,5 @@ namespace Sockets.Plugin
                     (_backingStreamSocket).Dispose();
             }
         }
-        
-        /// <summary>
-        /// Exposes the backing socket 
-        /// </summary>
-        public StreamSocket Socket => _backingStreamSocket;
-
-        /// <summary>
-        /// Exposes the backing socket. 
-        /// </summary>
-        object IExposeBackingSocket.Socket => Socket;
     }
 }
