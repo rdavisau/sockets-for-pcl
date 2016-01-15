@@ -1,5 +1,31 @@
 _This changelog refers to nuget package releases._
 
+#### 2.0.0 (2016-01-11)
+
+Deprecations:
+
+- Support for the iOS "Classic" API has been removed
+
+Features: 
+
+- A `SocketException` class has been added, allowing socket-related exceptions to be caught from PCL code. Thanks @danielcweber
+- It is now possible to retrieve the `ICommsInterface` that a `TcpSocketClient` is connected via. Thanks @fubar-coder
+- Auto-properties have been replaced with proper events across all classes. Thanks @Waty
+- `TcpSocketClient`'s `ConnectAsync` method optionally takes a `CancellationToken` to support client-invoked cancellation and scenarios like timeout. Thanks @SparkStream
+- You may now specify a service name rather than port when connecting with a `TcpSocketClient`. Thanks @SparkStream
+- For those that need it, you can access the underlying .NET or WinRT/UWP socket instance from native (non-PCL) projects. Thanks @SparkStream
+- `UdpSocketClient` can now receive response packets. This simplifies scenarios where you don't need to listen for new packets, but do need to receive response packets. Thanks @SatoshiARA
+- All the Udp socket classes now include a `Send-` overload that allows you to specify the number of bytes to be read from the input. This can avoid the need to duplicate a buffer when working with streams. Thanks @jasells
+
+Bugfixes: 
+
+- Fixed `InvalidCastException` being thrown by `TcpSocketListener.Dispose()`. Thanks @Waty
+- Fix for a rare issue where the Udp classes could throw an exception after receiving an ICMP unreachable packet in certain cases
+
+Other:
+
+- sockets-for-pcl can now also be installed via the Xamarin Component Store. Thanks @mattleibow
+
 #### 1.2.2 (2015-07-27)
 
 Features: 
@@ -7,7 +33,6 @@ Features:
 - `TcpSocketClient` and `TcpSocketListener` now supports setting of the buffer size used when sending data. If unset, this defaults to zero (unbuffered). This also addresses an inconsistency in default buffer sizes between .NET platforms and WinRT platforms. Thanks @xen2
 - `TcpSocketListener` now supports os-based/ephemeral port selection. When passing `0` to the `port` parameter of `StartListeningAsync`, the selection of bound port is deferred to the operating system. You can determine what port was bound by checking the `LocalPort` property. 
       
-
 #### 1.2.1 (2015-06-10)
 
 Bugfixes:
