@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>2.0.0</version>
+    <version>2.0.0-pre1</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
@@ -13,7 +13,11 @@
     <copyright>2015 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
-2.0.0 (2016-01-11)
+2.0.0-pre1 (2016-01-11)
+
+Known Issues: 
+
+- A `SocketException` class has been added, allowing socket-related exceptions to be caught from PCL code. In this prerelease, this works for WinRT/UWP platforms only. 
 
 Deprecations:
 
@@ -21,7 +25,6 @@ Deprecations:
 
 Features: 
 
-- A `SocketException` class has been added, allowing socket-related exceptions to be caught from PCL code. Thanks @danielcweber
 - It is now possible to retrieve the `ICommsInterface` that a `TcpSocketClient` is connected via. Thanks @fubar-coder
 - Auto-properties have been replaced with proper events across all classes. Thanks @Waty
 - `TcpSocketClient`'s `ConnectAsync` method optionally takes a `CancellationToken` to support client-invoked cancellation and scenarios like timeout. Thanks @SparkStream
