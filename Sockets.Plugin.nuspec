@@ -3,17 +3,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>2.0.0-pre1</version>
+    <version>2.0.0</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
     <licenseUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/rdavisau/sockets-for-pcl</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>2015 Ryan Davis</copyright>
+    <copyright>2016 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
-2.0.0-pre1 (2016-01-11)
+2.0.0 (2016-04-10)
 
 Known Issues: 
 
