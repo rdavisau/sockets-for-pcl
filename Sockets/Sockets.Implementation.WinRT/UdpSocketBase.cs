@@ -90,8 +90,7 @@ namespace Sockets.Plugin
 
             var stream = 
                 (await _backingDatagramSocket
-                        .GetOutputStreamAsync(hn, sn)
-                        .WrapNativeSocketExceptions())
+                        .GetOutputStreamAsync(hn, sn))
                     .AsStreamForWrite();
 
             await stream.WriteAsync(data, 0, length);

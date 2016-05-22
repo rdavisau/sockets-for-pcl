@@ -29,13 +29,13 @@ namespace Sockets.Plugin
                 var adapter = ((CommsInterface) listenOn).NativeNetworkAdapter;
                 return _backingDatagramSocket
                             .BindServiceNameAsync(sn, adapter)
-                            .WrapNativeSocketExceptionsAsTask();
+                            .AsTask();
             }
             else
 #endif
                 return _backingDatagramSocket
                             .BindServiceNameAsync(sn)
-                            .WrapNativeSocketExceptionsAsTask();
+                            .AsTask();
         }
 
         /// <summary>   

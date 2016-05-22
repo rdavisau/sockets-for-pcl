@@ -77,7 +77,7 @@ namespace Sockets.Plugin
 
             return _backingStreamSocket
                 .ConnectAsync(hn, sn, spl)
-                .WrapNativeSocketExceptionsAsTask(cancellationToken);
+                .AsTask(cancellationToken);
         }
 
         /// <summary>
