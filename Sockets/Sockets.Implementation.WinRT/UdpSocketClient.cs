@@ -28,7 +28,7 @@ namespace Sockets.Plugin
 
             return _backingDatagramSocket
                     .ConnectAsync(hn, sn)
-                    .WrapNativeSocketExceptionsAsTask();
+                    .AsTask();
         }
 
         /// <summary>

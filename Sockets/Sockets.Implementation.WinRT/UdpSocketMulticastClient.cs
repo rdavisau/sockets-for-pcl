@@ -33,7 +33,11 @@ namespace Sockets.Plugin
             var hn = new HostName(multicastAddress);
             var sn = port.ToString();
 
-#if !WP80    
+#if WINDOWS_UWP
+            _backingDatagramSocket.Control.MulticastOnly = true;
+#endif
+
+#if !WP80
             if (multicastOn != null)
             {
                 var adapter = ((CommsInterface)multicastOn).NativeNetworkAdapter;

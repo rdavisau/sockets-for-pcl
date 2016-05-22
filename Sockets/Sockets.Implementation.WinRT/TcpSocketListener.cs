@@ -67,13 +67,13 @@ namespace Sockets.Plugin
 
                 return _backingStreamSocketListener
                     .BindServiceNameAsync(sn, SocketProtectionLevel.PlainSocket, adapter)
-                    .WrapNativeSocketExceptionsAsTask();
+                    .AsTask();
             }
             else
 #endif
                 return _backingStreamSocketListener
                     .BindServiceNameAsync(sn)
-                    .WrapNativeSocketExceptionsAsTask();
+                    .AsTask();
         }
         
         /// <summary>
