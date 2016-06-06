@@ -71,6 +71,9 @@
     <Compile Include="Netmask\NetInterfaceInfo.cs" />
     <Compile Include="Netmask\StructsAndEnums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Sockets.Implementation.NET\Extensions\NativeExceptionExtensions.cs">
+      <Link>NativeExceptionExtensions.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sockets.Plugin.Abstractions\Sockets.Plugin.Abstractions.csproj">
