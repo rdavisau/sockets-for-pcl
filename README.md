@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/rdavisau/sockets-for-pcl](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rdavisau/sockets-for-pcl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, UWP, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
+An abstraction over the socket helper classes of .NET and WinRT, providing a PCL-friendly socket library for projects targeting Xamarin iOS/Android/Forms, Xamarin.Mac, Windows Phone 8/8.1, Windows Store, UWP, and Windows Desktop. It allows you to write socket code in your PCL, simplifying cross-platform peer-to-peer communications significantly as well as enabling code sharing for many other use cases. 
 
 This library utilises the "Bait and Switch" pattern, so must be installed via NuGet in both the PCL and your native projects. 
 
@@ -155,7 +155,6 @@ Console.WriteLine("Listening on interface with ip: {0}", firstUsable.IpAddress);
 `TcpSocketClient` supports TLS connections (server certificate only). Pass `true` to the optional parameter `useTls` on `ConnectAsync` to enable secure communication. 
 
 ### Platform Considerations
- - Xamarin.Mac Unified and MonoMac should work out of the box. For Xamarin.Mac Classic projects, after installing sockets-for-pcl you must manually alter the `<HintPath>` entries for `Sockets.Plugin` and `Sockets.Plugin.Abstractions` in your .csproj file, to replace references to `net45` with `Xamarin.Mac.Classic`. Without this, code interacting with portions of the `System.Net` namespace not implemented in mono, including methods on some classes required by `CommsInterface`, will fail. 
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of `privateNetworkClientServer`, `internetClient` and/or  `internetClientServer` capabilities. 
  - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between separate apps (i.e. no IPC) 
  - Binding to specific interfaces is not supported on Windows Phone 8.0 (8.1 is fine). All interfaces will be bound, even if a specific `CommsInterface` is provided. 
@@ -179,6 +178,8 @@ Many members of the community have contributed to improving sockets-for-pcl:
  - @SparkStream (TcpSocketClient cancellation support, service name support)
  - @usasos000 (bugfixes)
  - @jasells (udpclient design considerations)
+ - @vbisbest (prelease testing, bugfixes)
+ - @1iveowl (udp multicast considerations)
 
 If you have a bugfix or a feature you'd like to add, please open an issue. 
 All pull requests should be opened against the `dev` branch.

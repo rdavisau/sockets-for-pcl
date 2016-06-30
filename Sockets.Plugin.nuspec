@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>2.0.1-pre</version>
+    <version>2.0.2</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
@@ -13,15 +13,15 @@
     <copyright>2016 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
-2.0.0 (2016-04-10)
+2.0.2 (2016-06-30)
 
 Known Issues: 
 
-- A `SocketException` class has been added, allowing socket-related exceptions to be caught from PCL code. In this prerelease, this works for WinRT/UWP platforms only. 
+- A `SocketException` class has been added, allowing socket-related exceptions to be caught from PCL code. In this release, this works for WinRT/UWP platforms only. 
 
 Deprecations:
 
-- Support for the iOS "Classic" API has been removed
+- Support for the iOS "Classic" API, MacOS "Classic" and MonoMac (open source) platforms has been dropped.
 
 Features: 
 
@@ -41,11 +41,13 @@ Bugfixes:
 Other:
 
 - sockets-for-pcl can now also be installed via the Xamarin Component Store. Thanks @mattleibow
+- special thanks to @vbisbest for helping work through issues in the prereleases
+
     </releaseNotes>
     <description>
-      Cross-platform socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, UWP and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
+      Cross-platform socket API for Xamarin iOS/Android/Forms, Xamarin.Mac, Windows Phone 8/8.1, Windows Store, UWP and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
     </description>
-    <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store, UWP and Windows Desktop.</summary>
+    <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Xamarin.Mac, Windows Phone 8/8.1, Windows Store, UWP and Windows Desktop.</summary>
     <tags>sockets, tcp, udp, multicast, xamarin, pcl, windows phone, winphone, wp8, winrt, uwp, android, xamarin.forms, ios, xamarin.mac, monomac, linqpad-samples</tags>
     <dependencies>
     </dependencies>
@@ -135,26 +137,6 @@ Other:
           target="lib\Xamarin.Mac\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
           target="lib\Xamarin.Mac\Sockets.Plugin.Abstractions.xml" />
-
-    <!--Xamarin.Mac Classic-->
-    <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.dll"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.dll" />
-    <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.xml"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.xml" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.Abstractions.dll" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.Abstractions.xml" />
-
-    <!--MonoMac-->
-    <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.dll"
-          target="lib\MonoMac\Sockets.Plugin.dll" />
-    <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.xml"
-          target="lib\MonoMac\Sockets.Plugin.xml" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\MonoMac\Sockets.Plugin.Abstractions.dll" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\MonoMac\Sockets.Plugin.Abstractions.xml" />
 
     <!--Windows Desktop-->
     <file src="Sockets\Sockets.Plugin.WindowsDesktop\bin\Release\Sockets.Plugin.dll"

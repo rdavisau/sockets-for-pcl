@@ -1,10 +1,10 @@
 _This changelog refers to nuget package releases._
 
-#### 2.0.0 (2016-01-11)
+#### 2.0.0 - 2.0.2 (2016-06-30)
 
 Deprecations:
 
-- Support for the iOS "Classic" API has been removed
+- Support for the iOS "Classic" API, MacOS "Classic" and MonoMac (open source) platforms has been dropped.
 
 Features: 
 
@@ -25,6 +25,7 @@ Bugfixes:
 Other:
 
 - sockets-for-pcl can now also be installed via the Xamarin Component Store. Thanks @mattleibow
+- special thanks to @vbisbest for helping work through issues in the prereleases
 
 #### 1.2.2 (2015-07-27)
 
