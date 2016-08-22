@@ -197,3 +197,4 @@ nuget.exe
 /Sockets/Sockets.Plugin.Abstractions/Properties
 /Sockets/Samples/SocketsSample.XF/SocketsSample.XF.Droid/SocketsSample.XF.Droid.csproj.bak
 /Sockets/Samples/SocketsSample.XF/SocketsSample.XF.Droid
+/Sockets.userprefs

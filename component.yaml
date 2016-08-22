@@ -1,0 +1,30 @@
+id: rda.SocketsForPCL
+name: Sockets Plugin
+publisher: Ryan Davis
+publisher-url: http://www.ryandavis.io
+summary: Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Xamarin.Mac, Windows Phone 8/8.1, Windows Store, UWP, and Windows Desktop.
+version: 2.0.2
+src-url: https://github.com/rdavisau/sockets-for-pcl
+
+details: Details.md
+license: LICENSE.md
+getting-started: Details.md
+
+is_shell: true
+no_build: true
+packages:
+  winphone-8.0: rda.SocketsForPCL, Version=2.0.2
+  winphone-8.1: rda.SocketsForPCL, Version=2.0.2
+  android: rda.SocketsForPCL, Version=2.0.2
+  ios: rda.SocketsForPCL, Version=2.02
+  ios-unified: rda.SocketsForPCL, Version=2.0.2
+  mac-unified: rda.SocketsForPCL, Version=2.0.2
+  mobile: rda.SocketsForPCL, Version=2.0.2
+local-nuget-repo: ./
+
+icons: 
+  - _meta\icon\icon_128x128.png
+
+samples: 
+  - name: Cross-Platform Sockets Sample
+    path: Sockets/Samples/SocketsSample.XF/SocketsSample.XF.sln

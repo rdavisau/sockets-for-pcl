@@ -3,34 +3,52 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>rda.SocketsForPCL</id>
-    <version>1.2.2</version>
+    <version>2.0.2</version>
     <title>Sockets Plugin for Xamarin and Windows (PCL)</title>
     <authors>Ryan Davis</authors>
     <owners>Ryan Davis</owners>
     <licenseUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/rdavisau/sockets-for-pcl</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>2015 Ryan Davis</copyright>
+    <copyright>2016 Ryan Davis</copyright>
     <iconUrl>https://raw.githubusercontent.com/rdavisau/sockets-for-pcl/master/_meta/icon/icon.png</iconUrl>
     <releaseNotes>
-1.2.2 (2015-07-27)
+2.0.2 (2016-06-30)
+
+Known Issues: 
+
+- A `SocketException` class has been added, allowing socket-related exceptions to be caught from PCL code. In this release, this works for WinRT/UWP platforms only. 
+
+Deprecations:
+
+- Support for the iOS "Classic" API, MacOS "Classic" and MonoMac (open source) platforms has been dropped.
 
 Features: 
 
-- `TcpSocketClient` and `TcpSocketListener` now supports setting of the buffer size used when sending data. If unset, this defaults to zero (unbuffered). This also addresses an inconsistency in default buffer sizes between .NET platforms and WinRT platforms. Thanks @xen2
-- `TcpSocketListener` now supports os-based/ephemeral port selection. When passing `0` to the `port` parameter of `StartListeningAsync`, the selection of bound port is deferred to the operating system. You can determine what port was bound by checking the `LocalPort` property. 
-      
-1.2.1 (2015-06-10)
+- It is now possible to retrieve the `ICommsInterface` that a `TcpSocketClient` is connected via. Thanks @fubar-coder
+- Auto-properties have been replaced with proper events across all classes. Thanks @Waty
+- `TcpSocketClient`'s `ConnectAsync` method optionally takes a `CancellationToken` to support client-invoked cancellation and scenarios like timeout. Thanks @SparkStream
+- You may now specify a service name rather than port when connecting with a `TcpSocketClient`. Thanks @SparkStream
+- For those that need it, you can access the underlying .NET or WinRT/UWP socket instance from native (non-PCL) projects. Thanks @SparkStream
+- `UdpSocketClient` can now receive response packets. This simplifies scenarios where you don't need to listen for new packets, but do need to receive response packets. Thanks @SatoshiARA
+- All the Udp socket classes now include a `Send-` overload that allows you to specify the number of bytes to be read from the input. This can avoid the need to duplicate a buffer when working with streams. Thanks @jasells
 
-Bugfixes:
+Bugfixes: 
 
-- Fixed incorrect assembly version for WP8.
+- Fixed `InvalidCastException` being thrown by `TcpSocketListener.Dispose()`. Thanks @Waty
+- Fix for a rare issue where the Udp classes could throw an exception after receiving an ICMP unreachable packet in certain cases
+
+Other:
+
+- sockets-for-pcl can now also be installed via the Xamarin Component Store. Thanks @mattleibow
+- special thanks to @vbisbest for helping work through issues in the prereleases
+
     </releaseNotes>
     <description>
-      Cross-platform socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
+      Cross-platform socket API for Xamarin iOS/Android/Forms, Xamarin.Mac, Windows Phone 8/8.1, Windows Store, UWP and Windows Desktop. Includes support for TCP and UDP listeners and clients, as well as UDP multicast.
     </description>
-    <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Xamarin.Mac/MonoMac, Windows Phone 8/8.1, Windows Store and Windows Desktop.</summary>
-    <tags>sockets, tcp, udp, multicast, xamarin, pcl, windows phone, winphone, wp8, winrt, android, xamarin.forms, ios, xamarin.mac, monomac, linqpad-samples</tags>
+    <summary>Cross-platform TCP and UDP socket API for Xamarin iOS/Android/Forms, Xamarin.Mac, Windows Phone 8/8.1, Windows Store, UWP and Windows Desktop.</summary>
+    <tags>sockets, tcp, udp, multicast, xamarin, pcl, windows phone, winphone, wp8, winrt, uwp, android, xamarin.forms, ios, xamarin.mac, monomac, linqpad-samples</tags>
     <dependencies>
     </dependencies>
   </metadata>
@@ -119,26 +137,6 @@ Bugfixes:
           target="lib\Xamarin.Mac\Sockets.Plugin.Abstractions.dll" />
     <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
           target="lib\Xamarin.Mac\Sockets.Plugin.Abstractions.xml" />
-
-    <!--Xamarin.Mac Classic-->
-    <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.dll"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.dll" />
-    <file src="Sockets\Sockets.Plugin.MacClassic\bin\MacClassic\Release\Sockets.Plugin.xml"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.xml" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.Abstractions.dll" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\Xamarin.Mac.Classic\Sockets.Plugin.Abstractions.xml" />
-
-    <!--MonoMac-->
-    <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.dll"
-          target="lib\MonoMac\Sockets.Plugin.dll" />
-    <file src="Sockets\Sockets.Plugin.MacOpenSource\bin\MacOpenSource\Release\Sockets.Plugin.xml"
-          target="lib\MonoMac\Sockets.Plugin.xml" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll"
-          target="lib\MonoMac\Sockets.Plugin.Abstractions.dll" />
-    <file src="Sockets\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.xml"
-          target="lib\MonoMac\Sockets.Plugin.Abstractions.xml" />
 
     <!--Windows Desktop-->
     <file src="Sockets\Sockets.Plugin.WindowsDesktop\bin\Release\Sockets.Plugin.dll"

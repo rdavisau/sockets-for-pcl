@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -74,6 +75,11 @@ namespace Sockets.Plugin
 
             if (okOrCancelled == ret.Task)
             {
+#pragma warning disable CS4014
+                // ensure we observe the connectTask's exception in case downstream consumers throw on unobserved tasks
+                connectTask.ContinueWith(t => $"{t.Exception}", TaskContinuationOptions.OnlyOnFaulted);
+#pragma warning restore CS4014 
+
                 // reset the backing field.
                 // depending on the state of the socket this may throw ODE which it is appropriate to ignore
                 try { await DisconnectAsync(); } catch (ObjectDisposedException) { }
@@ -83,6 +89,9 @@ namespace Sockets.Plugin
             }
             else
                 canceller.Dispose();
+
+            if (okOrCancelled.IsFaulted)
+                throw okOrCancelled.Exception.InnerException;
 
             InitializeWriteStream();
 
@@ -137,6 +146,17 @@ namespace Sockets.Plugin
                 _secureStream = null;
                 _backingTcpClient = new TcpClient();
             });
+        }
+
+        /// <summary>
+        /// Gets the interface the connection is using.
+        /// </summary>
+        /// <returns>The <see cref="ICommsInterface"/> which represents the interface the connection is using.</returns>
+        public async Task<ICommsInterface> GetConnectedInterfaceAsync()
+        {
+            var ipEndpoint = (IPEndPoint)_backingTcpClient.Client.LocalEndPoint;
+            var interfaces = await CommsInterface.GetAllInterfacesAsync();
+            return interfaces.FirstOrDefault(x => x.NativeIpAddress.Equals(ipEndpoint.Address));
         }
 
         /// <summary>

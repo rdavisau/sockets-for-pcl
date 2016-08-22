@@ -72,18 +72,18 @@
     <Compile Include="Netmask\NetInterfaceInfo.cs" />
     <Compile Include="Netmask\StructsAndEnums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sockets.Plugin.Abstractions\Sockets.Plugin.Abstractions.csproj">
-      <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
-      <Name>Sockets.Plugin.Abstractions</Name>
-    </ProjectReference>
+    <Compile Include="..\Sockets.Implementation.NET\Extensions\NativeExceptionExtensions.cs">
+      <Link>NativeExceptionExtensions.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="MonoMac" />
+    <Reference Include="Sockets.Plugin.Abstractions">
+      <HintPath>..\Sockets.Plugin.Abstractions\bin\Release\Sockets.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Netmask\README.md" />

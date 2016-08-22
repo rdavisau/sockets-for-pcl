@@ -118,6 +118,21 @@ namespace Sockets.Plugin
                 .SendAsync(data, length, address, port)
                 .WrapNativeSocketExceptions();
         }
+        
+        protected void ProtectAgainstICMPUnreachable(UdpClient udpClient)
+        {
+#if WINDOWS_DESKTOP
+
+            // this should be called whenever the backing client is recreated.
+            // it prevents a strange class of errors, some discussion at
+            // http://stackoverflow.com/questions/7201862/an-existing-connection-was-forcibly-closed-by-the-remote-host
+
+            uint IOC_IN = 0x80000000;
+            uint IOC_VENDOR = 0x18000000;
+            uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+            udpClient.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+#endif
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -141,7 +156,10 @@ namespace Sockets.Plugin
             if (disposing)
             {
                 if (_backingUdpClient != null)
+                {
                     ((IDisposable)_backingUdpClient).Dispose();
+                    _backingUdpClient = null;
+                }
             }
         }
         
