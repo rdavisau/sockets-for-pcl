@@ -75,6 +75,11 @@ namespace Sockets.Plugin
 
             if (okOrCancelled == ret.Task)
             {
+#pragma warning disable CS4014
+                // ensure we observe the connectTask's exception in case downstream consumers throw on unobserved tasks
+                connectTask.ContinueWith(t => $"{t.Exception}", TaskContinuationOptions.OnlyOnFaulted);
+#pragma warning restore CS4014 
+
                 // reset the backing field.
                 // depending on the state of the socket this may throw ODE which it is appropriate to ignore
                 try { await DisconnectAsync(); } catch (ObjectDisposedException) { }

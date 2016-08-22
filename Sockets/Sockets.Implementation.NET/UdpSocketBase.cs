@@ -121,6 +121,8 @@ namespace Sockets.Plugin
         
         protected void ProtectAgainstICMPUnreachable(UdpClient udpClient)
         {
+#if WINDOWS_DESKTOP
+
             // this should be called whenever the backing client is recreated.
             // it prevents a strange class of errors, some discussion at
             // http://stackoverflow.com/questions/7201862/an-existing-connection-was-forcibly-closed-by-the-remote-host
@@ -129,6 +131,7 @@ namespace Sockets.Plugin
             uint IOC_VENDOR = 0x18000000;
             uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
             udpClient.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+#endif
         }
 
         /// <summary>
