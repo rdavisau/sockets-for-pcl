@@ -220,6 +220,9 @@ namespace Sockets.Plugin
             get { return RemoteEndpoint.Port; }
         }
 
+        /// <summary>
+        /// Enables or disables delay when send or receive buffers are full.
+        /// </summary>
         public bool NoDelay
         {
             get { return _backingTcpClient.NoDelay; }
