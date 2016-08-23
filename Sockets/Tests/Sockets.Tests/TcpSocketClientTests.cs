@@ -296,5 +296,14 @@ namespace Sockets.Tests
             return Assert.ThrowsAsync<OperationCanceledException>(()=> sut.ConnectAsync("99.99.99.99", 51234, cancellationToken: cts.Token));
         }
 
+        [Fact]
+        public void TcpSocketClient_NoDelay_CanBeSetAndRead()
+        {
+            var sut = new TcpSocketClient();
+            Assert.False(sut.NoDelay);
+            sut.NoDelay = true;
+            Assert.True(sut.NoDelay);
+        }
+
     }
 }
