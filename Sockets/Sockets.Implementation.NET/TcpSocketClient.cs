@@ -220,6 +220,12 @@ namespace Sockets.Plugin
             get { return RemoteEndpoint.Port; }
         }
 
+        public bool NoDelay
+        {
+            get { return _backingTcpClient.NoDelay; }
+            set { _backingTcpClient.NoDelay = value; }
+        }
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

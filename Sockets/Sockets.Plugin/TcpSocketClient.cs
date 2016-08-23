@@ -105,6 +105,15 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
+        /// Enables or disables delay when send or receive buffers are full.
+        /// </summary>
+        public bool NoDelay
+        {
+            get { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+            set { throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); }
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
