@@ -181,6 +181,7 @@ Many members of the community have contributed to improving sockets-for-pcl:
  - @jasells (udpclient design considerations)
  - @vbisbest (prelease testing, bugfixes)
  - @1iveowl (udp multicast considerations)
+ - @cts-craig (NoDelay property on TcpSocketClient and TcpSocketListener)
 
 If you have a bugfix or a feature you'd like to add, please open an issue. 
 All pull requests should be opened against the `dev` branch.
