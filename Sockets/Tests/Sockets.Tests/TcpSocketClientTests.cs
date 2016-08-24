@@ -305,5 +305,18 @@ namespace Sockets.Tests
             Assert.True(sut.NoDelay);
         }
 
+        [Fact]
+        public async Task TcpSocketListen_NoDelay_CanBeSetAndRead()
+        {
+#if !WINDOWS_UWP
+            var sut = new TcpSocketListener();
+            var port = PortGranter.GrantPort();
+            await sut.StartListeningAsync(port);
+            Assert.False(sut.NoDelay);
+            sut.NoDelay = true;
+            Assert.True(sut.NoDelay);
+#endif
+        }
+
     }
 }
