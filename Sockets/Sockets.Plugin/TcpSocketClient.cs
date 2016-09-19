@@ -37,7 +37,8 @@ namespace Sockets.Plugin
         /// <param name="address">The address of the endpoint to connect to.</param>
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        /// <param name="ignoreSSLErrors">True to ignore SSL errors.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken), bool ignoreSSLErrors = false)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }
@@ -49,7 +50,8 @@ namespace Sockets.Plugin
         /// <param name="service">The service of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public Task ConnectAsync(string address, string service, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        /// <param name="ignoreSSLErrors">True to ignore SSL errors.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false, CancellationToken cancellationToken = default(CancellationToken), bool ignoreSSLErrors = false)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }
