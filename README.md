@@ -157,7 +157,8 @@ Console.WriteLine("Listening on interface with ip: {0}", firstUsable.IpAddress);
 ### Platform Considerations
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of `privateNetworkClientServer`, `internetClient` and/or  `internetClientServer` capabilities. 
  - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between separate apps (i.e. no IPC) 
- - Binding to specific interfaces is not supported on Windows Phone 8.0 (8.1 is fine). All interfaces will be bound, even if a specific `CommsInterface` is provided. 
+ - Binding to specific interfaces is not supported on Windows Phone 8.0 (8.1 is fine). All interfaces will be bound, even if a specific `CommsInterface` is provided.
+ - On Windows Phone 8.0 or Windows 8.0 the ignoreSSLErrors flag doesn't work
 
 Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
 
