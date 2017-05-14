@@ -58,7 +58,8 @@ namespace Sockets.Plugin
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public async Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        /// <param name="ignoreSSLErrors">True to ignore SSL errors.</param>
+        public async Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken), bool ignoreSSLErrors = false)
         {
             // standard connect
             var connectTask =
@@ -97,7 +98,7 @@ namespace Sockets.Plugin
 
             if (secure)
             {
-                var secureStream = new SslStream(_writeStream, true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender, cert, chain, sslPolicy));
+                var secureStream = new SslStream(_writeStream, true, (sender, cert, chain, sslPolicy) => ServerValidationCallback(sender, cert, chain, sslPolicy, ignoreSSLErrors));
                 secureStream.AuthenticateAsClient(address, null, System.Security.Authentication.SslProtocols.Tls, false);
                 _secureStream = secureStream;
             }            
@@ -110,17 +111,22 @@ namespace Sockets.Plugin
         /// <param name="service">The service name of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <param name="ignoreSSLErrors">True to ignore SSL errors.</param>
         public Task ConnectAsync(string address, string service, bool secure = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken), bool ignoreSSLErrors = false)
         {
             var port = ServiceNames.PortForTcpServiceName(service);
-            return ConnectAsync(address, port, secure, cancellationToken);
+            return ConnectAsync(address, port, secure, cancellationToken, ignoreSSLErrors);
         }
 
         #region Secure Sockets Details
         
-        private bool ServerValidationCallback (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        private bool ServerValidationCallback (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors, bool ignoreSSLErrors)
         {
+            if (ignoreSSLErrors)
+            {
+                return true;
+            }
             switch (sslPolicyErrors)
             {
                 case SslPolicyErrors.RemoteCertificateNameMismatch:

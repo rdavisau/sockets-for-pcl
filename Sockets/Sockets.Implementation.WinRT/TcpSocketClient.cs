@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
+using Windows.Security.Cryptography.Certificates;
 using Sockets.Plugin.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -57,10 +58,11 @@ namespace Sockets.Plugin
         /// <param name="port">The port of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        /// <param name="ignoreSSLErrors">True to ignore SSL errors.</param>
+        public Task ConnectAsync(string address, int port, bool secure = false, CancellationToken cancellationToken = default(CancellationToken), bool ignoreSSLErrors = false)
         {
             var service = port.ToString();
-            return ConnectAsync(address, service, secure, cancellationToken);
+            return ConnectAsync(address, service, secure, cancellationToken, ignoreSSLErrors);
         }
 
         /// <summary>
@@ -70,11 +72,25 @@ namespace Sockets.Plugin
         /// <param name="service">The service of the endpoint to connect to.</param>
         /// <param name="secure">True to enable TLS on the socket.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
-        public Task ConnectAsync(string address, string service, bool secure = false, CancellationToken cancellationToken = default(CancellationToken))
+        /// <param name="ignoreSSLErrors">True to ignore SSL errors.</param>
+        public Task ConnectAsync(string address, string service, bool secure = false, CancellationToken cancellationToken = default(CancellationToken), bool ignoreSSLErrors = false)
         {
             var hn = new HostName(address);
             var sn = service;
             var spl = secure ? _secureSocketProtectionLevel : SocketProtectionLevel.PlainSocket;
+
+#if !WINDOWS_PHONE
+            if (ignoreSSLErrors)
+            {
+                //List is based on this forum post https://social.msdn.microsoft.com/Forums/en-US/838ba310-9e54-4b59-855f-92f32d1bdf75/what-are-those-ignorable-certificate-errors-after-the-ssl-connection-with-streamsocket-to-the-remote?forum=winappswithnativecode
+                _backingStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+                _backingStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.Expired);
+                _backingStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.WrongUsage);
+                _backingStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
+                _backingStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.RevocationInformationMissing);
+                _backingStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.RevocationFailure);
+            }
+#endif
 
             return _backingStreamSocket
                 .ConnectAsync(hn, sn, spl)
