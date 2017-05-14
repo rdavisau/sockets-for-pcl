@@ -103,6 +103,15 @@ namespace Sockets.Plugin
             get { return ((IPEndPoint) (_backingTcpListener.LocalEndpoint)).Port; }
         }
 
+        /// <summary>
+        /// Enables or disables delay when send or receive buffers are full.
+        /// </summary>
+        public bool NoDelay
+        {
+            get { return _backingTcpListener.Server.NoDelay; }
+            set { _backingTcpListener.Server.NoDelay = value; }
+        }
+
 #pragma warning disable 4014
         private void WaitForConnections(CancellationToken cancelToken)
         {

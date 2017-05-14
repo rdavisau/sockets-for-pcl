@@ -35,5 +35,10 @@ namespace Sockets.Plugin.Abstractions
         ///     to get a <code>TcpSocketClient</code> representing the connection for sending and receiving data.
         /// </summary>
         event EventHandler<TcpSocketListenerConnectEventArgs> ConnectionReceived;
+
+        /// <summary>
+        /// Enables or disables delay when send or receive buffers are full.
+        /// </summary>
+        bool NoDelay { get; set; }
     }
 }

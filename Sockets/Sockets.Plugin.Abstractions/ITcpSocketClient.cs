@@ -62,6 +62,11 @@ namespace Sockets.Plugin.Abstractions
         ///     The port of the remote endpoint to which the <code>TcpSocketClient</code> is currently connected.
         /// </summary>
         int RemotePort { get; }
+
+        /// <summary>
+        /// Enables or disables delay when send or receive buffers are full.
+        /// </summary>
+        bool NoDelay { get; set; }
     }
 
     public interface IExposeBackingSocket

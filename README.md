@@ -158,6 +158,7 @@ Console.WriteLine("Listening on interface with ip: {0}", firstUsable.IpAddress);
  - On Windows Phone, you will require appropriate permissions in your app manifest. Depending on whether you are listening or sending, this could include a combination of `privateNetworkClientServer`, `internetClient` and/or  `internetClientServer` capabilities. 
  - On Windows Phone/Store, there are restrictions regarding passing traffic over loopback between separate apps (i.e. no IPC) 
  - Binding to specific interfaces is not supported on Windows Phone 8.0 (8.1 is fine). All interfaces will be bound, even if a specific `CommsInterface` is provided. 
+ - On Windows Phone/Store, the NoDelay property of TcpSocketListener has no effect. The implementation does not support this property.
 
 Additional 'higher level' features will likely end up in the [sockethelpers-for-pcl](https://github.com/rdavisau/sockethelpers-for-pcl) project mentioned earlier. 
 
@@ -180,6 +181,7 @@ Many members of the community have contributed to improving sockets-for-pcl:
  - @jasells (udpclient design considerations)
  - @vbisbest (prelease testing, bugfixes)
  - @1iveowl (udp multicast considerations)
+ - @cmjacobs (NoDelay property on TcpSocketClient and TcpSocketListener)
 
 If you have a bugfix or a feature you'd like to add, please open an issue. 
 All pull requests should be opened against the `dev` branch.

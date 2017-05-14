@@ -135,6 +135,15 @@ namespace Sockets.Plugin
         }
 
         /// <summary>
+        /// Enables or disables delay when send or receive buffers are full.
+        /// </summary>
+        public bool NoDelay
+        {
+            get { return _backingStreamSocket.Control.NoDelay; }
+            set { _backingStreamSocket.Control.NoDelay = value; }            
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
