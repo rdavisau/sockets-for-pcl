@@ -17,8 +17,9 @@ namespace Sockets.Plugin
         /// <param name="multicastAddress">The address for the multicast group.</param>
         /// <param name="port">The port for the multicast group.</param>
         /// <param name="multicastOn">The <code>CommsInterface</code> to multicast on. If unspecified, all interfaces will be bound.</param>
+        /// <param name="exclusive">Should address use be exclusive?</param> 
         /// <returns></returns>
-        public Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn = null)
+        public Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn = null, bool? exclusive = null)
         {
             throw new NotImplementedException(PCL.BaitWithoutSwitchMessage);
         }

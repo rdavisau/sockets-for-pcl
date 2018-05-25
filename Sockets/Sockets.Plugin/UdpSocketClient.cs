@@ -12,6 +12,15 @@ namespace Sockets.Plugin
     /// </summary>
     public class UdpSocketClient : UdpSocketBase, IUdpSocketClient
     {
+		/// <summary> 
+        ///     Constructor for <code>UdpSocketClient.</code> 
+        /// </summary> 
+        /// <param name="exclusive">Should address use be exclusive?</param> 
+        public UdpSocketClient(bool exclusive) 
+        { 
+            throw new NotImplementedException(PCL.BaitWithoutSwitchMessage); 
+        } 
+ 
         /// <summary>
         ///     Sets the endpoint at the specified address/port pair as the 'default' target of sent data.
         ///     After calling <code>ConnectAsync</code>, use <code>SendAsync</code> to send data to the default target.
