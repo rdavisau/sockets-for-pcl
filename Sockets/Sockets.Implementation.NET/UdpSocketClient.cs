@@ -21,24 +21,46 @@ namespace Sockets.Plugin
     {
         private CancellationTokenSource _messageCanceller;
 
-        /// <summary>
-        ///     Default constructor for <code>UdpSocketClient.</code>
-        /// </summary>
-        public UdpSocketClient()
-        {
-            try
-            {
-                _backingUdpClient = new UdpClient
-                {
-                    EnableBroadcast = true
-                };
-                ProtectAgainstICMPUnreachable(_backingUdpClient);
-            }
-            catch (PlatformSocketException ex)
-            {
-                throw new PclSocketException(ex);
-            }
-        }
+		/// <summary>
+		///     Default constructor for <code>UdpSocketClient.</code>
+		/// </summary>
+		public UdpSocketClient()
+		{
+			try
+			{
+				_backingUdpClient = new UdpClient
+				{
+					EnableBroadcast = true
+				};
+				ProtectAgainstICMPUnreachable(_backingUdpClient);
+			}
+			catch (PlatformSocketException ex)
+			{
+				throw new PclSocketException(ex);
+			}
+		}
+
+		/// <summary> 
+        ///     Constructor for <code>UdpSocketClient.</code> 
+        /// </summary> 
+        /// <param name="exclusive">Should address use be exclusive?</param> 
+        public UdpSocketClient(bool exclusive) 
+        { 
+          try 
+            { 
+                _backingUdpClient = new UdpClient 
+                { 
+                    EnableBroadcast = true, 
+                    ExclusiveAddressUse = exclusive 
+                }; 
+                _backingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, !exclusive);  
+                ProtectAgainstICMPUnreachable(_backingUdpClient); 
+            } 
+            catch (PlatformSocketException ex) 
+            { 
+                throw new PclSocketException(ex); 
+            }   
+        } 
 
         /// <summary>
         ///     Sets the endpoint at the specified address/port pair as the 'default' target of sent data.

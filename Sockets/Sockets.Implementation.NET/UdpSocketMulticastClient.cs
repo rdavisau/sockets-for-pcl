@@ -11,44 +11,58 @@ using PclSocketException = Sockets.Plugin.Abstractions.SocketException;
 
 namespace Sockets.Plugin
 {
-    /// <summary>
-    ///     Sends and recieves data in a UDP multicast group.
-    ///     Join a UDP multicast address using <code>JoinMulticastGroupAsync</code>, then send data using
-    ///     <code>SendMulticastAsync</code>.
-    /// </summary>
-    public class UdpSocketMulticastClient : UdpSocketBase, IUdpSocketMulticastClient
-    {
-        private string _multicastAddress;
-        private int _multicastPort;
+	/// <summary>
+	///     Sends and recieves data in a UDP multicast group.
+	///     Join a UDP multicast address using <code>JoinMulticastGroupAsync</code>, then send data using
+	///     <code>SendMulticastAsync</code>.
+	/// </summary>
+	public class UdpSocketMulticastClient : UdpSocketBase, IUdpSocketMulticastClient
+	{
+		private string _multicastAddress;
+		private int _multicastPort;
 
-        private CancellationTokenSource _messageCanceller;
-        private int _ttl = 1;
+		private CancellationTokenSource _messageCanceller;
+		private int _ttl = 1;
 
-        /// <summary>
-        ///     Joins the multicast group at the specified endpoint.
-        /// </summary>
-        /// <param name="multicastAddress">The address for the multicast group.</param>
-        /// <param name="port">The port for the multicast group.</param>
-        /// <param name="multicastOn">The <code>CommsInterface</code> to multicast on. If unspecified, all interfaces will be bound.</param>
-        /// <returns></returns>
-        public async Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn = null)
-        {
-            if (multicastOn != null && !multicastOn.IsUsable)
-                throw new InvalidOperationException("Cannot multicast on an unusable interface. Check the IsUsable property before attemping to connect.");
+		/// <summary>
+		///     Joins the multicast group at the specified endpoint.
+		/// </summary>
+		/// <param name="multicastAddress">The address for the multicast group.</param>
+		/// <param name="port">The port for the multicast group.</param>
+		/// <param name="multicastOn">The <code>CommsInterface</code> to multicast on. If unspecified, all interfaces will be bound.</param>
+		/// <param name="exclusive">Should address use be exclusive?</param> 
+		/// <returns></returns>
+		public async Task JoinMulticastGroupAsync(string multicastAddress, int port, ICommsInterface multicastOn = null, bool? exclusive = null)
+		{
+			if (multicastOn != null && !multicastOn.IsUsable)
+				throw new InvalidOperationException("Cannot multicast on an unusable interface. Check the IsUsable property before attemping to connect.");
 
-            var bindingIp = multicastOn != null ? ((CommsInterface)multicastOn).NativeIpAddress : IPAddress.Any;
-            var bindingEp = new IPEndPoint(bindingIp, port);
+			var bindingIp = multicastOn != null ? ((CommsInterface)multicastOn).NativeIpAddress : IPAddress.Any;
+			var bindingEp = new IPEndPoint(bindingIp, port);
 
-            var multicastIp = IPAddress.Parse(multicastAddress);
+			var multicastIp = IPAddress.Parse(multicastAddress);
 
-            try
-            {
-                _backingUdpClient = new UdpClient(bindingEp)
-                {
-                    EnableBroadcast = true
-                };
-                ProtectAgainstICMPUnreachable(_backingUdpClient);
-            }
+			try
+			{
+				if (exclusive == null)
+				{
+					_backingUdpClient = new UdpClient(bindingEp)
+					{
+						EnableBroadcast = true
+					};
+					ProtectAgainstICMPUnreachable(_backingUdpClient);
+				}
+				else
+				{
+					_backingUdpClient = new UdpClient
+					{
+						EnableBroadcast = true,
+						ExclusiveAddressUse = exclusive.Value
+					};
+					_backingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, !exclusive.Value);
+					ProtectAgainstICMPUnreachable(_backingUdpClient);
+				}
+			}
             catch (PlatformSocketException ex)
             {
                 throw new PclSocketException(ex);
